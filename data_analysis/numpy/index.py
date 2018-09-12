@@ -41,5 +41,9 @@ print(arr[:, :2])
 print("Get all columns and the last two lines of the array:")
 print(arr[-2:, :])
 
+# Modify the array by slicing.
+arr[:2, :2] = 0
+print("After changed array = ")
+print(arr)
 
 

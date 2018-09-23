@@ -41,11 +41,10 @@ class Robot(object):
         update these parameters when necessary.
         """
         if self.testing:
-            # TODO 1. No random choice when testing
-            pass
+            self.t += 1
         else:
-            # TODO 2. Update parameters when learning
-            pass
+            self.t += 1
+            self.epsilon /= float(self.t)
 
         return self.epsilon
 
@@ -53,52 +52,50 @@ class Robot(object):
         """
         Get the current state of the robot. In this
         """
-
-        # TODO 3. Return robot's current state
-        return None
+        return self.maze.sense_robot()
 
     def create_Qtable_line(self, state):
         """
         Create the qtable with the current state
         """
-        # TODO 4. Create qtable with current state
-        # Our qtable should be a two level dict,
-        # Qtable[state] ={'u':xx, 'd':xx, ...}
-        # If Qtable[state] already exits, then do
-        # not change it.
-        pass
+        if state not in self.Qtable:
+            self.Qtable[state] = {'u': 0, 'd': 0, 'l': 0, 'r': 0}
 
     def choose_action(self):
         """
         Return an action according to given rules
         """
         def is_random_exploration():
-
-            # TODO 5. Return whether do random choice
-            # hint: generate a random number, and compare
-            # it with epsilon
-            pass
+            return False if random.randint(1, 10) > (10 * self.epsilon) else True
 
         if self.learning:
             if is_random_exploration():
-                # TODO 6. Return random choose aciton
-                return None
+                return_random = True
             else:
-                # TODO 7. Return action with highest q value
-                return None
+                return_random = False
+
         elif self.testing:
-            # TODO 7. choose action with highest q value
+            return_random = False
         else:
-            # TODO 6. Return random choose aciton
+            return_random = True
+        
+        if return_random:
+            return random.choice(self.valid_actions)
+        else:
+            max_val = max([v for _, v in self.Qtable[self.state].items()])
+            return [k for k, v in self.Qtable[self.state].items() if v == max_val][0]
 
     def update_Qtable(self, r, action, next_state):
         """
         Update the qtable according to the given rule.
         """
+
+        def get_max_q(state):
+            return max([v for _, v in self.Qtable[state].items()])
+
         if self.learning:
-            pass
-            # TODO 8. When learning, update the q table according
-            # to the given rules
+            self.Qtable[self.state][action] = (1 - self.alpha) * self.Qtable[self.state][action] +\
+                                                self.alpha * (r + self.gamma * get_max_q(next_state))
 
     def update(self):
         """
@@ -120,3 +117,23 @@ class Robot(object):
             self.update_parameter() # update parameters
 
         return action, reward
+
+if __name__ == '__main__':
+    epoch = 30
+
+    epsilon0 = 0.4
+    alpha = 0.5
+    gamma = 0.9
+
+    maze_size = (12, 12)
+    trap_number = 4
+    from Runner import Runner
+    from Maze import Maze
+
+    g = Maze(maze_size=maze_size,trap_number=trap_number)
+    r = Robot(g,alpha=alpha, epsilon0=epsilon0, gamma=gamma)
+    r.set_status(learning=True)
+
+    runner = Runner(r, g)
+    runner.run_training(epoch, display_direction=True)
+    runner.generate_movie(filename = "final3.mp4")

@@ -259,3 +259,123 @@ Constant-alpha CLIE Control的伪代码和普通的CLIE Control伪代码几乎�
 ```python
 Q[state, action] += alpha * (sum(rewards[state + 1:]) - Q[state, action])
 ```
+
+## Temporal Difference, 时间差分方法
+
+蒙特卡洛方法必须等到阶段结束时才能更新值函数的估值，但是时间差分(TD)方法在每个时间步之后都会更新值函数。
+
+对于任何固定策略，一步TD（或TD(0)）保证会收敛于真状态值函数，只要步长参数alpha足够小。
+
+在实践中，TD预测的收敛速度比MC预测要快得多。
+
+下面是TD(0)预测的伪代码:
+
+```python
+# TD Prediction: TD(0)
+def TD0_prediction(policy, num_episodes, alpha, gamma):
+
+    # Initialize V arbitrarily
+    V = defaultdict(0)
+
+    for i in range(1, num_episodes):
+
+        # Observe S0
+        state = reset_state()
+
+        while True:
+
+            # Choose action At using policy
+            action = choose_action(policy, state)
+            # Take action At and observe Rt+1, St+1
+            next_state, reward, done = step(state, action)
+            # Use next state to update current state
+            V[state] += alpha * (reward + \
+                gamma * V[next_state] - V[state])
+            # t <- t + 1
+            state = next_state
+
+            if done:
+                break
+    
+    return V
+```
+
+### Sersa(0)
+
+Sersa(0)是既定策略TD控制方法。它可以保证收敛于最优动作值函数q\*，只要步长alpha足够小，并且所选的epsilon满足GLIE条件。
+
+和TD(0)的差别在于获取下一个状态后使用epsilon贪婪算法选择下一个动作，然后根据下一个动作的动作值来预测当前动作的动作值。
+
+下面是Sersa(0)的伪代码:
+
+```python
+def sersa_prediction(policy, num_episodes, alpha):
+
+    # Initialize Q arbitrarily
+    Q = defaultdict(0)
+
+    for i in range(1, num_episodes):
+        epsilon = 1.0 / i
+        state = reset()
+        action = choose_action(policy, Q)
+
+        while True:
+            next_state, reward, done = step(state, action)
+            next_action = choose_action(policy, Q)
+
+            # Update Q accroding to next state and next action
+            Q[state, action] += alpha * (reward + \
+            gamma * Q[next_state, next_action] - Q[state, action])
+
+            state = next_state
+            action = next_action
+
+            if done:
+                break
+```
+
+### Sarsamax (Q学习)
+
+Sarsamax是一种新策略TD控制方法，它会保证Sarsa算法会收敛于最优动作值函数q\*。
+
+Sarsamax和Sarsa(0)的区别仅在于更新Q的公式不同，Sarsamax更新Q的公式如下:
+
+```text
+Q(St, At) = Q(St, At) + alpha * (Rt+1 + gamma * maxQ(St+1, a) - Q(St, At))
+```
+
+关键不同在于maxQ(St+1, a)，Sarsamax不直接使用下一个动作值来更新Q，而是选择下一个状态中动作值最大的动作来更新。这相当于使用另一个策略来更新Q，也就是所谓的离线策略评估。这可以让Q在最后更加接近于q\*。
+
+### 预期Sarsa
+
+预期Sarsa同样是一种新策略TD控制方法，和上面的算法不同地方同样在于它更新Q的方式。
+
+预期Sarsa更新Q的公式为:
+
+```text
+Q(St, At) = Q(St, At) + alpha * (Rt+1 + gamma * sum(π(a|St+1) * Q(St+1, a)) - Q(St, At))
+```
+
+注意sum(π(a|St+1) * Q(St+1, a))，这实际上是把策略选择下一个动作的概率和所有动作相乘然后求和。对比Sarsamax直接选择最大Q，这里会更多地考虑其它动作的表现。
+
+用python可以这么表达这个公式:
+
+```python
+Q[state][action] = update_Q(Q[state][action], np.dot(Q[next_state], action_prob), reward, alpha, gamma)
+```
+
+### 性能分析
+
+上面的三种算法（Sarsa, Sarsamax, 预期Sarsa）都会收敛于最优动作值函数q\*(依据q\*可以生成最优策略π\*)。因为满足下面两个条件:
+
+- epsilon的值依据GLIE条件逐渐降低
+- 步长参数alpha足够小
+
+这些算法的区别如下:
+
+- Sarsa和Sarsa预期都是异同策略TD控制算法。在这种情况下，我们会根据要评估和改进的相同（epsilon贪婪策略）策略选择动作。
+- Sersamax是离线策略方法，我们会评估和改进（epsilon贪婪）策略，并根据另一个策略来选择动作。
+- 既定策略TD控制方法（如预期Sarsa和Sarsa）的在线效果比新策略TD控制方法（如Sarsamax）要好。
+- 预期Sarsa效果通常比Sarsa要好。
+
+通常，Q学习(Sarsamax)的在线效果更差（智能体在每个阶段平均收集的奖励更少），但是能够学习最优策略。而Sarsa在线效果较好，但是学到的往往是次最优“安全”策略。

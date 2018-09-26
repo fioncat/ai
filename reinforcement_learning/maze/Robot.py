@@ -44,7 +44,7 @@ class Robot(object):
             self.t += 1
         else:
             self.t += 1
-            self.epsilon /= float(self.t)
+            self.epsilon -= 0.1
 
         return self.epsilon
 
@@ -58,15 +58,14 @@ class Robot(object):
         """
         Create the qtable with the current state
         """
-        if state not in self.Qtable:
-            self.Qtable[state] = {'u': 0, 'd': 0, 'l': 0, 'r': 0}
+        self.Qtable.setdefault(state, {a: 0.0 for a in self.valid_actions})
 
     def choose_action(self):
         """
         Return an action according to given rules
         """
         def is_random_exploration():
-            return False if random.randint(1, 10) > (10 * self.epsilon) else True
+            return random.random() < self.epsilon
 
         if self.learning:
             if is_random_exploration():
@@ -82,8 +81,9 @@ class Robot(object):
         if return_random:
             return random.choice(self.valid_actions)
         else:
-            max_val = max([v for _, v in self.Qtable[self.state].items()])
-            return [k for k, v in self.Qtable[self.state].items() if v == max_val][0]
+            # max_val = max([v for _, v in self.Qtable[self.state].items()])
+            # return [k for k, v in self.Qtable[self.state].items() if v == max_val][0]
+            return max(self.Qtable[self.state], key=self.Qtable[self.state].get)
 
     def update_Qtable(self, r, action, next_state):
         """
@@ -91,7 +91,7 @@ class Robot(object):
         """
 
         def get_max_q(state):
-            return max([v for _, v in self.Qtable[state].items()])
+            return max(self.Qtable[next_state].values())
 
         if self.learning:
             self.Qtable[self.state][action] = (1 - self.alpha) * self.Qtable[self.state][action] +\
@@ -121,8 +121,8 @@ class Robot(object):
 if __name__ == '__main__':
     epoch = 30
 
-    epsilon0 = 0.4
-    alpha = 0.5
+    epsilon0 = 0.9 
+    alpha = 0.7
     gamma = 0.9
 
     maze_size = (12, 12)

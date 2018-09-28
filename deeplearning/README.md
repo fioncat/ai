@@ -104,25 +104,10 @@ $$\hat{y}^i=\sigma(Wx^i+b)$$
 
 我们需要计算每一个$w^i$关于误差$E$的梯度,从而对参数进行调整.这里需要求:
 
-$$
-\begin{aligned}
-    \frac{\partial}{\partial{w_j}}\hat{y}&=\frac{\partial}{\partial{w_j}}\sigma(Wx+b)\\
-    &=\sigma(Wx+b)(1-\sigma(Wx+b))\cdot\frac{\partial}{\partial{w_j}}(Wx+b)\\
-    &=\hat{y}(1-\hat{y}) \cdot x_i
-\end{aligned}
-$$
+![3](images/3.png)
 
 有了上面的式子,我们可以对误差$E$求导:
 
-$$
-
-\begin{aligned}
-    \frac{\partial}{\partial{w_j}}E&=\frac{\partial}{\partial{w_j}}(-\frac{1}{m}\sum^m_{i=1}y_ilog(\hat{y}_i)+(1-y_i)log(1-\hat{y}_i))\\
-    &=-\frac{1}{m}\sum^m_{i=1}y_i\frac{\partial}{\partial{w_j}}log(\hat{y}_i)+(1-y_i)\frac{\partial}{\partial{w_j}}log(1-\hat{y}_i)\\
-    &=-\frac{1}{m}\sum^m_{i=1}y_i(1-\hat{y}_i)x^{(i)}_j-(1-y_i)\hat{y}_ix^{(i)}_j\\
-    &=-\frac{1}{m}\sum^m_{i=1}(y_i-\hat{y}_i)x^{(i)}_j
-\end{aligned}
-
-$$
+![4](images/4.png)
 
 注意上面的$x^{(i)}_j$表示第

@@ -269,19 +269,15 @@ $$w^{(k)}=w^{(k)}-\alpha\frac{\partial E}{\partial w^{(k)}}$$
 
 我们可以直接书写出每个h的表达式:
 
-$$h_1=W^{(1)}_{11}x_1+W^{(1)}_{21}x_2+W^{(1)}_{31}$$
-
-$$h_2=W^{(1)}_{12}x_1+W^{(1)}_{22}x_2+W^{(1)}_{32}$$
-
-$$h=W^{(2)}_{11}\sigma(h_1)+W^{(2)}_{21}\sigma(h_2)+W^{(2)}_{31}$$
-
-$$\hat{y}=\sigma(h)$$
+![11](images/11.png)
 
 我们需要计算$\frac{\partial E}{\partial W^{(k)}_{ij}}$.
 
 单独计算对$W^{(1)}_{11}$的偏导数(使用链式求导法则):
 
 $$\frac{\partial E}{\partial W^{(1)}_{11}}=\frac{\partial E}{\partial \hat{y}}\frac{\partial \hat{y}}{\partial h}\frac{\partial h}{\partial h_1}\frac{\partial h_1}{\partial W_{11}^{(1)}}$$
+
+这里的链式求导非常有意思,它实际上反映了一个"传播误差影响"的过程.
 
 因为篇幅原因,具体的求导我这里不再演算了(直接通过上面给的表达式求导即可),详情可以看西瓜书.
 

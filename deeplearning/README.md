@@ -1,6 +1,6 @@
 # 深度学习
 
-注意:请使用Chrome阅读并安装Github with MathJax插件,否则公式无法显示!
+**注意:请使用Chrome阅读并安装[Github with MathJax](https://chrome.google.com/webstore/detail/github-with-mathjax/ioemnmodlmafdkllaclgeombjnmnbima/related)插件,否则文中的数学公式无法显示!**
 
 欢迎来到深度学习的神奇世界!
 
@@ -29,6 +29,10 @@
 这里引入Sigmoid函数,Sigmoid将很大的值输出为接近1的值,将很小的值输出为接近0的值.越接近0的值,Sigmoid将会给出越接近0.5的结果.
 
 ![sigmoid](images/2.png)
+
+记:
+
+$$\sigma(x)=\frac{1}{1+e^{-x}}$$
 
 在二分类问题中,使用Sigmoid函数给出的结果并不是精确的分类,而是对分类的一个预测.如果结果越接近1,就表示感知器有更大的把握把该数据分为1类;越接近0,则有更大的把握分为0类别.
 
@@ -66,8 +70,57 @@ def softmax(L):
 
 $$CE=-\sum^m_{i=1}y_iln(\hat{y}_i)+(1-y_i)ln(1-\hat{y}_i)$$
 
-对于多分类问题,我们定义$\hat{y}_{ij}$为感知器输出的第$i$个数据属于类别$j$的概率.$y_{ij}$等于1如果第$i$个数据属于$j$类,否则等于0,n表示有几个类别,m表示数据点的个数.那么多分类的交叉熵公式为:
+对于多分类问题,我们定义$\hat{y}_{ij}$为感知器输出的第$j$个数据属于类别$i$的概率.
 
-$$CE=-\sum^n_{j=1}\sum^m_{i=1}y_{ij}ln(\hat{y}_{ij})$$
+$y_{ij}$等于1如果第$j$个数据属于$i$类,否则等于0,m表示有几个类别,n表示数据点的个数.那么多分类的交叉熵公式为:
+
+$$CE=-\sum^m_{i=1}\sum^n_{j=1}y_{ij}ln(\hat{y}_{ij})$$
 
 我们可以使用交叉熵作为神经网络的误差函数使训练更加符合概率论的理论.
+
+## 梯度下降法 Gradient Descent
+
+有了上面的交叉熵作为误差函数,我们就可以使用梯度下降法来最小化误差了.
+
+注意我们现在面对的问题仍然是训练感知器使其能够正确地执行分类问题.也就是我们需要调整参数W和bias.
+
+这里介绍梯度下降法,它的思想非常简单.我们现在的目标是最小化误差,使用随机的参数分类数据得到一个误差后,我们可以计算这个点在误差函数上的梯度,随后向梯度的方向调整参数,就可以实现对误差的减少.
+
+以上的步骤多执行几次,我们可以让误差点逼近于误差函数的最小值或局部最小值,这样,就得到了一个较为完善的模型.
+
+下面推导感知器学习中梯度下降法的完整数学过程:
+
+首先,Sigmoid函数有一个非常好的求导特征:
+
+$$\sigma\prime(x)=\sigma(x)(1-\sigma(x))$$
+
+假设问题是一个二分类问题,如果有m个样本点(训练集),误差公式为:
+
+$$E=-\frac{1}{m}\sum^m_{i=1}y^iln(\hat{y}^i)+(1-y^i)ln(1-\hat{y}^i)$$
+
+$\hat{y}^i$表示预测值,在感知器算法中,它的计算公式如下:
+
+$$\hat{y}^i=\sigma(Wx^i+b)$$
+
+我们需要计算每一个$w^i$关于误差$E$的梯度,从而对参数进行调整.这里需要求:
+
+$$
+\begin{aligned}
+    \frac{\partial}{\partial{w_j}}\hat{y}&=\frac{\partial}{\partial{w_j}}\sigma(Wx+b)\\
+    &=\sigma(Wx+b)(1-\sigma(Wx+b))\cdot\frac{\partial}{\partial{w_j}}(Wx+b)\\
+    &=\hat{y}(1-\hat{y}) \cdot x_i
+\end{aligned}
+$$
+
+有了上面的式子,我们可以对误差$E$求导:
+
+$$
+\begin{aligned}
+    \frac{\partial}{\partial{w_j}}E&=\frac{\partial}{\partial{w_j}}(-\frac{1}{m}\sum^m_{i=1}y_ilog(\hat{y}_i)+(1-y_i)log(1-\hat{y}_i))\\
+    &=-\frac{1}{m}\sum^m_{i=1}y_i\frac{\partial}{\partial{w_j}}log(\hat{y}_i)+(1-y_i)\frac{\partial}{\partial{w_j}}log(1-\hat{y}_i)\\
+    &=-\frac{1}{m}\sum^m_{i=1}y_i(1-\hat{y}_i)x^{(i)}_j-(1-y_i)\hat{y}_ix^{(i)}_j\\
+    &=-\frac{1}{m}\sum^m_{i=1}(y_i-\hat{y}_i)x^{(i)}_j
+\end{aligned}
+$$
+
+注意上面的$x^{(i)}_j$表示第

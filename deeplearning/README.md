@@ -115,12 +115,14 @@ $$
 有了上面的式子,我们可以对误差$E$求导:
 
 $$
+
 \begin{aligned}
     \frac{\partial}{\partial{w_j}}E&=\frac{\partial}{\partial{w_j}}(-\frac{1}{m}\sum^m_{i=1}y_ilog(\hat{y}_i)+(1-y_i)log(1-\hat{y}_i))\\
     &=-\frac{1}{m}\sum^m_{i=1}y_i\frac{\partial}{\partial{w_j}}log(\hat{y}_i)+(1-y_i)\frac{\partial}{\partial{w_j}}log(1-\hat{y}_i)\\
     &=-\frac{1}{m}\sum^m_{i=1}y_i(1-\hat{y}_i)x^{(i)}_j-(1-y_i)\hat{y}_ix^{(i)}_j\\
     &=-\frac{1}{m}\sum^m_{i=1}(y_i-\hat{y}_i)x^{(i)}_j
 \end{aligned}
+
 $$
 
 注意上面的$x^{(i)}_j$表示第

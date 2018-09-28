@@ -22,3 +22,38 @@ $$
 \end{aligned}
 
 $$
+
+## 神经网络
+
+$$
+W^{(1)}=
+
+\begin{pmatrix}
+    W_{11}^{(1)} & W_{12}^{(1)}\\
+    W_{21}^{(1)} & W_{22}^{(1)}\\
+    W_{31}^{(1)} & W_{32}^{(1)}
+\end{pmatrix}
+
+W^{(2)}=
+
+\begin{pmatrix}
+    W_{11}^{(2)}\\
+    W_{21}^{(2)}\\
+    W_{31}^{(2)}
+\end{pmatrix}
+
+X=
+
+\begin{pmatrix}
+    x_1\\
+    x_2\\
+    1
+\end{pmatrix}
+
+$$
+
+$$
+
+\nabla E=(\frac{\partial E}{\partial W^{(1)}},\frac{\partial E}{\partial W^{(2)}},\dots,\frac{\partial E}{\partial W^{(n)}})
+
+$$

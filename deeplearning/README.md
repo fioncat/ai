@@ -1,6 +1,6 @@
 # 深度学习
 
-**注意:请使用Chrome阅读并安装[Github with MathJax](https://chrome.google.com/webstore/detail/github-with-mathjax/ioemnmodlmafdkllaclgeombjnmnbima/related)插件,否则文中的数学公式无法显示!**
+**注意:请使用Chrome阅读并安装[Github with MathJax](https://chrome.google.com/webstore/detail/github-with-mathjax/ioemnmodlmafdkllaclgeombjnmnbima/related)插件,否则文中的数学公式无法显示,除非你愿意读原始Latex代码_(:з」∠)_!**
 
 欢迎来到深度学习的神奇世界!
 
@@ -84,7 +84,7 @@ $$CE=-\sum^m_{i=1}\sum^n_{j=1}y_{ij}ln(\hat{y}_{ij})$$
 
 注意我们现在面对的问题仍然是训练感知器使其能够正确地执行分类问题.也就是我们需要调整参数W和bias.
 
-这里介绍梯度下降法,它的思想非常简单.我们现在的目标是最小化误差,使用随机的参数分类数据得到一个误差后,我们可以计算这个点在误差函数上的梯度,随后向梯度的方向调整参数,就可以实现对误差的减少.
+这里介绍梯度下降法,它的思想非常简单.我们现在的目标是最小化误差,使用随机的参数分类数据得到一个误差后,我们可以计算这个点在误差函数上的梯度,随后向梯度的方向调整参数(实际上就是用参数减去算得的梯度),就可以实现对误差的减少.
 
 以上的步骤多执行几次,我们可以让误差点逼近于误差函数的最小值或局部最小值,这样,就得到了一个较为完善的模型.
 
@@ -110,4 +110,63 @@ $$\hat{y}^i=\sigma(Wx^i+b)$$
 
 ![4](images/4.png)
 
-注意上面的$x^{(i)}_j$表示第
+类似可以计算出bias的梯度:
+
+$$\frac{\partial}{\partial{b}}E=\frac{1}{m}\sum^m_{i=1}(y_i-\hat{y}_i)$$
+
+通过上面的推导,我们可以知道:对于一个点$(x_1,x_2,\dots,x_n)$,标签为$y$,感知器预测为$\hat{y}$.那么该点的误差函数梯度为:
+
+$$-(y-\hat{y})(x_1,x_2,\dots,x_n,1)$$
+
+现在,我们能够写出梯度下降的代码了:
+
+```python
+# Implement of Gradient Desent for Sensor Algorithm.
+
+import numpy as np
+# Activation function
+def sigmoid(x):
+    return 1 / (1 + np.exp(-x))
+
+# final output
+def output_formula(features, weights, bias):
+    return sigmoid(np.dot(features, weights) + bias)
+
+# Use final output to calculate error.
+def error_formula(y, output):
+    return - y * np.log(output) - (1 - y) * np.log(1 - output)
+
+# Use Gradient Desent to update weights.
+def update_weights(x, y, weights, bias, alpha):
+    output = output_formula(x, weights, bias)
+    error = -(y - output)
+    weights -= alpha * error * x
+    bias -= alpha * error
+    return weights, bias
+```
+
+上面是核心的辅助函数,可以帮助感知器完成训练.其中alpha表示学习率,范围在[0,1]之间,alpha越大,学习速度越快.适当减少alpha可以在一定程度上避免过拟合.
+
+在真正训练的时候,需要不断地对weights和bias调用update_weights更新.具体次数通过epochs控制.
+
+另外要注意的是,我们在训练的时候得到的是多组梯度(每个点都可以产生一组梯度),一般情况下,我们可以去这些梯度的均值作为最终的梯度结果.
+
+一份简单的训练代码如下:
+
+```python
+import numpy as np
+# Train Sensor.
+def train(features, targets, epochs, alpha):
+    errors = []
+    n_records, n_features = features.shape
+    # Randomly initialize weights.
+    weights = np.random.normal(scale=(1 / n_features**.5), size=n_features)
+    bias = 0
+    for i in range(epochs):
+
+        for x, y in zip(features, targets):
+            output = output_formula(x, weights, bias)
+            error = error_formula(y, output)
+            weights, bias = update_weights(x, y, weights, bias, alpha)
+
+```

@@ -2,6 +2,8 @@
 
 一些公式推导无法在GitHub显示,故将源码贴在这里.
 
+## 感知器
+
 $$
 \begin{aligned}
     \frac{\partial}{\partial{w_j}}\hat{y}&=\frac{\partial}{\partial{w_j}}\sigma(Wx+b)\\

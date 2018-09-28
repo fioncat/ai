@@ -4,6 +4,20 @@
 
 欢迎来到深度学习的神奇世界!
 
+<script type="text/javascript">
+$(document).ready(function(){
+  $("code").map(function(){
+    match = /^\$(.*)\$$/.exec($(this).html());
+    if (match){
+      //$(this).after("<span class=mathjax_inline>" + match + "</span>");
+      //$(this).hide();
+      $(this).replaceWith("<span class=hpl_mathjax_inline>" + $(this).html() + "</span>");
+      MathJax.Hub.Queue(["Typeset",MathJax.Hub,$(this).get(0)]);
+    }
+  });
+});
+</script>
+
 ## 感知器
 
 神经网络最基础的概念就是感知器.一个感知器实际上就是一个节点,它可以接受n个输入X,每个输入都有一个权重W.感知器将输入和权重相乘后加起来,得到一个结果.我们一般把这个结果叫做"得分".
@@ -263,4 +277,14 @@ $$\nabla E=(\frac{\partial E}{\partial W^{(1)}},\frac{\partial E}{\partial W^{(2
 
 对于某个权重的更新,方法和训练感知器是一样的:
 
-$$W^{(k)}_{ij}=W^{(k)}_{ij}-\alpha\frac{\partial E}{\partial W^{(k)}_{ij}}$$
+$$W^{(k)}=W^{(k)}-\alpha\frac{\partial E}{\partial W^{(k)}}$$
+
+现在我们假设我们的神经网络是下面这样的:
+
+![10](images/10.png)
+
+我们可以直接书写出每个h的表达式:
+
+$$
+h_1=W^{(1)}_{11}+W^{(1)}_{12}
+$$

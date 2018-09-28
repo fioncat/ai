@@ -57,3 +57,12 @@ $$
 \nabla E=(\frac{\partial E}{\partial W^{(1)}},\frac{\partial E}{\partial W^{(2)}},\dots,\frac{\partial E}{\partial W^{(n)}})
 
 $$
+
+$$h_1=W^{(1)}_{11}x_1+W^{(1)}_{21}x_2+W^{(1)}_{31}$$
+
+$$h_1=W^{(1)}_{12}x_1+W^{(1)}_{22}x_2+W^{(1)}_{32}$$
+
+$$h=W^{(2)}_{11}\sigma(h_1)+W^{(2)}_{21}\sigma(h_2)+W^{(2)}_{31}$$
+
+$$\hat{y}=\sigma(h)$$
+

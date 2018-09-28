@@ -260,3 +260,7 @@ $$\nabla E=(\dots,\frac{\partial E}{\partial w_j^{(i)}}, \dots)$$
 我们可以把误差梯度写成矩阵的形式:
 
 $$\nabla E=(\frac{\partial E}{\partial W^{(1)}},\frac{\partial E}{\partial W^{(2)}},\dots,\frac{\partial E}{\partial W^{(n)}})$$
+
+对于某个权重的更新,方法和训练感知器是一样的:
+
+$$W^{(k)}_{ij}=W^{(k)}_{ij}-\alpha\frac{\partial E}{\partial W^{(k)}_{ij}}$$

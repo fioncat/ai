@@ -259,8 +259,4 @@ $$\nabla E=(\dots,\frac{\partial E}{\partial w_j^{(i)}}, \dots)$$
 
 我们可以把误差梯度写成矩阵的形式:
 
-$$
-
-\nabla E=(\frac{\partial E}{\partial W^{(1)}},\frac{\partial E}{\partial W^{(2)}},\dots,\frac{\partial E}{\partial W^{(n)}})
-
-$$
+$$\nabla E=(\frac{\partial E}{\partial W^{(1)}},\frac{\partial E}{\partial W^{(2)}},\dots,\frac{\partial E}{\partial W^{(n)}})$$

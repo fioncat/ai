@@ -8,23 +8,39 @@
 
 <!-- TOC -->
 
-- [深度学习](#深度学习)
-    - [感知器](#感知器)
-    - [Sigmoid激活函数](#sigmoid激活函数)
-    - [Softmax激活函数](#softmax激活函数)
-    - [交叉熵 Cross Entropy](#交叉熵-cross-entropy)
-    - [梯度下降法 Gradient Descent](#梯度下降法-gradient-descent)
-    - [神经网络 Neural Network](#神经网络-neural-network)
-        - [前向反馈 Feed Forward](#前向反馈-feed-forward)
-        - [反向传播 Back Propagation](#反向传播-back-propagation)
-    - [过拟合](#过拟合)
-        - [早期停止](#早期停止)
-        - [正则化](#正则化)
+- [深度学习](#%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0)
+    - [感知器](#%E6%84%9F%E7%9F%A5%E5%99%A8)
+    - [Sigmoid激活函数](#sigmoid%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0)
+    - [Softmax激活函数](#softmax%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0)
+    - [交叉熵 Cross Entropy](#%E4%BA%A4%E5%8F%89%E7%86%B5-cross-entropy)
+    - [梯度下降法 Gradient Descent](#%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E6%B3%95-gradient-descent)
+    - [神经网络 Neural Network](#%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-neural-network)
+        - [前向反馈 Feed Forward](#%E5%89%8D%E5%90%91%E5%8F%8D%E9%A6%88-feed-forward)
+        - [反向传播 Back Propagation](#%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD-back-propagation)
+    - [过拟合](#%E8%BF%87%E6%8B%9F%E5%90%88)
+        - [早期停止](#%E6%97%A9%E6%9C%9F%E5%81%9C%E6%AD%A2)
+        - [正则化](#%E6%AD%A3%E5%88%99%E5%8C%96)
         - [Dropout](#dropout)
-    - [ReLU激活函数](#relu激活函数)
-    - [随机梯度下降](#随机梯度下降)
-    - [学习速率](#学习速率)
-    - [动量](#动量)
+    - [ReLU激活函数](#relu%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0)
+    - [随机梯度下降](#%E9%9A%8F%E6%9C%BA%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D)
+    - [学习速率](#%E5%AD%A6%E4%B9%A0%E9%80%9F%E7%8E%87)
+    - [动量](#%E5%8A%A8%E9%87%8F)
+    - [TensorFlow 入门](#tensorflow-%E5%85%A5%E9%97%A8)
+        - [Tensor](#tensor)
+        - [Session](#session)
+        - [输入](#%E8%BE%93%E5%85%A5)
+    - [卷积神经网络 Convolutional Neural Network](#%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-convolutional-neural-network)
+        - [Keras实现CNN](#keras%E5%AE%9E%E7%8E%B0cnn)
+        - [TensorFlow实现CNN](#tensorflow%E5%AE%9E%E7%8E%B0cnn)
+        - [权值初始化](#%E6%9D%83%E5%80%BC%E5%88%9D%E5%A7%8B%E5%8C%96)
+        - [自编码器](#%E8%87%AA%E7%BC%96%E7%A0%81%E5%99%A8)
+        - [迁移学习](#%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0)
+    - [循环神经网络 Recurrent Neural Network](#%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-recurrent-neural-network)
+        - [长短期记忆网络 LSTM](#%E9%95%BF%E7%9F%AD%E6%9C%9F%E8%AE%B0%E5%BF%86%E7%BD%91%E7%BB%9C-lstm)
+        - [Word2vec](#word2vec)
+    - [生成对抗网络Generative Adversarial Network](#%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9Cgenerative-adversarial-network)
+        - [深度卷积生成对抗网络](#%E6%B7%B1%E5%BA%A6%E5%8D%B7%E7%A7%AF%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C)
+        - [半监督GAN模型](#%E5%8D%8A%E7%9B%91%E7%9D%A3gan%E6%A8%A1%E5%9E%8B)
 
 <!-- /TOC -->
 
@@ -416,3 +432,110 @@ $$STEP=STEP(t)+\beta STEP(t-1)+\beta^2STEP(t-2)+\dots$$
 一个小问题是,在到达最低点之后,误差仍然会有一定的波动,但是这个波动不是很大,对最终结果并不会造成太大的影响.
 
 在实际中,使用动量更有可能得到更加好的模型.
+
+使用Python创建神经网络进行分类的传送门:
+
+## TensorFlow 入门
+
+在安装完TensorFlow之后,输入代码可以检测TensorFlow是否正常安装:
+
+```python
+import tensorflow as tf
+
+hello_constant = tf.constant('Hello TensorFlow!')
+
+with tf.Session() as sess:
+    output = sess.run(hello_constant)
+    print(output)
+
+```
+
+### Tensor
+
+在TensorFlow中,数据不是以整数,浮点数或者字符串的形式储存的.这些值被封装在一个叫做tensor的对象中.在上面的hello程序中,hello_constant就是一个0维度的字符串tensor,tensor可以有很多不同的大小:
+
+```python
+# 0-dimensinal int32 tensor
+a = tf.constant(1000)
+
+# 1-dimensinal int32 tensor
+b = tf.constant([1, 2, 3])
+
+# 2-dimensinal int32 tensor
+c = tf.constant([[1, 2, 3], [5, 6, 7]])
+
+```
+
+tf.constant()会返回一个常量tensor,这个tensor的值不能发生改变.
+
+### Session
+
+TensorFlow的api构建在computational graph的概念上,它是一种对数学运算过程进行可视化的方法.刚才的hello程序可以变为以下的图:
+
+![19](images/19.png)
+
+TensorFlow Session是用来运行图的环境.这个session负责分配GPU(s)或CPU(s),包括远程计算机的运算,使用的基本方法是:
+
+```python
+with tf.Session() as sess:
+    output = sess.run(tensor)
+```
+
+tensor是之前已经创建好的Tensor对象.使用sess.run()函数可以对tensor进行求值,并返回结果.
+
+### 输入
+
+tf.placeholder()可以产生一个非常量的Tensor.在Session启动之后,我们需要给这个Tensor赋值.赋值可以通过sess.run()中的feed_dict参数设置.
+
+注意一点,tf.placeholder()产生的Tensor是在Session创建之后再赋值的.初始化的时候仅需要指定它的类型.
+
+```python
+import tensorflow as tf
+
+x = tf.placeholder(tf.string)
+
+with tf.Session() as sess:
+    output = sess.run(x, feed_dict={x: "Hello Tensorflow!"})
+    print(output)
+```
+
+我们也可以在feed_dict中设置多个Tensor:
+
+```python
+import tensorflow as tf
+
+x = tf.placeholder(tf.string)
+y = tf.placeholder(tf.int32)
+z = tf.placeholder(tf.float32)
+
+with tf.Session() as sess:
+    output = sess.run(x, feed_dict={x: 'Test string', y: 12, z: 1.2})
+    print(output)
+
+```
+
+注意如果Tensor的类型和传入的值类型不一样,TensorFlow会报错.
+
+## 卷积神经网络 Convolutional Neural Network
+
+### Keras实现CNN
+
+### TensorFlow实现CNN
+
+### 权值初始化
+
+### 自编码器
+
+### 迁移学习
+
+## 循环神经网络 Recurrent Neural Network
+
+### 长短期记忆网络 LSTM
+
+### Word2vec
+
+## 生成对抗网络Generative Adversarial Network
+
+### 深度卷积生成对抗网络
+
+### 半监督GAN模型

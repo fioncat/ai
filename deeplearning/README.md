@@ -4,6 +4,30 @@
 
 欢迎来到深度学习的神奇世界!
 
+**目录**:
+
+<!-- TOC -->
+
+- [深度学习](#深度学习)
+    - [感知器](#感知器)
+    - [Sigmoid激活函数](#sigmoid激活函数)
+    - [Softmax激活函数](#softmax激活函数)
+    - [交叉熵 Cross Entropy](#交叉熵-cross-entropy)
+    - [梯度下降法 Gradient Descent](#梯度下降法-gradient-descent)
+    - [神经网络 Neural Network](#神经网络-neural-network)
+        - [前向反馈 Feed Forward](#前向反馈-feed-forward)
+        - [反向传播 Back Propagation](#反向传播-back-propagation)
+    - [过拟合](#过拟合)
+        - [早期停止](#早期停止)
+        - [正则化](#正则化)
+        - [Dropout](#dropout)
+    - [ReLU激活函数](#relu激活函数)
+    - [随机梯度下降](#随机梯度下降)
+    - [学习速率](#学习速率)
+    - [动量](#动量)
+
+<!-- /TOC -->
+
 ## 感知器
 
 神经网络最基础的概念就是感知器.一个感知器实际上就是一个节点,它可以接受n个输入X,每个输入都有一个权重W.感知器将输入和权重相乘后加起来,得到一个结果.我们一般把这个结果叫做"得分".
@@ -275,7 +299,7 @@ $$w^{(k)}=w^{(k)}-\alpha\frac{\partial E}{\partial w^{(k)}}$$
 
 单独计算对$W^{(1)}_{11}$的偏导数(使用链式求导法则):
 
-$$\frac{\partial E}{\partial W^{(1)}_{11}}=\frac{\partial E}{\partial \hat{y}}\frac{\partial \hat{y}}{\partial h}\frac{\partial h}{\partial h_1}\frac{\partial h_1}{\partial W_{11}^{(1)}}$$
+![18](images/18.png)
 
 这里的链式求导非常有意思,它实际上反映了一个"传播误差影响"的过程.
 

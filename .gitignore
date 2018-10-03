@@ -114,3 +114,6 @@ dmypy.json
 
 # train and test data
 data/
+
+.idea/
+venv

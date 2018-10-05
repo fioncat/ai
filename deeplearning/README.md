@@ -445,6 +445,8 @@ $$STEP=STEP(t)+\beta STEP(t-1)+\beta^2STEP(t-2)+\dots$$
 
 ## TensorFlow 入门
 
+使用Tensorflow可以很容易地用Python实现上面的神经网络.
+
 在安装完TensorFlow之后,输入代码可以检测TensorFlow是否正常安装:
 
 ```python
@@ -796,7 +798,7 @@ n_hidden_layer = 256
 ```python
 # Initialize the network's Parameters
 weights = {
-    'hidden_layer': tf.Variable(tf.random_normal([n_input, n_classes])),
+    'hidden_layer': tf.Variable(tf.random_normal([n_input, n_hidden_layer])),
     'out': tf.Variable(tf.random_normal([n_hidden_layer, n_classes]))
 }
 biases = {
@@ -823,7 +825,7 @@ x_flat = tf.reshape(x, [-1, n_input])
 hidden_layer = tf.add(tf.matmul(x_flat, weights['hidden_layer']),
                         biases['hidden_layer'])
 hidden_layer = tf.nn.relu(hidden_layer)
-logits = tf.add(tf.matmul(x_flat, weights['out']), biases['out'])
+logits = tf.add(tf.matmul(hidden_layer, weights['out']), biases['out'])
 ```
 
 logits的输出我们没有做激活函数处理,因为后面在定义误差的时候Tensorflow会自动对logits输出做softmax再算误差.
@@ -857,6 +859,64 @@ Tensorflow中的MNIST库提供了分批接收数据的功能.使用mnist.train.n
 以上就完成了定义和训练单隐层神经网络,多层网络只需要简单地添加更多layer即可.
 
 ### 保存和读取模型
+
+训练完模型之后我们希望把参数储存好可以方便下一次直接使用.
+
+Tensorflow提供有tf.train.Saver的类,可以把参数保存下来.
+
+通过下面的代码,我们可以完成对参数的保存:
+
+```python
+import tensorflow as tf
+
+save_file = './models/test.ckpt'
+
+weights = tf.Variable(tf.truncated_normal([2, 3]))
+bias = tf.Variable(tf.truncated_normal([3]))
+
+saver = tf.train.Saver()
+
+with tf.Session() as sess:
+    sess.run(tf.global_variables_initializer())
+
+    print('weights:')
+    print(sess.run(weights))
+    print('Bias:')
+    print(sess.run(bias))
+
+    saver.save(sess, save_file)
+```
+
+注意保存的是Session,也就是说这个Session加载的所有参数都会被保存.
+
+下面的代码实现对参数的读取:
+
+```python
+import tensorflow as tf
+
+save_file = './models/test.ckpt'
+
+weights = tf.Variable(tf.truncated_normal([2, 3]))
+bias = tf.Variable(tf.truncated_normal([3]))
+
+saver = tf.train.Saver()
+
+with tf.Session() as sess:
+    saver.restore(sess, save_file)
+
+    print("weights:")
+    print(sess.run(weights))
+    print("bias:")
+    print(sess.run(bias))
+```
+
+注意Variable的定义格式必须和保存的时候一样.
+
+有了保存和读取模型,我们就可以真正地编写训练MNIST数据的神经网络并储存模型了.
+
+使用Tensorflow训练单隐层神经网络并储存模型的代码在:[训练MNIST模型]()
+
+读取储存好的模型并使用其预测数据的代码在:[读取MNIST模型]()
 
 ### Dropout
 

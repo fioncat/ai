@@ -8,48 +8,47 @@
 
 <!-- TOC -->
 
-- [深度学习](#%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0)
-    - [感知器](#%E6%84%9F%E7%9F%A5%E5%99%A8)
-    - [Sigmoid激活函数](#sigmoid%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0)
-    - [Softmax激活函数](#softmax%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0)
-    - [交叉熵 Cross Entropy](#%E4%BA%A4%E5%8F%89%E7%86%B5-cross-entropy)
-    - [梯度下降法 Gradient Descent](#%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E6%B3%95-gradient-descent)
-    - [神经网络 Neural Network](#%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-neural-network)
-        - [前向反馈 Feed Forward](#%E5%89%8D%E5%90%91%E5%8F%8D%E9%A6%88-feed-forward)
-        - [反向传播 Back Propagation](#%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD-back-propagation)
-    - [过拟合](#%E8%BF%87%E6%8B%9F%E5%90%88)
-        - [早期停止](#%E6%97%A9%E6%9C%9F%E5%81%9C%E6%AD%A2)
-        - [正则化](#%E6%AD%A3%E5%88%99%E5%8C%96)
+- [深度学习](#深度学习)
+    - [感知器](#感知器)
+    - [Sigmoid激活函数](#sigmoid激活函数)
+    - [Softmax激活函数](#softmax激活函数)
+    - [交叉熵 Cross Entropy](#交叉熵-cross-entropy)
+    - [梯度下降法 Gradient Descent](#梯度下降法-gradient-descent)
+    - [神经网络 Neural Network](#神经网络-neural-network)
+        - [前向反馈 Feed Forward](#前向反馈-feed-forward)
+        - [反向传播 Back Propagation](#反向传播-back-propagation)
+    - [过拟合](#过拟合)
+        - [早期停止](#早期停止)
+        - [正则化](#正则化)
         - [Dropout](#dropout)
-    - [ReLU激活函数](#relu%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0)
-    - [随机梯度下降](#%E9%9A%8F%E6%9C%BA%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D)
-    - [学习速率](#%E5%AD%A6%E4%B9%A0%E9%80%9F%E7%8E%87)
-    - [动量](#%E5%8A%A8%E9%87%8F)
-    - [TensorFlow 入门](#tensorflow-%E5%85%A5%E9%97%A8)
+    - [ReLU激活函数](#relu激活函数)
+    - [随机梯度下降](#随机梯度下降)
+    - [学习速率](#学习速率)
+    - [动量](#动量)
+    - [TensorFlow 入门](#tensorflow-入门)
         - [Tensor](#tensor)
         - [Session](#session)
-        - [输入](#%E8%BE%93%E5%85%A5)
-        - [线性函数](#%E7%BA%BF%E6%80%A7%E5%87%BD%E6%95%B0)
+        - [输入](#输入)
+        - [线性模型(单感知器)](#线性模型单感知器)
         - [Softmax](#softmax)
-        - [交叉熵](#%E4%BA%A4%E5%8F%89%E7%86%B5)
+        - [交叉熵](#交叉熵)
         - [Mini Batch](#mini-batch)
-        - [实现单层神经网络](#%E5%AE%9E%E7%8E%B0%E5%8D%95%E5%B1%82%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C)
-        - [ReLUs](#relus)
-        - [实现深度神经网络](#%E5%AE%9E%E7%8E%B0%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C)
-        - [保存和读取模型](#%E4%BF%9D%E5%AD%98%E5%92%8C%E8%AF%BB%E5%8F%96%E6%A8%A1%E5%9E%8B)
-        - [Dropout](#dropout)
-    - [卷积神经网络 Convolutional Neural Network](#%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-convolutional-neural-network)
-        - [Keras实现CNN](#keras%E5%AE%9E%E7%8E%B0cnn)
-        - [TensorFlow实现CNN](#tensorflow%E5%AE%9E%E7%8E%B0cnn)
-        - [权值初始化](#%E6%9D%83%E5%80%BC%E5%88%9D%E5%A7%8B%E5%8C%96)
-        - [自编码器](#%E8%87%AA%E7%BC%96%E7%A0%81%E5%99%A8)
-        - [迁移学习](#%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0)
-    - [循环神经网络 Recurrent Neural Network](#%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-recurrent-neural-network)
-        - [长短期记忆网络 LSTM](#%E9%95%BF%E7%9F%AD%E6%9C%9F%E8%AE%B0%E5%BF%86%E7%BD%91%E7%BB%9C-lstm)
+        - [实现两层网络](#实现两层网络)
+        - [训练两层网络](#训练两层网络)
+        - [保存和读取模型](#保存和读取模型)
+        - [Dropout](#dropout-1)
+    - [卷积神经网络 Convolutional Neural Network](#卷积神经网络-convolutional-neural-network)
+        - [Keras实现CNN](#keras实现cnn)
+        - [TensorFlow实现CNN](#tensorflow实现cnn)
+        - [权值初始化](#权值初始化)
+        - [自编码器](#自编码器)
+        - [迁移学习](#迁移学习)
+    - [循环神经网络 Recurrent Neural Network](#循环神经网络-recurrent-neural-network)
+        - [长短期记忆网络 LSTM](#长短期记忆网络-lstm)
         - [Word2vec](#word2vec)
-    - [生成对抗网络Generative Adversarial Network](#%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9Cgenerative-adversarial-network)
-        - [深度卷积生成对抗网络](#%E6%B7%B1%E5%BA%A6%E5%8D%B7%E7%A7%AF%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C)
-        - [半监督GAN模型](#%E5%8D%8A%E7%9B%91%E7%9D%A3gan%E6%A8%A1%E5%9E%8B)
+    - [生成对抗网络Generative Adversarial Network](#生成对抗网络generative-adversarial-network)
+        - [深度卷积生成对抗网络](#深度卷积生成对抗网络)
+        - [半监督GAN模型](#半监督gan模型)
 
 <!-- /TOC -->
 
@@ -492,6 +491,8 @@ with tf.Session() as sess:
 
 tensor是之前已经创建好的Tensor对象.使用sess.run()函数可以对tensor进行求值,并返回结果.
 
+Tensorflow编程的核心思想是,先构建运算graph,也就是Tensor之间的运算关系.这时候,Tensor并没有真正地求值,只有在tf.run()之后,Tensorflow才会执行这个graph,真正地对Tensor进行求值.这样的编程模式有点类似于Spark的RDD编程.
+
 ### 输入
 
 tf.placeholder()可以产生一个常量的Tensor,但是可以在Session启动之后再赋值.可以通过sess.run()中的feed_dict参数设置.
@@ -525,7 +526,7 @@ with tf.Session() as sess:
 
 注意如果Tensor的类型和传入的值类型不一样,TensorFlow会报错.
 
-### 线性函数
+### 线性模型(单感知器)
 
 神经网络中最常见的计算,就是计算输入,权重和偏差的线性组合.我们通常把线性运算的输出写为:
 
@@ -549,6 +550,14 @@ tf.global_variables_initializer()会返回一个操作,它会从graph中初始�
 线性回归需要用到权重,我们一般从正态分布中取随机数来初始化权重.tf.truncated_normal()返回一个tensor,它的随机值取自一个正态分布.
 
 bias一般初始化为0,使用tf.zeros()可以返回一个初值全部是0的Tensor.
+
+在使用Tensorflow构建一个线性模型并训练的过程中,我们需要定义下列Tensor:
+
+- 训练数据和测试数据
+- 参数,这里指的是weights和bias
+- 模型的计算过程,可以使用Tensorflow计算公式完成,输出叫做logit
+- 损失,定义在训练的时候使用什么标准作为模型误差的衡量工具.一般使用交叉熵(后面会介绍)
+- 优化器,定义在训练过程中怎么减少损失优化模型.一般使用梯度下降优化器(Tensorflow有提供,需要传入学习速率和要最小化的损失).
 
 一个使用Tensorflow进行线性回归并且对著名的MNIST数据集中0,1,2进行分类的例子:[Tensorflow实现线性回归](https://github.com/LovelyLazyCat/ai/blob/master/deeplearning/tensorflow_test/linear_regression.py).
 
@@ -601,11 +610,251 @@ with tf.Session() as sess:
 
 ### Mini Batch
 
-### 实现单层神经网络
+Mini Batch是一个一次训练数据集的一小部分,而不是整个训练集的技术.它可以使内存较小,不能同时训练整个训练集的电脑也可以训练模型.
 
-### ReLUs
+它的代价是不能使用所有训练集来计算loss,但是这点代价对于完全无法计算来说还是微不足道的.
 
-### 实现深度神经网络
+它和随机梯度下降(SGD)结合在一起也很有帮助.方法是在每一次训练之前,对数据进行混洗,然后创建mini-batches,对每一个mini-batch,用梯度下降训练网络权重.
+
+在数据量很大的时候,mini-batch变得非常有意义.
+
+我们可以这么做,假设有n_input个特征,有n_classes个可能的标签.可以使用[None, n_input]作为features的维度;[None, n_classes]作为labels的维度.
+
+None维度在这里是一个batch size占位符.在运行时,Tensorflow会接收任何大于0的batch size.
+
+下面对features和labels实现一个batches函数.这个函数返回每个有最大batch_size数据点的batch.例如,假如我们有4个数据点,batch_size为3.那么第一个batch长度为3,第二个为1.
+
+```python
+def batches(batch_size, features, labels):
+    """
+    Create batches of features and labels
+
+    :param batch_size: the batch size(max)
+    :param features: list of features.
+    :param labels: list of labels
+    :return: Batches of (features, labels)
+    """
+    assert len(features) == len(labels)
+
+    output = []
+
+    for start in range(0, len(features), batch_size):
+        end = start + batch_size
+        batch = [features[start:end], labels[start:end]]
+        output.append(batch)
+
+    return output
+```
+
+下面在Tensorflow中,对MNIST数据进行Mini-Batch操作并训练(使用线性模型):
+
+```python
+from tensorflow.examples.tutorials.mnist import input_data
+import tensorflow as tf
+import numpy as np
+
+learning_rate = 0.001
+n_input = 784
+n_classes = 10
+
+# origin mnist data
+mnist = input_data.read_data_sets('/datasets/ud730/mnist', one_hot=True)
+
+# features data
+train_features = mnist.train.images
+test_features = mnist.test.images
+
+# labels data
+train_labels = mnist.train.labels.astype(np.float32)
+test_labels = mnist.test.labels.astype(np.float32)
+
+# features and labels Tensor
+# The first dimension is None to save the batch size.
+features = tf.placeholder(tf.float32, [None, n_input])
+labels = tf.placeholder(tf.float32, [None, n_classes])
+
+# Initialize weights and bias
+weights = tf.Variable(tf.random_normal([n_input, n_classes]))
+bias = tf.Variable(tf.random_normal([n_classes]))
+
+# Linear Model
+logits = tf.add(tf.matmul(features, weights), bias)
+
+# Define loss and optimizer.
+cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=logits, labels=labels))
+optimizer = tf.train.GradientDescentOptimizer(learning_rate=learning_rate).minimize(cost)
+
+# Calculate accuracy
+correct_prediction = tf.equal(tf.argmax(logits, 1), tf.argmax(labels, 1))
+accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
+
+batch_size = 128
+
+init = tf.global_variables_initializer()
+
+with tf.Session() as sess:
+    sess.run(init)
+
+    for batch_features, batch_label in batches(batch_size, train_features, train_labels):
+        sess.run(optimizer, feed_dict={features: batch_features, labels: batch_label})
+
+    test_accuracy = sess.run(accuracy, feed_dict={features: test_features, labels: test_labels})
+
+print("test accuracy: {}".format(test_accuracy))
+```
+
+### 实现两层网络
+
+通过上面的线性模型,我们可以简单地实现单层感知器模型.对于多层感知器模型,也就是多层神经网络,利用Tensorflow也可以简单地实现.
+
+对于一个神经网络,输出层的激活函数一般是Sigmoid或Softmax.但是,隐藏层的激活函数一般使用ReLU比较好(为了避免梯度消失),Tensorflow直接提供了ReLU激活函数,可以直接把多个线性感知器连接起来:
+
+```python
+hidden_layer = tf.add(tf.matmul(features, hidden_weights), hidden_biases)
+hidden_layer = tf.nn.relu(hidden_layer)
+```
+
+我们可以通过下面的代码把一个线性单层网络变成一个双层的非线性网络:
+
+```python
+import tensorflow as tf
+
+output = None
+
+hidden_layer_weights = [
+    [0.1, 0.2, 0.4],
+    [0.4, 0.6, 0.6],
+    [0.5, 0.9, 0.1],
+    [0.8, 0.2, 0.8]
+]
+
+out_weights = [
+    [0.1, 0.6],
+    [0.2, 0.1],
+    [0.7, 0.9]
+]
+
+weights = [
+    tf.Variable(hidden_layer_weights),
+    tf.Variable(out_weights)
+]
+
+biases = [
+    tf.Variable(tf.zeros(3)),
+    tf.Variable(tf.zeros(2))
+]
+
+features = tf.Variable([[1.0, 2.0, 3.0, 4.0], [-1.0, -2.0, -3.0, -4.0], [11.0, 12.0, 13.0, 14.0]])
+
+hidden_layer = tf.add(tf.matmul(features, weights[0]), biases[0])
+hidden_layer = tf.nn.relu(hidden_layer)
+logits = tf.add(tf.matmul(hidden_layer, weights[1]), biases[1])
+
+with tf.Session() as sess:
+    sess.run(tf.global_variables_initializer())
+    print(sess.run(logits))
+```
+
+这对3个点进行神经网络的前向反馈算法,得到了3组输出.这里的隐藏层有3个感知器,一共有3x12+3=39个参数.输出层有两个感知器,有2x3+2=8个参数.
+
+### 训练两层网络
+
+我们可以在上面单隐藏层网络的基础上训练这个网络了.
+
+我们还是使用MNIST数据集,首先,读取这个数据集:
+
+```python
+from tensorflow.examples.tutorials.mnist import input_data
+
+mnist = input_data.read_data_sets('.', one_hot=True, reshape=False)
+```
+
+设定一些超参数,这些参数描述了数据集中数据的维度,类别的个数,学习率,batch大小,Epoch:
+
+```python
+import tensorflow as tf
+# Parameters
+learning_rate = 0.001
+training_epochs = 20
+batch_size = 128
+display_step = 1
+
+# data feature
+n_input = 784
+n_classes = 10
+```
+
+一个非常重要的参数,隐藏层的宽度,也就是隐藏层有多少个感知器.这个数越大,神经网络就越复杂.因为我们这是一个单隐藏层网络,所以只需要设置一个.如果是多隐层网络,就需要设置多个:
+
+```python
+# Layer number of features
+n_hidden_layer = 256
+```
+
+随后,初始化网络的参数.这是两个字典,其中weights保存网络中的初始权值.这些权值是矩阵,每一列保存一个感知器的权值.biases保存网络中的初始偏差.我们均使用正则随机数去初始化这些参数:
+
+```python
+# Initialize the network's Parameters
+weights = {
+    'hidden_layer': tf.Variable(tf.random_normal([n_input, n_classes])),
+    'out': tf.Variable(tf.random_normal([n_hidden_layer, n_classes]))
+}
+biases = {
+    'hidden_layer': tf.Variable(tf.random_normal([n_hidden_layer])),
+    'out': tf.Variable(tf.random_normal([n_classes]))
+}
+```
+
+因为只有一个隐藏层,所以只有一个hidden_layer参数,如果有多个,则需要设置多个key-value.
+
+随后设置Tensorflow的输入,它们表示输入的数据,使用placeholder预先规定它们的类型和尺寸.注意原始图像输入为[28, 28, 1]\(28px*28px单通道图片\),我们需要reshape为一维的.另外第一个维度是None,这是保存batch大小的:
+
+```python
+# TF Graph input
+x = tf.placeholder(tf.float32, [None, 28, 28, 1])
+y = tf.placeholder(tf.float32, [None, n_classes])
+x_flat = tf.reshape(x, [-1, n_input])
+```
+
+接着就到了激动人心的环节了,定义多层感知器模型,也就是神经网络.在上面我们已经写过定义代码了,这里再贴出来加深理解(因为真的挺重要):
+
+```python
+# Define two-layer neural network model
+hidden_layer = tf.add(tf.matmul(x_flat, weights['hidden_layer']),
+                        biases['hidden_layer'])
+hidden_layer = tf.nn.relu(hidden_layer)
+logits = tf.add(tf.matmul(x_flat, weights['out']), biases['out'])
+```
+
+logits的输出我们没有做激活函数处理,因为后面在定义误差的时候Tensorflow会自动对logits输出做softmax再算误差.
+
+随后定义误差和优化器,这是训练网络的必备品:
+
+```python
+# Define Optimizer
+cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(
+    logits=logits, labels=y))
+optimizer = tf.train.GradientDescentOptimizer(
+    learning_rate=learning_rate).minimize(cost)
+```
+
+随后,启动graph,开始训练:
+
+```python
+init = tf.global_variables_initializer()
+with tf.Session() as sess:
+    sess.run(init)
+
+    for epoch in range(training_epochs):
+        total_batch = int(mnist.train.num_examples / batch_size)
+        for i in range(total_batch):
+            batch_x, batch_y = mnist.train.next_batch(batch_size)
+            sess.run(optimizer, feed_dict={x: batch_x, y: batch_y})
+```
+
+Tensorflow中的MNIST库提供了分批接收数据的功能.使用mnist.train.next_batch()函数返回训练数据的一个子集.
+
+以上就完成了定义和训练单隐层神经网络,多层网络只需要简单地添加更多layer即可.
 
 ### 保存和读取模型
 

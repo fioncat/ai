@@ -30,6 +30,14 @@
         - [Session](#session)
         - [输入](#%E8%BE%93%E5%85%A5)
         - [线性函数](#%E7%BA%BF%E6%80%A7%E5%87%BD%E6%95%B0)
+        - [Softmax](#softmax)
+        - [交叉熵](#%E4%BA%A4%E5%8F%89%E7%86%B5)
+        - [Mini Batch](#mini-batch)
+        - [实现单层神经网络](#%E5%AE%9E%E7%8E%B0%E5%8D%95%E5%B1%82%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C)
+        - [ReLUs](#relus)
+        - [实现深度神经网络](#%E5%AE%9E%E7%8E%B0%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C)
+        - [保存和读取模型](#%E4%BF%9D%E5%AD%98%E5%92%8C%E8%AF%BB%E5%8F%96%E6%A8%A1%E5%9E%8B)
+        - [Dropout](#dropout)
     - [卷积神经网络 Convolutional Neural Network](#%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-convolutional-neural-network)
         - [Keras实现CNN](#keras%E5%AE%9E%E7%8E%B0cnn)
         - [TensorFlow实现CNN](#tensorflow%E5%AE%9E%E7%8E%B0cnn)
@@ -542,7 +550,67 @@ tf.global_variables_initializer()会返回一个操作,它会从graph中初始�
 
 bias一般初始化为0,使用tf.zeros()可以返回一个初值全部是0的Tensor.
 
-一个使用
+一个使用Tensorflow进行线性回归并且对著名的MNIST数据集中0,1,2进行分类的例子:[Tensorflow实现线性回归](https://github.com/LovelyLazyCat/ai/blob/master/deeplearning/tensorflow_test/linear_regression.py).
+
+### Softmax
+
+Softmax可以把它的输入,通常称为logits或者logit scores,处理成0到1之间的数字,并且能够把输出的和归一化为1.这意味softmax函数与分类的概率分布等价.在多分类任务中,它是一个优秀的激活函数.
+
+![20](images/20.png)
+
+在Tensorflow中使用softmax函数是非常简单的,下面是一个示例:
+
+```python
+import tensorflow as tf
+
+logit_data = [2.0, 1.0, 0.1]
+
+logits = tf.placeholder(tf.float32)
+
+softmax = tf.nn.softmax(logits)
+
+with tf.Session() as sess:
+    output = sess.run(softmax, feed_dict={logits: logit_data})
+    print(output)
+```
+
+### 交叉熵
+
+在Tensorflow中实现交叉熵也是非常简单的.我们需要知道数据的原始one-hot编码和预测值(一般是由softmax函数得出的概率).来计算交叉熵.
+
+Tensorflow并没有提供直接的交叉熵计算函数,但是我们可以通过其它数学函数来简单地组合一下:
+
+```python
+import tensorflow as tf
+
+softmax_data = [0.7, 0.2, 0.1]
+one_hot_data = [1.0, 0.0, 0.0]
+
+softmax = tf.placeholder(tf.float32)
+one_hot = tf.placeholder(tf.float32)
+
+cross_entropy = tf.reduce_sum(tf.multiply(one_hot, tf.log(softmax)))
+
+with tf.Session() as sess:
+    output = sess.run(cross_entropy, feed_dict={softmax: softmax_data,
+                                                one_hot: one_hot_data})
+    print(output)
+```
+
+其中,reduce_sum输入一个序列,返回它们的和.
+
+### Mini Batch
+
+### 实现单层神经网络
+
+### ReLUs
+
+### 实现深度神经网络
+
+### 保存和读取模型
+
+### Dropout
+
 
 ## 卷积神经网络 Convolutional Neural Network
 

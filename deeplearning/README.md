@@ -8,47 +8,47 @@
 
 <!-- TOC -->
 
-- [深度学习](#深度学习)
-    - [感知器](#感知器)
-    - [Sigmoid激活函数](#sigmoid激活函数)
-    - [Softmax激活函数](#softmax激活函数)
-    - [交叉熵 Cross Entropy](#交叉熵-cross-entropy)
-    - [梯度下降法 Gradient Descent](#梯度下降法-gradient-descent)
-    - [神经网络 Neural Network](#神经网络-neural-network)
-        - [前向反馈 Feed Forward](#前向反馈-feed-forward)
-        - [反向传播 Back Propagation](#反向传播-back-propagation)
-    - [过拟合](#过拟合)
-        - [早期停止](#早期停止)
-        - [正则化](#正则化)
+- [深度学习](#%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0)
+    - [感知器](#%E6%84%9F%E7%9F%A5%E5%99%A8)
+    - [Sigmoid激活函数](#sigmoid%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0)
+    - [Softmax激活函数](#softmax%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0)
+    - [交叉熵 Cross Entropy](#%E4%BA%A4%E5%8F%89%E7%86%B5-cross-entropy)
+    - [梯度下降法 Gradient Descent](#%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E6%B3%95-gradient-descent)
+    - [神经网络 Neural Network](#%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-neural-network)
+        - [前向反馈 Feed Forward](#%E5%89%8D%E5%90%91%E5%8F%8D%E9%A6%88-feed-forward)
+        - [反向传播 Back Propagation](#%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD-back-propagation)
+    - [过拟合](#%E8%BF%87%E6%8B%9F%E5%90%88)
+        - [早期停止](#%E6%97%A9%E6%9C%9F%E5%81%9C%E6%AD%A2)
+        - [正则化](#%E6%AD%A3%E5%88%99%E5%8C%96)
         - [Dropout](#dropout)
-    - [ReLU激活函数](#relu激活函数)
-    - [随机梯度下降](#随机梯度下降)
-    - [学习速率](#学习速率)
-    - [动量](#动量)
-    - [TensorFlow 入门](#tensorflow-入门)
+    - [ReLU激活函数](#relu%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0)
+    - [随机梯度下降](#%E9%9A%8F%E6%9C%BA%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D)
+    - [学习速率](#%E5%AD%A6%E4%B9%A0%E9%80%9F%E7%8E%87)
+    - [动量](#%E5%8A%A8%E9%87%8F)
+    - [TensorFlow 入门](#tensorflow-%E5%85%A5%E9%97%A8)
         - [Tensor](#tensor)
         - [Session](#session)
-        - [输入](#输入)
-        - [线性模型(单感知器)](#线性模型单感知器)
+        - [输入](#%E8%BE%93%E5%85%A5)
+        - [线性模型(单感知器)](#%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B%E5%8D%95%E6%84%9F%E7%9F%A5%E5%99%A8)
         - [Softmax](#softmax)
-        - [交叉熵](#交叉熵)
+        - [交叉熵](#%E4%BA%A4%E5%8F%89%E7%86%B5)
         - [Mini Batch](#mini-batch)
-        - [实现两层网络](#实现两层网络)
-        - [训练两层网络](#训练两层网络)
-        - [保存和读取模型](#保存和读取模型)
-        - [Dropout](#dropout-1)
-    - [卷积神经网络 Convolutional Neural Network](#卷积神经网络-convolutional-neural-network)
-        - [Keras实现CNN](#keras实现cnn)
-        - [TensorFlow实现CNN](#tensorflow实现cnn)
-        - [权值初始化](#权值初始化)
-        - [自编码器](#自编码器)
-        - [迁移学习](#迁移学习)
-    - [循环神经网络 Recurrent Neural Network](#循环神经网络-recurrent-neural-network)
-        - [长短期记忆网络 LSTM](#长短期记忆网络-lstm)
+        - [实现两层网络](#%E5%AE%9E%E7%8E%B0%E4%B8%A4%E5%B1%82%E7%BD%91%E7%BB%9C)
+        - [训练两层网络](#%E8%AE%AD%E7%BB%83%E4%B8%A4%E5%B1%82%E7%BD%91%E7%BB%9C)
+        - [保存和读取模型](#%E4%BF%9D%E5%AD%98%E5%92%8C%E8%AF%BB%E5%8F%96%E6%A8%A1%E5%9E%8B)
+        - [Tensorflow Dropout](#tensorflow-dropout)
+    - [卷积神经网络 Convolutional Neural Network](#%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-convolutional-neural-network)
+        - [Keras实现CNN](#keras%E5%AE%9E%E7%8E%B0cnn)
+        - [TensorFlow实现CNN](#tensorflow%E5%AE%9E%E7%8E%B0cnn)
+        - [权值初始化](#%E6%9D%83%E5%80%BC%E5%88%9D%E5%A7%8B%E5%8C%96)
+        - [自编码器](#%E8%87%AA%E7%BC%96%E7%A0%81%E5%99%A8)
+        - [迁移学习](#%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0)
+    - [循环神经网络 Recurrent Neural Network](#%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-recurrent-neural-network)
+        - [长短期记忆网络 LSTM](#%E9%95%BF%E7%9F%AD%E6%9C%9F%E8%AE%B0%E5%BF%86%E7%BD%91%E7%BB%9C-lstm)
         - [Word2vec](#word2vec)
-    - [生成对抗网络Generative Adversarial Network](#生成对抗网络generative-adversarial-network)
-        - [深度卷积生成对抗网络](#深度卷积生成对抗网络)
-        - [半监督GAN模型](#半监督gan模型)
+    - [生成对抗网络Generative Adversarial Network](#%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9Cgenerative-adversarial-network)
+        - [深度卷积生成对抗网络](#%E6%B7%B1%E5%BA%A6%E5%8D%B7%E7%A7%AF%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C)
+        - [半监督GAN模型](#%E5%8D%8A%E7%9B%91%E7%9D%A3gan%E6%A8%A1%E5%9E%8B)
 
 <!-- /TOC -->
 
@@ -380,6 +380,10 @@ L2正则化可以在一定程度上解决这个问题,因为它能够得到一�
 使用Dropout能够保证神经网络中所有的节点都得到充分的训练.
 
 我们可以设置一个参数,这是一个概率,表示每个节点在每次Epoch中被放弃的概率.合理地设置这个值可以让训练出来的神经网络中的每个节点都起到一定的作用.
+
+下图展示了Dropout的过程:
+
+![21](images/21.png)
 
 ## ReLU激活函数
 
@@ -914,12 +918,35 @@ with tf.Session() as sess:
 
 有了保存和读取模型,我们就可以真正地编写训练MNIST数据的神经网络并储存模型了.
 
-使用Tensorflow训练单隐层神经网络并储存模型的代码在:[训练MNIST模型]()
+使用Tensorflow训练单隐层神经网络并储存模型的代码在:[训练MNIST模型](https://github.com/LovelyLazyCat/ai/blob/master/deeplearning/tensorflow_test/train_mnist.py)
 
-读取储存好的模型并使用其预测数据的代码在:[读取MNIST模型]()
+读取储存好的模型并使用其预测数据的代码在:[读取MNIST模型](https://github.com/LovelyLazyCat/ai/blob/master/deeplearning/tensorflow_test/use_mnist.py)
 
-### Dropout
+### Tensorflow Dropout
 
+Dropout是一种降低过拟合的正则化技术.它会在网络中暂时丢弃一些单元,已经与它们前后相连的所有节点.
+
+Tensorflow提供了tf.nn.dropout()函数,可以很方便地实现Dropout操作.
+
+下面的例子展示了dropout的用法:
+
+```python
+# probaility to keep units
+keep_prob = tf.placeholder(tf.float32)
+
+hidden_layer = tf.add(tf.matmul(x, weights[0]), biases[0])
+hidden_layer = tf.nn.relu(hidden_layer)
+hidden_layer = tf.nn.dropout(hidden_layer, keep_prob)
+```
+
+解释一下dropout函数的两个参数:
+
+- hidden_layer: 要应用dropout的tensor
+- keep_prob: 任何一个给定单元的存留率
+
+tf.nn.dropout()为了补偿被丢弃的单元,会把没有被丢弃的单元值乘以1/keep_prob.
+
+在训练时,一个好的keep_prob初始值为0.5,在测试时,keep_prob应该设置为1.0,这样会保留所有单元,最大化模型能力.
 
 ## 卷积神经网络 Convolutional Neural Network
 

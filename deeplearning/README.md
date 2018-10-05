@@ -29,6 +29,7 @@
         - [Tensor](#tensor)
         - [Session](#session)
         - [输入](#%E8%BE%93%E5%85%A5)
+        - [线性函数](#%E7%BA%BF%E6%80%A7%E5%87%BD%E6%95%B0)
     - [卷积神经网络 Convolutional Neural Network](#%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-convolutional-neural-network)
         - [Keras实现CNN](#keras%E5%AE%9E%E7%8E%B0cnn)
         - [TensorFlow实现CNN](#tensorflow%E5%AE%9E%E7%8E%B0cnn)
@@ -485,7 +486,7 @@ tensor是之前已经创建好的Tensor对象.使用sess.run()函数可以对ten
 
 ### 输入
 
-tf.placeholder()可以产生一个非常量的Tensor.在Session启动之后,我们需要给这个Tensor赋值.赋值可以通过sess.run()中的feed_dict参数设置.
+tf.placeholder()可以产生一个常量的Tensor,但是可以在Session启动之后再赋值.可以通过sess.run()中的feed_dict参数设置.
 
 注意一点,tf.placeholder()产生的Tensor是在Session创建之后再赋值的.初始化的时候仅需要指定它的类型.
 
@@ -515,6 +516,33 @@ with tf.Session() as sess:
 ```
 
 注意如果Tensor的类型和传入的值类型不一样,TensorFlow会报错.
+
+### 线性函数
+
+神经网络中最常见的计算,就是计算输入,权重和偏差的线性组合.我们通常把线性运算的输出写为:
+
+$$y=Wx+b$$
+
+训练神经网络的目的是更新权重和偏差来更好地预测目标.为了更新,需要一个能修改的Tensor.这就需要tf.Variable了.
+
+tf.Variable可以创建一个可变值的Tensor,就像Python的普通变量一样.该tensor把状态存在session里面,所以必须手动初始化它的状态.我们可以使用tf.global_variables_initializer()函数来初始化所以可变tensor.
+
+以下的代码创建Variable并且初始化:
+
+```python
+x = tf.Variable(5)
+
+with tf.Session() as sess:
+    sess.run(tf.global_variable_initializer())
+```
+
+tf.global_variables_initializer()会返回一个操作,它会从graph中初始化所有的Tensorflow变量.可以通过session来调用这个操作初始化所有上面的变量.
+
+线性回归需要用到权重,我们一般从正态分布中取随机数来初始化权重.tf.truncated_normal()返回一个tensor,它的随机值取自一个正态分布.
+
+bias一般初始化为0,使用tf.zeros()可以返回一个初值全部是0的Tensor.
+
+一个使用
 
 ## 卷积神经网络 Convolutional Neural Network
 

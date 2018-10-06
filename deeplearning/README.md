@@ -40,11 +40,12 @@
     - [卷积神经网络 Convolutional Neural Network](#%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-convolutional-neural-network)
         - [卷积层](#%E5%8D%B7%E7%A7%AF%E5%B1%82)
         - [Stride](#stride)
+        - [池化层](#%E6%B1%A0%E5%8C%96%E5%B1%82)
         - [Keras实现CNN](#keras%E5%AE%9E%E7%8E%B0cnn)
             - [Keras 卷积层](#keras-%E5%8D%B7%E7%A7%AF%E5%B1%82)
             - [Keras 最大池化层](#keras-%E6%9C%80%E5%A4%A7%E6%B1%A0%E5%8C%96%E5%B1%82)
-            - [图片增强](#%E5%9B%BE%E7%89%87%E5%A2%9E%E5%BC%BA)
             - [CNN架构](#cnn%E6%9E%B6%E6%9E%84)
+            - [图片增强](#%E5%9B%BE%E7%89%87%E5%A2%9E%E5%BC%BA)
         - [TensorFlow实现CNN](#tensorflow%E5%AE%9E%E7%8E%B0cnn)
         - [权值初始化](#%E6%9D%83%E5%80%BC%E5%88%9D%E5%A7%8B%E5%8C%96)
         - [自编码器](#%E8%87%AA%E7%BC%96%E7%A0%81%E5%99%A8)
@@ -1045,7 +1046,7 @@ $$(+1)\times 0 + (-1) \times 0 + (-1)\times 0 = 0$$
 
 ![25](images/25.png)
 
-这就得到了卷积层的计算结果(注意ReLU会把所有负值结果转换为0,因此卷积层的结果中没有出现负数).
+这就得到了卷积层的计算结果(注意ReLU会把所有负值结果转换为0,因此卷积层的结果中没有出现负数).我们也把卷积层的计算结果叫做**特征映射**.
 
 现在,仔细观察卷积窗口的参数,发现它在左对角线的方向的参数都是+1.而在实际对图片作用之后,发现只有在左对角线是白线的情况下,才会产生3这个结果.
 
@@ -1075,7 +1076,7 @@ $$(+1)\times 0 + (-1) \times 0 + (-1)\times 0 = 0$$
 
 可视化之后,如果线的亮度越高,表示特征越明显.例如,第一个过滤器就能识别出汽车的右边缘.
 
-我们上面的所有图片都是针对于灰白图片的,但是对于彩色图片呢?其实很简单,所有颜色都是由三原色的组合构成的.我们只需要把原来的二维数组改为拥有多色值的三维数组即可.对于RGB图片来说,这是一个深度为3的数组.
+我们上面的所有图片都是针对于灰白图片的,但是对于彩色图片呢?其实很简单,所有颜色都是由三原色的组合构成的.我们只需要把原来的二维数组改为拥有多色值的三维数组即可.对于RGB图片来说,这是一个深度为3的矩阵.
 
 对于彩色图片的卷积层,处理起来和黑白的是类似的.只不过现在过滤器是三维的:
 
@@ -1085,7 +1086,7 @@ $$(+1)\times 0 + (-1) \times 0 + (-1)\times 0 = 0$$
 
 利用一个卷积层,能够发现图片中的某些特征,过滤掉其它一些没有用的东西(我们通过上面汽车的可视化已经可以看出来了).而卷积层又可以接受多维的数据.
 
-我们现在单看某个卷积层的输出,如果有多个过滤器,发现它实际上也是多组的二维数据.那么,可以把这多组二维数据传给另外一个卷积层,继续过滤上一个卷积层已经过滤出来的特征(也就是提取特征中的特征).通过这样多层卷积层连接在一起,就产生了深层CNN,能够过滤出来一些非常复杂的特征.
+我们现在单看某个卷积层的输出,如果有多个过滤器,发现它实际上也是多组的特征映射.那么,可以把这多组映射传给另外一个卷积层,继续过滤上一个卷积层已经过滤出来的特征(也就是提取特征中的特征).通过这样多层卷积层连接在一起,就产生了深层CNN,能够过滤出来一些非常复杂的特征.
 
 卷积层的参数虽然比密集层要少不少,但是训练的过程也是一样的.一开始,参数是随机初始化的,通过最小化损失函数,来训练这些参数.这样,CNN就能逐渐训练出应该过滤哪些特征.
 
@@ -1114,15 +1115,224 @@ stride为1,则输出和输入图片的尺寸差不多.stride越大,输出就越�
 
 通过padding参数可以指定遇到溢出时的处理方式,'valid'表示第一种做法;'same'表示第二种做法.
 
+### 池化层
+
+在构建CNN时,还需要另外一种层级,叫做池化层.
+
+我们知道,卷积层有多少过滤器,它就能产生多少个深度的特征映射.如果过滤器很多,意味着输出的维度可能会非常巨大,并且可能会导致过拟合.
+
+池化层就是用来降低卷积层输出的维度的.
+
+我们有两种池化层,**最大池化层**.最大池化层也有窗口的size和strides参数,它对特征映射做类似卷积层的窗口滑动操作,不过每次计算不再使用感知器算法,而是简单地选择特征最大值.类似下面这样:
+
+![34](images/34.png)
+
+这样,就可以大大减少特征映射的尺寸:
+
+![35](images/35.png)
+
+另外一个池化层叫做**全局平均池化层**,这种池化层不需要指定窗口和stride.它降低维度的方式非常极端:它获取每一层特征映射,计算特征映射中所有值的均值.这样,有多少层特征映射,就产生了多少个结果.
+
+最终输出就是多个一维的特征映射(实际上就是一个一维数组或向量):
+
+![36](images/36.png)
+
+除了上面两种池化层,还有一些池化层可以选择,限于篇幅这里不再介绍.
+
 ### Keras实现CNN
 
 #### Keras 卷积层
 
+在Keras中创建卷积层是非常简单的.Keras中的卷积层是有维度的.对于我们的图像识别来说,是二维的,所以使用Conv2D.如果数据是一维的,则使用Conv1D.
+
+创建Conv2D的方式如下:
+
+```python
+from keras.layers import Conv2D
+Conv2D(filters, kernel_size, strides, padding, activation, input_shape)
+```
+
+对每个参数做一个解释:
+
+- 必填参数
+  - filters: 过滤器数量
+  - kernel_size: 卷积窗口的尺寸.如果卷积窗口是正方形,则只需要指定一个数据,如果是长方形,则需要传一个元组
+- 选填参数
+  - strides: 卷积Stride.默认为1
+  - padding: 'valid'或'same'.默认为'valid'
+  - activation: 激活函数,通常为'relu'.默认不使用激活函数
+  - input_shape: 如果卷积层出现在模型的第一层,需要指定,指的是输入数据的(height, weight, deep)元组.如果是Conv1D,不需要deep.
+
+例如,假设现在要指定一个输入是200x200的灰度图片,第一层是卷积层,则第一层可以这么定义:
+
+```python
+from keras.models import Sequential
+from keras.layers import Conv2D
+
+model = Sequential()
+model.add(Conv2D(filters=16, kernel_size=2, strides=2, activation='relu', input_shape=(200, 200, 1)))
+
+model.summary()
+```
+
+使用model.summary()可以查看模型的概述,包括参数个数等信息.上面的这个模型输出是:
+
+![33](images/33.png)
+
+这个卷积层有80个参数.Output Shape表示该卷积层输出的大小.其中,None表示批次大小;卷积的高度为100,宽度为100,深度为16.
+
+我们来看看这些参数怎么计算,先定义几个符号,$k$表示卷积层过滤器的数量,$f$表示过滤器的边长(假定过滤器都是正方形),$d_{in}$表示上一层的深度.
+
+则参数的计算公式为:
+
+- 权值个数: $k\times f^2\times d_{in}$
+- 卷积层深度: $k$
+
+卷积的尺寸计算稍微复杂一些.我们假设上一层(对于第一个卷积层来说,就是图片)的高度为$h_{in}$,宽度为$w_{in}$,Stride为$s$.
+
+则如果pading为'same',卷积的维度为:
+
+- height = ceil(float($h_{in}$)/float($s$))
+- height = ceil(float($w_{in}$)/float($s$))
+
+如果padding为'valid',卷积的维度为:
+
+- height = ceil(float($h_{in} - f + 1$)/float($s$))
+- height = ceil(float($w_{in} - f + 1$)/float($s$))
+
+ceil返回大于或者等于指定表达式的最小整数.
+
 #### Keras 最大池化层
 
-#### 图片增强
+Keras中最大池化层的API如下:
+
+```python
+from keras.layers import MaxPooling2D
+
+MaxPooling2D(pool_size, strides, padding)
+```
+
+对参数做一个简要说明:
+
+- 必要的参数
+  - pool_size: 池化窗口的尺寸
+- 可选的参数
+  - strides: 默认为pool_size
+  - padding: 'valid'和'same',默认为'valid'
+
+假设我们要创建一个最大池化层,卷积层的输出大小为(100, 100, 15),我们希望池化后的大小为(50, 50, 15).则窗口边长应该为2.
+
+下面的代码验证了这一点:
+
+```python
+from keras.models import Sequential
+from keras.layers import MaxPooling2D
+
+model = Sequential()
+model.add(MaxPooling2D(pool_size=2, strides=2, input_shape=(100, 100, 15)))
+model.summary()
+```
+
+输出为:
+
+![37](images/37.png)
 
 #### CNN架构
+
+利用上面这些东西,我们就可以利用Keras构建一个完整的CNN了.
+
+我们已经学习了卷积层和最大池化层.下面我们需要讨论如何排列这些层级,并设计出一个完整的CNN架构.我们将设计出一个图片分类CNN.
+
+我们的首个问题是,图片的大小是不相同的.但是CNN需要固定的大小输入.我们需要选择一个大小,把所有图片处理成这个大小,才能执行其它操作.我们经常把图片调整为正方形的.
+
+对于RGB图像,计算机会解释为三层二维数组.例如100x100的RGB图像的尺寸为(100, 100, 3),如果是黑白图片,则为(100, 100, 1).
+
+在一开始,一张图像的宽和高是远大于它的深度的.我们的目标就是在CNN处理后让图像的深度远大于它的宽和高(提取更多的特征).
+
+在架构中,卷积层用于提高图像的深度,最大池化层用于减少空间维度.形象点说,卷积层用于把图像"拉长",最大池化层用于把图像"挤扁".
+
+![38](images/38.png)
+
+在图像分类中,对于卷积层参数的选择,可以参考以下原则:
+
+- filters: 决定了输出的深度,一般采取递增原则.例如第一层有16个,第二层有32个,第三层有64个等.
+- kernel_size: 一般选为2,即窗口尺寸为2x2
+- strides: 一般为1, 默认即可
+- padding: 一般选'same',防止丢失一些信息
+- activation: relu
+
+除了卷积层,我们还需要池化层来减小高度和宽度,池化层一般紧跟在卷积层后面,最常见的参数选择是:
+
+- pool_size: 一般选2
+- stride: 一般选2
+- padding: 默认即可
+
+这样,每次池化层都会把卷积层的输出的高度和宽度减少一倍.
+
+如果我们使用3个卷积层,就可以产生下面的架构(假设图片尺寸是32x32):
+
+```python
+from keras.models import Sequential
+from keras.layers import Conv2D, MaxPool2D
+
+model = Sequential()
+
+model.add(Conv2D(filters=16, kernel_size=2, padding='same', activation='relu',
+                 input_shape=(32, 32, 3)))
+model.add(MaxPool2D(pool_size=2))
+model.add(Conv2D(filters=32, kernel_size=2, padding='same', activation='relu'))
+model.add(MaxPool2D(pool_size=2))
+model.add(Conv2D(filters=64, kernel_size=2, padding='same', activation='relu'))
+model.add(MaxPool2D(pool_size=2))
+
+model.summary()
+```
+
+结果为:
+
+![39](images/39.png)
+
+可见Shape符合我们之前的目标.
+
+最后一层的输出Shape是(4,4,64).也就是说可以检测出4x4x64个特征.例如,在小猫识别中,最后一层可能可以告诉我们: 图片中有猫耳朵吗?图片中有猫胡须吗?图片中有猫爪吗?等等
+
+一旦我们只需要这些yes or no的信息了,完全可以转换为一个一维的向量.利用Flatten层可以实现这一转换.最后,把这个一维的向量交给Dense层,让它来整合这些信息,产生最后的输出.例如,既有猫耳朵又有猫胡须但是没有猫爪的图片有95%的概率有猫,只有猫爪但是其他都没有的图片有30%的概率有猫,这些需要Dense层来完成.
+
+最后还需要一个Dense层产生最终的输出.
+
+这样,我们就构建了一个完整的图像识别CNN架构,代码如下:
+
+```python
+from keras.models import Sequential
+from keras.layers import Conv2D, MaxPool2D, Flatten, Dense
+
+model = Sequential()
+
+model.add(Conv2D(filters=16, kernel_size=2, padding='same', activation='relu',
+                 input_shape=(32, 32, 3)))
+model.add(MaxPool2D(pool_size=2))
+model.add(Conv2D(filters=32, kernel_size=2, padding='same', activation='relu'))
+model.add(MaxPool2D(pool_size=2))
+model.add(Conv2D(filters=64, kernel_size=2, padding='same', activation='relu'))
+model.add(MaxPool2D(pool_size=2))
+model.add(Flatten())
+model.add(Dense(500, activation='relu'))
+model.add(Dense(10, activation='softmax'))
+
+model.summary()
+```
+
+注意,在MaxPool和Dense之间一定要跟上一个Flatten层,因为Dense只接受一维向量.最后一个Dense作为输出层使用,如果是多分类任务,使用softmax激活函数,单分类任务可以使用Sigmoid.在这个例子中,有10个待分类的类别.
+
+这个网络的summary信息:
+
+![40](images/40.png)
+
+在实际中,以上的架构仅作为一个参考.深度学习更多的还是在于实践,上面的参数并不是一成不变的,还需要大量的调参才可能得到更好的效果.实际上,CNN的架构选择和调参确实有一定"玄学"的味道(不要怕,后面会介绍强大的迁移学习).
+
+这里有一个利用上面的架构对CIFAR-10数据集进行训练的例子可以参考:[使用Keras CNN训练CIFAR-10数据集]()
+
+#### 图片增强
 
 ### TensorFlow实现CNN
 

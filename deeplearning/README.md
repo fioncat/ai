@@ -47,8 +47,6 @@
             - [CNN架构](#cnn%E6%9E%B6%E6%9E%84)
             - [图片增强](#%E5%9B%BE%E7%89%87%E5%A2%9E%E5%BC%BA)
         - [TensorFlow实现CNN](#tensorflow%E5%AE%9E%E7%8E%B0cnn)
-        - [权值初始化](#%E6%9D%83%E5%80%BC%E5%88%9D%E5%A7%8B%E5%8C%96)
-        - [自编码器](#%E8%87%AA%E7%BC%96%E7%A0%81%E5%99%A8)
         - [迁移学习](#%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0)
     - [循环神经网络 Recurrent Neural Network](#%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-recurrent-neural-network)
         - [长短期记忆网络 LSTM](#%E9%95%BF%E7%9F%AD%E6%9C%9F%E8%AE%B0%E5%BF%86%E7%BD%91%E7%BB%9C-lstm)
@@ -1330,6 +1328,8 @@ model.summary()
 
 在实际中,以上的架构仅作为一个参考.深度学习更多的还是在于实践,上面的参数并不是一成不变的,还需要大量的调参才可能得到更好的效果.实际上,CNN的架构选择和调参确实有一定"玄学"的味道(不要怕,后面会介绍强大的迁移学习).
 
+训练CNN的代码很简单,需要先编译后训练.编译的时候需要传入注入损失函数,优化器等选择(和Tensorflow一样),代码很简单,这里就不贴了.可以直接阅读下面的代码查看写法.
+
 这里有一个利用上面的架构对CIFAR-10数据集进行训练的例子可以参考:[使用Keras CNN训练CIFAR-10数据集](https://github.com/LovelyLazyCat/ai/blob/master/deeplearning/cnn/cifar10.py)
 
 这里需要训练4万多个数据,建议使用GPU进行训练(我使用NVIDIA GTX 960M训练大约耗时2分钟).
@@ -1340,11 +1340,48 @@ CIFAR-10比赛的CNN获胜架构可以达到95%的准确度,这是这个架构�
 
 #### 图片增强
 
+在某些训练中,我们只需要检测出图片中是否含有某个对象,其位置,大小,方位并不重要.
+
+这是我们希望模型能够学习到图片的不变表示.不变性有下面几种分类:
+
+- 标度不变性: 不希望模型根据对象的大小而改变预测
+- 旋转不变性: 不希望模型根据对象的角度而改变预测
+- 平移不变性: 不希望模型根据对象的位置而改变预测
+
+我们的解决方法是,如果要CNN有旋转不变性,可以在训练集中增加数据,这些数据是对训练图片的随机旋转.我们也可以改变训练集的大小等.
+
+这就是数据增强.它可以减少模型的过拟合.
+
+Keras自带了图片增强的功能,我们需要导入并且传入一些参数:
+
+```python
+from keras.preprocessing.image import ImageDataGenerator
+
+datagen = ImageDataGenerator(
+            width_shift=0.1,
+            height_shift_range=0.1,
+            horizontal_flip=True)
+
+datagen.fit(x_train)
+```
+
+上面的这个增强器会随机地水平和垂直移动,翻转图片.
+
+使用图片增强之后,训练的代码就略有不同了,现在训练代码应该这么写:
+
+```python
+batch_size = 32
+model.fit_generator(datagen.flow(x_train, y_train, batch_size=batch_size),
+                    steps_per_epoch=x_train.shape[0] // batch_size, ...)
+```
+
+其余的写法和之前相同.注意我们不再调用fit方法而是调用fit_generator.datagen.flow()方法使增强器能够创建一批一批增强图片,需要传入每次生成增强图片的个数.
+
+另外还要指定一个额外的参数steps_per_epoch,表示每个epoch的步长数量.通常设定为数据集中唯一样本的数量除以批次大小.
+
 ### TensorFlow实现CNN
 
-### 权值初始化
-
-### 自编码器
+下面我们看看如何在Tensorflow中实现CNN.
 
 ### 迁移学习
 

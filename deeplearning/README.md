@@ -1330,7 +1330,13 @@ model.summary()
 
 在实际中,以上的架构仅作为一个参考.深度学习更多的还是在于实践,上面的参数并不是一成不变的,还需要大量的调参才可能得到更好的效果.实际上,CNN的架构选择和调参确实有一定"玄学"的味道(不要怕,后面会介绍强大的迁移学习).
 
-这里有一个利用上面的架构对CIFAR-10数据集进行训练的例子可以参考:[使用Keras CNN训练CIFAR-10数据集]()
+这里有一个利用上面的架构对CIFAR-10数据集进行训练的例子可以参考:[使用Keras CNN训练CIFAR-10数据集](https://github.com/LovelyLazyCat/ai/blob/master/deeplearning/cnn/cifar10.py)
+
+这里需要训练4万多个数据,建议使用GPU进行训练(我使用NVIDIA GTX 960M训练大约耗时2分钟).
+
+上面这个模型对CIFAR-10的训练准确度可以达到65%左右,后面我们学习迁移学习之后,可以训练出更加准确的模型.
+
+CIFAR-10比赛的CNN获胜架构可以达到95%的准确度,这是这个架构的链接:[CIFAR-10获胜架构](http://blog.kaggle.com/2015/01/02/cifar-10-competition-winners-interviews-with-dr-ben-graham-phil-culliton-zygmunt-zajac/).
 
 #### 图片增强
 

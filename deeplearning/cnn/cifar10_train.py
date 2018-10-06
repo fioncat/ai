@@ -47,4 +47,20 @@ if __name__ == '__main__':
     model.summary()
 
     # 编译,训练模型
+    from keras.callbacks import ModelCheckpoint
+    from time import time
+
+    start = time()
+
+    model.compile(loss='categorical_crossentropy', optimizer='rmsprop', metrics=['accuracy'])
+    checkpointer = ModelCheckpoint(filepath='models/CNN.weights.best.hdf5', verbose=1, save_best_only=True)
+
+    hist = model.fit(x_train, y_train, batch_size=32, epochs=20, validation_data=(x_valid, y_valid),
+                     callbacks=[checkpointer], verbose=2, shuffle=True)
+
+    end = time()
+    print("Train end, cost ", (end - start), " seconds.")
+
+    score = model.evaluate(x_test, y_test, verbose=0)
+    print('Test accuracy:', score[1])
 

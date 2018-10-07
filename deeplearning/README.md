@@ -12,7 +12,7 @@
 
 推荐使用[Anaconda](https://www.anaconda.com/),它包含了一个完整的Python环境和一些常用的科学计算库.
 
-欢迎来到深度学习的神奇世界!
+本文大部分demo和图片来自于Udacity.
 
 **目录**:
 
@@ -57,7 +57,7 @@
             - [CNN架构](#cnn%E6%9E%B6%E6%9E%84)
             - [图片增强](#%E5%9B%BE%E7%89%87%E5%A2%9E%E5%BC%BA)
         - [TensorFlow实现CNN](#tensorflow%E5%AE%9E%E7%8E%B0cnn)
-        - [迁移学习](#%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0)
+        - [VGG迁移学习](#vgg%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0)
     - [循环神经网络 Recurrent Neural Network](#%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-recurrent-neural-network)
         - [长短期记忆网络 LSTM](#%E9%95%BF%E7%9F%AD%E6%9C%9F%E8%AE%B0%E5%BF%86%E7%BD%91%E7%BB%9C-lstm)
         - [Word2vec](#word2vec)
@@ -1442,7 +1442,7 @@ ksize是滤波器的大小,strides是步长.它们也都需要4个元素,对应�
 
 一般我们把batch和channels的stride设置为1.
 
-下面我们使用Tensorflow构建一个完整的CNN模型并训练MNIST数据,完整的源代码在[Tensorflow实现CNN]()
+下面我们使用Tensorflow构建一个完整的CNN模型并训练MNIST数据,完整的源代码在[Tensorflow实现CNN](https://github.com/LovelyLazyCat/ai/blob/master/deeplearning/cnn/tf_mnist.py)
 
 首先,数据预处理,Tensorflow提供了直接读取MNIST的API:
 
@@ -1582,9 +1582,27 @@ with tf.Session() as sess:
     print("Train Over, test accuracy: {}".format(test_acc))
 ```
 
-### 迁移学习
+### VGG迁移学习
+
+深度学习的数据量都是非常大的,而且要训练的参数也特别多.即使使用GPU,要训练一个强大的网络也需要大量的时间.大部分人还是不愿意去亲自用巨大的数据集来训练巨大的网络的(强大的网络即使使用GPU阵列也需要数周时间训练,大部分人负担不起).
+
+一个可行的方案是使用别人已经训练好的网络,然后稍加修改,用于解决我们自己的问题.
+
+具体做法是,选择一个其他人训练好的网络,删除最后的全连接层,加上我们自己的全连接层.然后在我们自己的数据上重新训练一次即可.
+
+重新训练的目的是获取我们自己数据的卷积码,使网络能对我们自己的数据进行分类.
+
+VGGNET是一个非常好的迁移学习网络,它很简单,但是很强大.VGGNET的结构如下:
+
+![42](images/42.png)
+
+下面我们使用一个已经预训练好的Tensorflow-VGG网络,这是一个开源的项目,地址为:[tensorflow-vgg](https://github.com/machrisaa/tensorflow-vgg).在使用前,我们需要把它clone到本地工作目录.
+
+这里是一个用Tensorflow VGG迁移学习训练花朵数据的例子:[Tensorflow VGG迁移学习]().因为代码很多,这里不再贴出来了.
 
 ## 循环神经网络 Recurrent Neural Network
+
+
 
 ### 长短期记忆网络 LSTM
 

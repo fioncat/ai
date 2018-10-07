@@ -65,3 +65,15 @@ $$h_1=W^{(1)}_{12}x_1+W^{(1)}_{22}x_2+W^{(1)}_{32}$$
 $$h=W^{(2)}_{11}\sigma(h_1)+W^{(2)}_{21}\sigma(h_2)+W^{(2)}_{31}$$
 
 $$\hat{y}=\sigma(h)$$
+
+aa
+
+$$
+\overline{s}_t=\phi(\overline{x}_t\cdot W_x+\overline{s}_{t-1}\cdot W_s)
+$$
+
+最终输出
+
+$$
+\overline{y}=\overline{s}_t\cdot W_y
+$$

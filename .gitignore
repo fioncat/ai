@@ -119,3 +119,5 @@ data/
 venv
 
 *.hdf5
+
+*.gz

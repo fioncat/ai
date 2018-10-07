@@ -2,6 +2,16 @@
 
 **注意:请使用Chrome阅读并安装[Github with MathJax](https://chrome.google.com/webstore/detail/github-with-mathjax/ioemnmodlmafdkllaclgeombjnmnbima/related)插件,否则文中的数学公式无法显示,除非你愿意读原始Latex代码_(:з」∠)_**
 
+阅读本文需要[Python](https://www.python.org/)基础,Python是一门强大的解释语言,拥有简单的语法,强大的表达能力,无比庞大的库支持.Python在AI领域有着举足轻重的地位.
+
+本文的代码基于Python3.x编写,需要numpy,tensorflow,keras这三个核心库:
+
+- numpy: 一个强大的Python数学计算库,底层使用C语言编写,快速高效.非常擅长矩阵运算.[Numpy文档](https://docs.scipy.org/doc/numpy/user/index.html)
+- tensorflow: 由Google发布的开源AI库.是目前使用最广泛的Python深度学习库.[Tensorflow文档](https://www.tensorflow.org/api_docs/python/?hl=zh-cn)
+- keras: 基于Tensorflow, 提供更加简洁,人性化的API.[Keras文档](https://keras.io/)
+
+推荐使用[Anaconda](https://www.anaconda.com/),它包含了一个完整的Python环境和一些常用的科学计算库.
+
 欢迎来到深度学习的神奇世界!
 
 **目录**:
@@ -1330,7 +1340,7 @@ model.summary()
 
 训练CNN的代码很简单,需要先编译后训练.编译的时候需要传入注入损失函数,优化器等选择(和Tensorflow一样),代码很简单,这里就不贴了.可以直接阅读下面的代码查看写法.
 
-这里有一个利用上面的架构对CIFAR-10数据集进行训练的例子可以参考:[使用Keras CNN训练CIFAR-10数据集](https://github.com/LovelyLazyCat/ai/blob/master/deeplearning/cnn/cifar10.py)
+这里有一个利用上面的架构对CIFAR-10数据集进行训练的例子可以参考:[使用Keras CNN训练CIFAR-10数据集](https://github.com/LovelyLazyCat/ai/blob/master/deeplearning/cnn/cifar10_train.py)
 
 这里需要训练4万多个数据,建议使用GPU进行训练(我使用NVIDIA GTX 960M训练大约耗时2分钟).
 
@@ -1382,6 +1392,195 @@ model.fit_generator(datagen.flow(x_train, y_train, batch_size=batch_size),
 ### TensorFlow实现CNN
 
 下面我们看看如何在Tensorflow中实现CNN.
+
+Tensorflow提供了tf.nn.conv2d()和tf.nn.bias_add()函数来创建卷积层.创建的方法和Keras类似,但是需要自定定义卷积层的weight和bias,并且需要自己激活.下面是代码:
+
+```python
+import tensorflow as tf
+
+# 输出的深度
+k_output = 64
+
+# 图片的参数
+image_width = 10
+image_height = 10
+color_channels = 3
+
+# 过滤器的宽度和高度
+filter_size_width = 5
+filter_size_height = 5
+
+# 图片输入
+image_input = tf.placeholder(tf.float32,
+                             shape=[None, image_height, image_width, color_channels])
+
+# 初始化卷积层的参数,权值和偏差
+weight = tf.Variable(tf.truncated_normal([filter_size_height,
+                                          filter_size_width, color_channels, k_output]))
+bias = tf.Variable(tf.zeros(k_output))
+
+# 定义卷积层
+conv_layer = tf.nn.conv2d(image_input, weight, strides=[1, 2, 2, 1], padding='SAME')
+conv_layer = tf.nn.bias_add(conv_layer)   # 添加偏置
+conv_layer = tf.nn.relu(conv_layer)       # 激活
+```
+
+注意strides参数传的是一个数组,Tensorflow对每一个input维度使用一个单独的stride,也就是说这个数组分别对应于[batch,input_height, input_weight, channels]
+
+和Keras相比麻烦之处在于什么都需要自己定义,Tensorflow只提供最基础的辅助函数.优势就是灵活性更高,更贴近卷积层的底层实现.
+
+Tensorflow提供了tf.nn.max_pool(),可以实现最大池化:
+
+```python
+conv_layer = tf.nn.max_pool(conv_layer,
+                            ksize=[1, 2, 2, 1],
+                            strides=[1, 2, 2, 1],
+                            padding='SAME')
+```
+
+ksize是滤波器的大小,strides是步长.它们也都需要4个元素,对应和上面的strides一样.
+
+一般我们把batch和channels的stride设置为1.
+
+下面我们使用Tensorflow构建一个完整的CNN模型并训练MNIST数据,完整的源代码在[Tensorflow实现CNN]()
+
+首先,数据预处理,Tensorflow提供了直接读取MNIST的API:
+
+```python
+from tensorflow.examples.tutorials.mnist import input_data
+mnist = input_data.read_data_sets('.', one_hot=True, reshape=False)
+```
+
+定义一些训练参数:
+
+```python
+learning_rate = 0.0001
+epochs = 10
+batch_size = 128
+
+# 用于验证的样本数
+valid_size = 256
+test_size = 256
+
+# 10个类别
+n_classes = 10
+
+# 保留单元的概率
+keep_prob = 0.70
+```
+
+网络的结构和之间用Keras定义的差不多,两层卷积+池化,最后跟两个Dense.下面定义这些层的参数:
+
+```python
+weights = {
+    'conv2': tf.Variable(tf.random_normal([5, 5, 32, 64])),
+    'dense1': tf.Variable(tf.random_normal([7 * 7 * 64, 1024])),
+    'out': tf.Variable(tf.random_normal([1024, n_classes]))
+}
+
+biases = {
+    'conv1': tf.Variable(tf.random_normal([32])),
+    'conv2': tf.Variable(tf.random_normal([64])),
+    'dense1': tf.Variable(tf.random_normal([1024])),
+    'out': tf.Variable(tf.random_normal([n_classes]))
+}
+```
+
+定义一个函数,它返回Tensorflow的卷积层,这里面需要增加偏置和调用ReLU激活函数的步骤:
+
+```python
+def conv2d(x, W, b, strides=1):
+    x = tf.nn.conv2d(x, W, strides=[1, strides, strides, 1], padding='SAME')
+    x = tf.nn.bias_add(x, b)
+    return tf.nn.relu(x)
+```
+
+随后定义创建最大池化层的函数:
+
+```python
+def maxpool2d(x, k=2):
+    return tf.nn.max_pool(x, ksize=[k, k], strides=[k, k], padding='SAME')
+```
+
+整个模型如下图所示:
+
+![41](images/41.png)
+
+让我们来定义这个模型吧:
+
+```python
+def network(x, weights, biases, keep_prob):
+
+    conv1 = conv2d(x, weights['conv1'], biases['conv1'])
+    conv1 = maxpool2d(conv1)
+
+    conv2 = conv2d(conv1, weights['conv2'], biases['conv2'])
+    conv2 = maxpool2d(conv2)
+
+    # Flatten First
+    dense = tf.reshape(conv2, [-1, weights['dense'].get_shape().as_list()[0]])
+    dense = tf.add(tf.matmul(dense, weights['dense']), biases['dense'])
+    dense = tf.nn.relu(dense)
+    dense = tf.nn.dropout(dense, keep_prob)
+
+    return tf.add(tf.matmul(dense, weights['out']), biases['out'])
+```
+
+下面开始训练网络:
+
+```python
+# 输入数据
+x = tf.placeholder(tf.float32, [None, 28, 28, 1])
+y = tf.placeholder(tf.float32, [None, n_classes])
+kp = tf.placeholder(tf.float32)
+
+# 网络处理数据后产生的logits输出
+logits = network(x, weights, biases, kp)
+
+# 损失和优化器,用于训练网络
+cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=logits, labels=y))
+optimizer = tf.train.GradientDescentOptimizer(learning_rate=learning_rate).minimize(cost)
+
+# 准确度
+pred = tf.equal(tf.argmax(logits, 1), tf.argmax(y, 1))
+accuracy = tf.reduce_mean(tf.cast(pred, tf.float32))
+
+# 用于初始化变量
+init = tf.global_variables_initializer()
+
+with tf.Session() as sess:
+    sess.run(init)
+
+    last_loss = 'inf'
+    for epoch in range(epochs):
+
+        for batch in range(mnist.train.num_examples // batch_size):
+
+            batch_x, batch_y = mnist.train.next_batch(batch_size)
+            sess.run(optimizer, feed_dict={
+                x: batch_x, y: batch_y, kp: keep_prob
+            })
+
+            loss = sess.run(cost, feed_dict={
+                x: batch_x, y: batch_y, kp: 1.
+            })
+            losses.append(loss)
+
+            valid_acc = sess.run(accuracy, feed_dict={
+                x: mnist.validation.images[:valid_size],
+                y: mnist.validation.labels[:valid_size],
+                kp: 1.0
+            })
+            valid_accs.append(valid_acc)
+
+    test_acc = sess.run(accuracy, feed_dict={
+        x: mnist.test.images[:test_size],
+        y: mnist.test.labels[:test_size],
+        kp: 1.0
+    })
+    print()
+    print("Train Over, test accuracy: {}".format(test_acc))
+```
 
 ### 迁移学习
 

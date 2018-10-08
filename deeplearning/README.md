@@ -18,53 +18,53 @@
 
 <!-- TOC -->
 
-- [深度学习](#%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0)
-    - [感知器](#%E6%84%9F%E7%9F%A5%E5%99%A8)
-    - [Sigmoid激活函数](#sigmoid%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0)
-    - [Softmax激活函数](#softmax%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0)
-    - [交叉熵 Cross Entropy](#%E4%BA%A4%E5%8F%89%E7%86%B5-cross-entropy)
-    - [梯度下降法 Gradient Descent](#%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E6%B3%95-gradient-descent)
-    - [神经网络 Neural Network](#%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-neural-network)
-        - [前向反馈 Feed Forward](#%E5%89%8D%E5%90%91%E5%8F%8D%E9%A6%88-feed-forward)
-        - [反向传播 Back Propagation](#%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD-back-propagation)
-    - [过拟合](#%E8%BF%87%E6%8B%9F%E5%90%88)
-        - [早期停止](#%E6%97%A9%E6%9C%9F%E5%81%9C%E6%AD%A2)
-        - [正则化](#%E6%AD%A3%E5%88%99%E5%8C%96)
+- [深度学习](#深度学习)
+    - [感知器](#感知器)
+    - [Sigmoid激活函数](#sigmoid激活函数)
+    - [Softmax激活函数](#softmax激活函数)
+    - [交叉熵 Cross Entropy](#交叉熵-cross-entropy)
+    - [梯度下降法 Gradient Descent](#梯度下降法-gradient-descent)
+    - [神经网络 Neural Network](#神经网络-neural-network)
+        - [前向反馈 Feed Forward](#前向反馈-feed-forward)
+        - [反向传播 Back Propagation](#反向传播-back-propagation)
+    - [过拟合](#过拟合)
+        - [早期停止](#早期停止)
+        - [正则化](#正则化)
         - [Dropout](#dropout)
-    - [ReLU激活函数](#relu%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0)
-    - [随机梯度下降](#%E9%9A%8F%E6%9C%BA%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D)
-    - [学习速率](#%E5%AD%A6%E4%B9%A0%E9%80%9F%E7%8E%87)
-    - [动量](#%E5%8A%A8%E9%87%8F)
-    - [TensorFlow 入门](#tensorflow-%E5%85%A5%E9%97%A8)
+    - [ReLU激活函数](#relu激活函数)
+    - [随机梯度下降](#随机梯度下降)
+    - [学习速率](#学习速率)
+    - [动量](#动量)
+    - [TensorFlow 入门](#tensorflow-入门)
         - [Tensor](#tensor)
         - [Session](#session)
-        - [输入](#%E8%BE%93%E5%85%A5)
-        - [线性模型(单感知器)](#%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B%E5%8D%95%E6%84%9F%E7%9F%A5%E5%99%A8)
+        - [输入](#输入)
+        - [线性模型(单感知器)](#线性模型单感知器)
         - [Softmax](#softmax)
-        - [交叉熵](#%E4%BA%A4%E5%8F%89%E7%86%B5)
+        - [交叉熵](#交叉熵)
         - [Mini Batch](#mini-batch)
-        - [实现两层网络](#%E5%AE%9E%E7%8E%B0%E4%B8%A4%E5%B1%82%E7%BD%91%E7%BB%9C)
-        - [训练两层网络](#%E8%AE%AD%E7%BB%83%E4%B8%A4%E5%B1%82%E7%BD%91%E7%BB%9C)
-        - [保存和读取模型](#%E4%BF%9D%E5%AD%98%E5%92%8C%E8%AF%BB%E5%8F%96%E6%A8%A1%E5%9E%8B)
+        - [实现两层网络](#实现两层网络)
+        - [训练两层网络](#训练两层网络)
+        - [保存和读取模型](#保存和读取模型)
         - [Tensorflow Dropout](#tensorflow-dropout)
-    - [卷积神经网络 Convolutional Neural Network](#%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-convolutional-neural-network)
-        - [卷积层](#%E5%8D%B7%E7%A7%AF%E5%B1%82)
+    - [卷积神经网络 Convolutional Neural Network](#卷积神经网络-convolutional-neural-network)
+        - [卷积层](#卷积层)
         - [Stride](#stride)
-        - [池化层](#%E6%B1%A0%E5%8C%96%E5%B1%82)
-        - [Keras实现CNN](#keras%E5%AE%9E%E7%8E%B0cnn)
-            - [Keras 卷积层](#keras-%E5%8D%B7%E7%A7%AF%E5%B1%82)
-            - [Keras 最大池化层](#keras-%E6%9C%80%E5%A4%A7%E6%B1%A0%E5%8C%96%E5%B1%82)
-            - [CNN架构](#cnn%E6%9E%B6%E6%9E%84)
-            - [图片增强](#%E5%9B%BE%E7%89%87%E5%A2%9E%E5%BC%BA)
-        - [TensorFlow实现CNN](#tensorflow%E5%AE%9E%E7%8E%B0cnn)
-        - [VGG迁移学习](#vgg%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0)
-    - [循环神经网络 Recurrent Neural Network](#%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-recurrent-neural-network)
-        - [基于时间的反向传播](#%E5%9F%BA%E4%BA%8E%E6%97%B6%E9%97%B4%E7%9A%84%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD)
-        - [长短期记忆网络 LSTM](#%E9%95%BF%E7%9F%AD%E6%9C%9F%E8%AE%B0%E5%BF%86%E7%BD%91%E7%BB%9C-lstm)
+        - [池化层](#池化层)
+        - [Keras实现CNN](#keras实现cnn)
+            - [Keras 卷积层](#keras-卷积层)
+            - [Keras 最大池化层](#keras-最大池化层)
+            - [CNN架构](#cnn架构)
+            - [图片增强](#图片增强)
+        - [TensorFlow实现CNN](#tensorflow实现cnn)
+        - [VGG迁移学习](#vgg迁移学习)
+    - [循环神经网络 Recurrent Neural Network](#循环神经网络-recurrent-neural-network)
+        - [基于时间的反向传播](#基于时间的反向传播)
+        - [长短期记忆网络 LSTM](#长短期记忆网络-lstm)
         - [Word2vec](#word2vec)
-    - [生成对抗网络Generative Adversarial Network](#%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9Cgenerative-adversarial-network)
-        - [深度卷积生成对抗网络](#%E6%B7%B1%E5%BA%A6%E5%8D%B7%E7%A7%AF%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C)
-        - [半监督GAN模型](#%E5%8D%8A%E7%9B%91%E7%9D%A3gan%E6%A8%A1%E5%9E%8B)
+    - [生成对抗网络Generative Adversarial Network](#生成对抗网络generative-adversarial-network)
+        - [深度卷积生成对抗网络](#深度卷积生成对抗网络)
+        - [半监督GAN模型](#半监督gan模型)
 
 <!-- /TOC -->
 
@@ -1643,13 +1643,13 @@ VGGNET是一个非常好的迁移学习网络,它很简单,但是很强大.VGGNE
 
 而语音和视频等自然信号都有随着时间而变化的属性,具有依赖时间的特点.传统的FFNN无法对它们进行很好的训练.因此向FFNN添加记忆能力就变得非常有意义.
 
-后来出现了时延神经网络(Time Delay Neural Network, TDNN),TDNN在输入的时候还会输入之前的时间步长,来改变实际的输入.这可以让网络不仅仅考虑当前的时间步长.但是时间依赖于选择的时间窗口.
+为此人们设计了时延神经网络(Time Delay Neural Network, TDNN),TDNN在输入的时候还会输入之前的时间步长,来改变实际的输入.这可以让网络不仅仅考虑当前的时间步长.但是时间依赖于选择的时间窗口.
 
-后来就出现了简单的RNN(Simple RNN),也叫Elman Network.我们后面会详细介绍这种网络.
+后来出现了简单的RNN(Simple RNN),也叫Elman Network.我们后面会详细介绍这种网络.
 
 上面的网络都面临着一个严重的问题:梯度消失,训练数据贡献的信息随着时间出现了几何级的消失.所以Epoch如果在10以上,训练将几乎没有任何效果.我们后面会详细讨论困扰RNN的梯度消失问题.
 
-后来诞生了长短期记忆网络(Long Short Term Memory, LSTM),LSTM就解决了RNN的梯度消失问题.我们后面也会介绍LSTM.
+为了解决这个问题，人们发明了长短期记忆网络(Long Short Term Memory, LSTM),LSTM就解决了RNN的梯度消失问题.我们后面也会介绍LSTM.
 
 RNN和LSTM的应用领域非常广,全球大量高科技公司使用RNN和LSTM技术构建了很多绝妙的AI项目.包括语音识别,机器翻译,导航等等.可以说RNN和LSTM是构建只能系统的明星.
 

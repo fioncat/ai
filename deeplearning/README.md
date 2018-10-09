@@ -18,53 +18,94 @@
 
 <!-- TOC -->
 
-- [深度学习](#%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0)
-    - [感知器](#%E6%84%9F%E7%9F%A5%E5%99%A8)
-    - [Sigmoid激活函数](#sigmoid%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0)
-    - [Softmax激活函数](#softmax%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0)
-    - [交叉熵 Cross Entropy](#%E4%BA%A4%E5%8F%89%E7%86%B5-cross-entropy)
-    - [梯度下降法 Gradient Descent](#%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E6%B3%95-gradient-descent)
-    - [神经网络 Neural Network](#%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-neural-network)
-        - [前向反馈 Feed Forward](#%E5%89%8D%E5%90%91%E5%8F%8D%E9%A6%88-feed-forward)
-        - [反向传播 Back Propagation](#%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD-back-propagation)
-    - [过拟合](#%E8%BF%87%E6%8B%9F%E5%90%88)
-        - [早期停止](#%E6%97%A9%E6%9C%9F%E5%81%9C%E6%AD%A2)
-        - [正则化](#%E6%AD%A3%E5%88%99%E5%8C%96)
+- [深度学习](#深度学习)
+    - [感知器](#感知器)
+    - [Sigmoid激活函数](#sigmoid激活函数)
+    - [Softmax激活函数](#softmax激活函数)
+    - [交叉熵 Cross Entropy](#交叉熵-cross-entropy)
+    - [梯度下降法 Gradient Descent](#梯度下降法-gradient-descent)
+- [Implement of Gradient Desent for Sensor Algorithm.](#implement-of-gradient-desent-for-sensor-algorithm)
+- [Activation function](#activation-function)
+- [final output](#final-output)
+- [Use final output to calculate error.](#use-final-output-to-calculate-error)
+- [Use Gradient Desent to update weights.](#use-gradient-desent-to-update-weights)
+- [Train Sensor.](#train-sensor)
+    - [神经网络 Neural Network](#神经网络-neural-network)
+        - [前向反馈 Feed Forward](#前向反馈-feed-forward)
+        - [反向传播 Back Propagation](#反向传播-back-propagation)
+    - [过拟合](#过拟合)
+        - [早期停止](#早期停止)
+        - [正则化](#正则化)
         - [Dropout](#dropout)
-    - [ReLU激活函数](#relu%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0)
-    - [随机梯度下降](#%E9%9A%8F%E6%9C%BA%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D)
-    - [学习速率](#%E5%AD%A6%E4%B9%A0%E9%80%9F%E7%8E%87)
-    - [动量](#%E5%8A%A8%E9%87%8F)
-    - [TensorFlow 入门](#tensorflow-%E5%85%A5%E9%97%A8)
+    - [ReLU激活函数](#relu激活函数)
+    - [随机梯度下降](#随机梯度下降)
+    - [学习速率](#学习速率)
+    - [动量](#动量)
+    - [TensorFlow 入门](#tensorflow-入门)
         - [Tensor](#tensor)
+- [0-dimensinal int32 tensor](#0-dimensinal-int32-tensor)
+- [1-dimensinal int32 tensor](#1-dimensinal-int32-tensor)
+- [2-dimensinal int32 tensor](#2-dimensinal-int32-tensor)
         - [Session](#session)
-        - [输入](#%E8%BE%93%E5%85%A5)
-        - [线性模型(单感知器)](#%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B%E5%8D%95%E6%84%9F%E7%9F%A5%E5%99%A8)
+        - [输入](#输入)
+        - [线性模型(单感知器)](#线性模型单感知器)
         - [Softmax](#softmax)
-        - [交叉熵](#%E4%BA%A4%E5%8F%89%E7%86%B5)
+        - [交叉熵](#交叉熵)
         - [Mini Batch](#mini-batch)
-        - [实现两层网络](#%E5%AE%9E%E7%8E%B0%E4%B8%A4%E5%B1%82%E7%BD%91%E7%BB%9C)
-        - [训练两层网络](#%E8%AE%AD%E7%BB%83%E4%B8%A4%E5%B1%82%E7%BD%91%E7%BB%9C)
-        - [保存和读取模型](#%E4%BF%9D%E5%AD%98%E5%92%8C%E8%AF%BB%E5%8F%96%E6%A8%A1%E5%9E%8B)
+- [origin mnist data](#origin-mnist-data)
+- [features data](#features-data)
+- [labels data](#labels-data)
+- [features and labels Tensor](#features-and-labels-tensor)
+- [The first dimension is None to save the batch size.](#the-first-dimension-is-none-to-save-the-batch-size)
+- [Initialize weights and bias](#initialize-weights-and-bias)
+- [Linear Model](#linear-model)
+- [Define loss and optimizer.](#define-loss-and-optimizer)
+- [Calculate accuracy](#calculate-accuracy)
+        - [实现两层网络](#实现两层网络)
+        - [训练两层网络](#训练两层网络)
+- [Parameters](#parameters)
+- [data feature](#data-feature)
+- [Layer number of features](#layer-number-of-features)
+- [Initialize the network's Parameters](#initialize-the-networks-parameters)
+- [TF Graph input](#tf-graph-input)
+- [Define two-layer neural network model](#define-two-layer-neural-network-model)
+- [Define Optimizer](#define-optimizer)
+        - [保存和读取模型](#保存和读取模型)
         - [Tensorflow Dropout](#tensorflow-dropout)
-    - [卷积神经网络 Convolutional Neural Network](#%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-convolutional-neural-network)
-        - [卷积层](#%E5%8D%B7%E7%A7%AF%E5%B1%82)
+- [probaility to keep units](#probaility-to-keep-units)
+    - [卷积神经网络 Convolutional Neural Network](#卷积神经网络-convolutional-neural-network)
+        - [卷积层](#卷积层)
         - [Stride](#stride)
-        - [池化层](#%E6%B1%A0%E5%8C%96%E5%B1%82)
-        - [Keras实现CNN](#keras%E5%AE%9E%E7%8E%B0cnn)
-            - [Keras 卷积层](#keras-%E5%8D%B7%E7%A7%AF%E5%B1%82)
-            - [Keras 最大池化层](#keras-%E6%9C%80%E5%A4%A7%E6%B1%A0%E5%8C%96%E5%B1%82)
-            - [CNN架构](#cnn%E6%9E%B6%E6%9E%84)
-            - [图片增强](#%E5%9B%BE%E7%89%87%E5%A2%9E%E5%BC%BA)
-        - [TensorFlow实现CNN](#tensorflow%E5%AE%9E%E7%8E%B0cnn)
-        - [VGG迁移学习](#vgg%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0)
-    - [循环神经网络 Recurrent Neural Network](#%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-recurrent-neural-network)
-        - [基于时间的反向传播](#%E5%9F%BA%E4%BA%8E%E6%97%B6%E9%97%B4%E7%9A%84%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD)
-        - [长短期记忆网络 LSTM](#%E9%95%BF%E7%9F%AD%E6%9C%9F%E8%AE%B0%E5%BF%86%E7%BD%91%E7%BB%9C-lstm)
+        - [池化层](#池化层)
+        - [Keras实现CNN](#keras实现cnn)
+            - [Keras 卷积层](#keras-卷积层)
+            - [Keras 最大池化层](#keras-最大池化层)
+            - [CNN架构](#cnn架构)
+            - [图片增强](#图片增强)
+        - [TensorFlow实现CNN](#tensorflow实现cnn)
+- [输出的深度](#输出的深度)
+- [图片的参数](#图片的参数)
+- [过滤器的宽度和高度](#过滤器的宽度和高度)
+- [图片输入](#图片输入)
+- [初始化卷积层的参数,权值和偏差](#初始化卷积层的参数权值和偏差)
+- [定义卷积层](#定义卷积层)
+- [用于验证的样本数](#用于验证的样本数)
+- [10个类别](#10个类别)
+- [保留单元的概率](#保留单元的概率)
+- [输入数据](#输入数据)
+- [网络处理数据后产生的logits输出](#网络处理数据后产生的logits输出)
+- [损失和优化器,用于训练网络](#损失和优化器用于训练网络)
+- [准确度](#准确度)
+- [用于初始化变量](#用于初始化变量)
+        - [VGG迁移学习](#vgg迁移学习)
+    - [循环神经网络 Recurrent Neural Network](#循环神经网络-recurrent-neural-network)
+        - [基于时间的反向传播](#基于时间的反向传播)
+        - [严重的梯度消失](#严重的梯度消失)
+        - [长短期记忆网络 LSTM](#长短期记忆网络-lstm)
         - [Word2vec](#word2vec)
-    - [生成对抗网络Generative Adversarial Network](#%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9Cgenerative-adversarial-network)
-        - [深度卷积生成对抗网络](#%E6%B7%B1%E5%BA%A6%E5%8D%B7%E7%A7%AF%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C)
-        - [半监督GAN模型](#%E5%8D%8A%E7%9B%91%E7%9D%A3gan%E6%A8%A1%E5%9E%8B)
+    - [生成对抗网络Generative Adversarial Network](#生成对抗网络generative-adversarial-network)
+        - [深度卷积生成对抗网络](#深度卷积生成对抗网络)
+        - [半监督GAN模型](#半监督gan模型)
 
 <!-- /TOC -->
 
@@ -1728,6 +1769,108 @@ RNN甚至可以有不对齐的输入和输出,也就是有一些神经元可以�
 我们看到只有当hello一起出现时,"o"才会输出一个比较大的值.这就是RNN的特点,它能够记住之前的输入和当前的输入的关系!
 
 ### 基于时间的反向传播
+
+训练RNN的方法和FFNN差不多,也是使用反向传播算法,不过这个算法是基于时间的.
+
+在推导基于时间的反向传播之前,先复习一下RNN的一些变量,更新RNN神经元状态的公式是:
+
+![73](images/73.png)
+
+其中,$\phi$是激活函数.则神经元的输出是:
+
+![74](images/74.png)
+
+如果是最终节点,也可以使用Sigmoid或Softmax函数作用于y:
+
+![75](images/75.png)
+
+定义误差为:
+
+![76](images/76.png)
+
+其中$y_t$是我们希望RNN产生的输出,$\overline{y}_t$是RNN自己产生的输出.
+
+假设t=3,为了更新权重,我们需要计算:
+
+![77](images/77.png)
+
+计算导数和之前一样,也是使用链式求导,唯一的区别就是我们在计算的时候还需要考虑之前的时间步长.
+
+为了方便观察,我们展开模型并只关心前三个神经元:
+
+![78](images/78.png)
+
+首先计算$\Delta W_y$.这是最简单的:
+
+![79](images/79.png)
+
+在计算$\Delta W_s$的时候,情况略有不同.因为$S_t$不仅仅和当前的输入有关,还和所有之前的输入有关,所以BP过程需要传播到所有之前的$W_s$上.
+
+我们采取的方法是:计算三个链式求导的和.第一次,我们只考虑t=3的情况,即:
+
+![80](images/80.png)
+
+第二次,我们考虑t=3和t=2的情况:
+
+![84](images/84.png)
+
+求得:
+
+![82](images/82.png)
+
+最后一次,考虑所有t的情况:
+
+![83](images/83.png)
+
+求得:
+
+![85](images/85.png)
+
+则我们就得到了一个累计梯度:
+
+![86](images/86.png)
+
+总的来说,有多少个t,我们就要考虑多少个S.则我们得到了通用的表达式:
+
+![87](images/87.png)
+
+最后,我们来计算$\Delta W_x$,其过程和$\Delta W_s$差不多.
+
+首先,仅仅考虑t=3:
+
+![88](images/88.png)
+
+考虑t=2和t=3:
+
+![89](images/89.png)
+
+计算得:
+
+![90](images/90.png)
+
+最后考虑所有时间点:
+
+![91](images/91.png)
+
+求得:
+
+![92](images/92.png)
+
+同样地,有:
+
+![93](images/93.png)
+
+通用的表达式是:
+
+![94](images/94.png)
+
+这样,就得到了所有权值的更新公式.
+
+注意所有的导数我都没有展开,因为展开过程比较简单但是得到的式子很复杂(要计算的导数很多).
+
+### 严重的梯度消失
+
+
 
 ### 长短期记忆网络 LSTM
 

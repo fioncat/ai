@@ -77,3 +77,93 @@ $$
 $$
 \overline{y}=\overline{s}_t\cdot W_y
 $$
+
+## RNN
+
+更新状态的公式:
+
+$$
+\overline{S}_t=\phi(\overline{x}_t\cdot W_x+\overline{S}_{t-1}\cdot W_s)
+$$
+
+输出:
+
+$$
+\overline{y}_t=\overline{S}_t\cdot W_y
+$$
+
+输出节点输出:
+
+$$
+\overline{y}_t=\sigma(\overline{S}_t\cdot W_y)
+$$
+
+误差:
+
+$$
+E_t=(y_t-\overline{y}_t)^2
+$$
+
+求Wy:
+
+$$
+\frac{\partial E_3}{\partial W_y}=\frac{\partial E_3}{\partial \overline{y}_3}\cdot\frac{\partial \overline{y}_3}{\partial W_y}
+$$
+
+求Ws(time=3):
+
+$$
+s_1=\frac{\partial E_3}{\partial \overline{y}_3}\cdot\frac{\partial \overline{y}_3}{\partial \overline{s}_3}\cdot\frac{\partial\overline{s}_3}{\partial W_s}
+$$
+
+at time t=2
+
+$$
+
+s_2=\frac{\partial E_3}{\partial \overline{y}_3}\cdot\frac{\partial \overline{y}_3}{\partial \overline{s}_3}\cdot\frac{\partial\overline{s}_3}{\partial\overline{s}_2}\cdot\frac{\partial\overline{s}_2}{\partial W_s}
+
+$$
+
+at time=3
+
+$$
+
+s_3=\frac{\partial E_3}{\partial \overline{y}_3}\cdot\frac{\partial \overline{y}_3}{\partial \overline{s}_3}\cdot\frac{\partial\overline{s}_3}{\partial\overline{s}_2}\cdot\frac{\partial\overline{s}_2}{\partial\overline{s}_1}\cdot\frac{\partial\overline{s}_1}{\partial W_s}
+
+$$
+
+结果:
+
+$$
+\frac{\partial E_3}{\partial W_s}=s_1+s_2+s_3
+$$
+
+通用表达式:
+
+$$
+\frac{\partial E_3}{\partial W_s}=\sum_{i=1}^N\frac{\partial E_N}{\partial \overline{y}_N}\cdot\frac{\partial \overline{y}_N}{\partial \overline{s}_i}\cdot\frac{\partial \overline{s}_i}{\partial W_s}
+$$
+
+time=3
+
+$$
+s_1=\frac{\partial E_3}{\partial \overline{y}_3}\cdot\frac{\partial\overline{y}_3}{\partial\overline{s}_3}\cdot\frac{\partial\overline{s}_3}{\partial W_x}
+$$
+
+time=2
+
+$$
+s_2=\frac{\partial E_3}{\partial \overline{y}_3}\cdot\frac{\partial\overline{y}_3}{\partial\overline{s}_3}\cdot\frac{\partial\overline{s}_3}{\partial\overline{s}_2}\cdot\frac{\partial\overline{s}_2}{\partial W_x}
+$$
+
+time=3
+
+$$
+s_3=\frac{\partial E_3}{\partial \overline{y}_3}\cdot\frac{\partial\overline{y}_3}{\partial\overline{s}_3}\cdot\frac{\partial\overline{s}_3}{\partial\overline{s}_2}\cdot\frac{\partial\overline{s}_2}{\partial\overline{s}_1}\cdot\frac{\partial\overline{s}_1}{\partial W_x}
+$$
+
+最终
+
+$$
+\frac{\partial E_3}{\partial W_x}=s_1+s_2+s_3
+$$

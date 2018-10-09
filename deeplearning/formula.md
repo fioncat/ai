@@ -167,3 +167,9 @@ $$
 $$
 \frac{\partial E_3}{\partial W_x}=s_1+s_2+s_3
 $$
+
+通用的:
+
+$$
+\frac{\partial E_3}{\partial W_x}=\sum^N_{i=1}\frac{\partial E_N}{\partial \overline{y}_N}\cdot\frac{\partial \overline{y}_N}{\partial\overline{s}_i}\cdot\frac{\partial\overline{s}_i}{\partial W_x}
+$$

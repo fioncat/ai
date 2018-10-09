@@ -1,4 +1,4 @@
-# 深度学习
+﻿# 深度学习
 
 **注意:请使用Chrome阅读并安装[Github with MathJax](https://chrome.google.com/webstore/detail/github-with-mathjax/ioemnmodlmafdkllaclgeombjnmnbima/related)插件,否则文中的数学公式无法显示,除非你愿意读原始Latex代码_(:з」∠)_**
 
@@ -14,8 +14,6 @@
 
 本文大部分demo和图片来自于Udacity.
 
-**目录**:
-
 <!-- TOC -->
 
 - [深度学习](#深度学习)
@@ -24,12 +22,6 @@
     - [Softmax激活函数](#softmax激活函数)
     - [交叉熵 Cross Entropy](#交叉熵-cross-entropy)
     - [梯度下降法 Gradient Descent](#梯度下降法-gradient-descent)
-- [Implement of Gradient Desent for Sensor Algorithm.](#implement-of-gradient-desent-for-sensor-algorithm)
-- [Activation function](#activation-function)
-- [final output](#final-output)
-- [Use final output to calculate error.](#use-final-output-to-calculate-error)
-- [Use Gradient Desent to update weights.](#use-gradient-desent-to-update-weights)
-- [Train Sensor.](#train-sensor)
     - [神经网络 Neural Network](#神经网络-neural-network)
         - [前向反馈 Feed Forward](#前向反馈-feed-forward)
         - [反向传播 Back Propagation](#反向传播-back-propagation)
@@ -43,36 +35,16 @@
     - [动量](#动量)
     - [TensorFlow 入门](#tensorflow-入门)
         - [Tensor](#tensor)
-- [0-dimensinal int32 tensor](#0-dimensinal-int32-tensor)
-- [1-dimensinal int32 tensor](#1-dimensinal-int32-tensor)
-- [2-dimensinal int32 tensor](#2-dimensinal-int32-tensor)
         - [Session](#session)
         - [输入](#输入)
         - [线性模型(单感知器)](#线性模型单感知器)
         - [Softmax](#softmax)
         - [交叉熵](#交叉熵)
         - [Mini Batch](#mini-batch)
-- [origin mnist data](#origin-mnist-data)
-- [features data](#features-data)
-- [labels data](#labels-data)
-- [features and labels Tensor](#features-and-labels-tensor)
-- [The first dimension is None to save the batch size.](#the-first-dimension-is-none-to-save-the-batch-size)
-- [Initialize weights and bias](#initialize-weights-and-bias)
-- [Linear Model](#linear-model)
-- [Define loss and optimizer.](#define-loss-and-optimizer)
-- [Calculate accuracy](#calculate-accuracy)
         - [实现两层网络](#实现两层网络)
         - [训练两层网络](#训练两层网络)
-- [Parameters](#parameters)
-- [data feature](#data-feature)
-- [Layer number of features](#layer-number-of-features)
-- [Initialize the network's Parameters](#initialize-the-networks-parameters)
-- [TF Graph input](#tf-graph-input)
-- [Define two-layer neural network model](#define-two-layer-neural-network-model)
-- [Define Optimizer](#define-optimizer)
         - [保存和读取模型](#保存和读取模型)
         - [Tensorflow Dropout](#tensorflow-dropout)
-- [probaility to keep units](#probaility-to-keep-units)
     - [卷积神经网络 Convolutional Neural Network](#卷积神经网络-convolutional-neural-network)
         - [卷积层](#卷积层)
         - [Stride](#stride)
@@ -83,20 +55,6 @@
             - [CNN架构](#cnn架构)
             - [图片增强](#图片增强)
         - [TensorFlow实现CNN](#tensorflow实现cnn)
-- [输出的深度](#输出的深度)
-- [图片的参数](#图片的参数)
-- [过滤器的宽度和高度](#过滤器的宽度和高度)
-- [图片输入](#图片输入)
-- [初始化卷积层的参数,权值和偏差](#初始化卷积层的参数权值和偏差)
-- [定义卷积层](#定义卷积层)
-- [用于验证的样本数](#用于验证的样本数)
-- [10个类别](#10个类别)
-- [保留单元的概率](#保留单元的概率)
-- [输入数据](#输入数据)
-- [网络处理数据后产生的logits输出](#网络处理数据后产生的logits输出)
-- [损失和优化器,用于训练网络](#损失和优化器用于训练网络)
-- [准确度](#准确度)
-- [用于初始化变量](#用于初始化变量)
         - [VGG迁移学习](#vgg迁移学习)
     - [循环神经网络 Recurrent Neural Network](#循环神经网络-recurrent-neural-network)
         - [基于时间的反向传播](#基于时间的反向传播)
@@ -119,7 +77,13 @@
 
 注意一个特殊的输入和权值1和b.它们实际上构成了bias.bias能够控制感知器在什么时候能够"激活"(指的是感知器返回1).它实际上刻画了感知器的"敏感程度".bias也可以不写成权值和输入的形式,而作为感知器的一个属性保存在感知器内部.当bias越大,感知器越难被激活.
 
-由此可见,感知器可以解决简单的"二分类"问题.那么现在的问题就是我们如何调整W使得感知器能够进行准确的分类.
+感知器实际上就是一个简单的线性模型,它无非表达了下面的方程式:
+
+$$\hat{y}=Wx+b$$
+
+你可能会奇怪这么一个简单地线性模型为什么要使用这种节点表示法,这实际上是为后面扩展感知器形成神经网络做铺垫.
+
+感知器可以解决简单的"二分类"问题.那么现在的问题就是我们如何调整W使得感知器能够进行准确的分类.
 
 在一开始,W是随机设置的,使用这样的感知器去对数据分类,必然会产生很大的误差,我们的目的就是尽可能最小化这个误差.那么在感知器算法中,如何定义这个误差并且最小化它就成为了很关键的一步.
 
@@ -1684,15 +1648,15 @@ VGGNET是一个非常好的迁移学习网络,它很简单,但是很强大.VGGNE
 
 而语音和视频等自然信号都有随着时间而变化的属性,具有依赖时间的特点.传统的FFNN无法对它们进行很好的训练.因此向FFNN添加记忆能力就变得非常有意义.
 
-后来出现了时延神经网络(Time Delay Neural Network, TDNN),TDNN在输入的时候还会输入之前的时间步长,来改变实际的输入.这可以让网络不仅仅考虑当前的时间步长.但是时间依赖于选择的时间窗口.
+为此人们设计了时延神经网络(Time Delay Neural Network, TDNN),TDNN在输入的时候还会输入之前的时间步长,来改变实际的输入.这可以让网络不仅仅考虑当前的时间步长.但是时间依赖于选择的时间窗口.
 
-后来就出现了简单的RNN(Simple RNN),也叫Elman Network.我们后面会详细介绍这种网络.
+后来出现了简单的RNN(Simple RNN),也叫Elman Network.我们后面会详细介绍这种网络.
 
 上面的网络都面临着一个严重的问题:梯度消失,训练数据贡献的信息随着时间出现了几何级的消失.所以Epoch如果在10以上,训练将几乎没有任何效果.我们后面会详细讨论困扰RNN的梯度消失问题.
 
-后来诞生了长短期记忆网络(Long Short Term Memory, LSTM),LSTM就解决了RNN的梯度消失问题.我们后面也会介绍LSTM.
+为了解决这个问题，人们发明了长短期记忆网络(Long Short Term Memory, LSTM),LSTM就解决了RNN的梯度消失问题.我们后面也会介绍LSTM.
 
-RNN和LSTM的应用领域非常广,全球大量高科技公司使用RNN和LSTM技术构建了很多绝妙的AI项目.包括语音识别,机器翻译,导航等等.可以说RNN和LSTM是构建只能系统的明星.
+RNN和LSTM的应用领域非常广,全球大量高科技公司使用RNN和LSTM技术构建了很多绝妙的AI项目.包括语音识别,机器翻译,导航等等.可以说RNN和LSTM是构建智能系统的明星.
 
 在学习RNN前,强烈建议先复习FFNN的前馈和[反向传播](#%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD-back-propagation)过程.
 

@@ -173,3 +173,23 @@ $$
 $$
 \frac{\partial E_3}{\partial W_x}=\sum^N_{i=1}\frac{\partial E_N}{\partial \overline{y}_N}\cdot\frac{\partial \overline{y}_N}{\partial\overline{s}_i}\cdot\frac{\partial\overline{s}_i}{\partial W_x}
 $$
+
+## RNN梯度消失
+
+W_x导数计算公式
+
+$$
+\frac{\partial E_t}{\partial W_x}=\sum^{N}_{i=1}\frac{\partial E_t}{\partial\overline{y}_t}\cdot\frac{\partial\overline{y}_t}{\partial S_t}\cdot(\prod_{j=i+1}^{i}\frac{\partial S_j}{\partial S_{j-1}})\cdot\frac{\partial S_i}{\partial W_i}
+$$
+
+表达式:
+
+$$
+S_j=tanh(\overline{x}_j\cdot W_x+\overline{S}_{j-1}\cdot W_s)
+$$
+
+考虑激活函数:
+
+$$
+\prod_{j=i+1}^{i}tanh'W_s
+$$

@@ -193,3 +193,47 @@ $$
 $$
 \prod_{j=i+1}^{i}tanh'W_s
 $$
+
+## LSTM
+
+学习门
+
+$$
+N_t=tanh(W_n[STM_{t-1},E_t]+b_n)
+$$
+
+遗忘因子计算:
+
+$$
+i_t=\sigma(W_i[STM_{t-1},E_t]+b_i)
+$$
+
+遗忘门
+
+$$
+f_t=\sigma(W_f[STM_{t-1},E_t]+b_f)
+$$
+
+记忆门
+
+$$
+LTM_t=LTM_{t-1}\cdot f_t+N_t\cdot i_t
+$$
+
+应用门1:
+
+$$
+U_t=tanh(W_u LTM_{t-1}\cdot f_t+b_u)
+$$
+
+应用门2:
+
+$$
+V_t=tanh(W_v[STM_{t-1},E_t]+b_v)
+$$
+
+应用门3:
+
+$$
+STM_t=O_t=U_t \cdot V_t
+$$

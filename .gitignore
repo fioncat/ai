@@ -123,3 +123,5 @@ venv
 *.gz
 
 *.npy
+
+checkpoints/

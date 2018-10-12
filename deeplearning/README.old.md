@@ -16,65 +16,6 @@
 
 **目录:**
 
-<!-- TOC -->
-
-- [深度学习](#深度学习)
-    - [感知器](#感知器)
-    - [Sigmoid激活函数](#sigmoid激活函数)
-    - [Softmax激活函数](#softmax激活函数)
-    - [交叉熵 Cross Entropy](#交叉熵-cross-entropy)
-    - [梯度下降法 Gradient Descent](#梯度下降法-gradient-descent)
-    - [神经网络 Neural Network](#神经网络-neural-network)
-        - [前向反馈 Feed Forward](#前向反馈-feed-forward)
-        - [反向传播 Back Propagation](#反向传播-back-propagation)
-    - [过拟合](#过拟合)
-        - [早期停止](#早期停止)
-        - [正则化](#正则化)
-        - [Dropout](#dropout)
-    - [ReLU激活函数](#relu激活函数)
-    - [随机梯度下降](#随机梯度下降)
-    - [学习速率](#学习速率)
-    - [动量](#动量)
-    - [TensorFlow 入门](#tensorflow-入门)
-        - [Tensor](#tensor)
-        - [Session](#session)
-        - [输入](#输入)
-        - [线性模型(单感知器)](#线性模型单感知器)
-        - [Softmax](#softmax)
-        - [交叉熵](#交叉熵)
-        - [Mini Batch](#mini-batch)
-        - [实现两层网络](#实现两层网络)
-        - [训练两层网络](#训练两层网络)
-        - [保存和读取模型](#保存和读取模型)
-        - [Tensorflow Dropout](#tensorflow-dropout)
-    - [卷积神经网络 Convolutional Neural Network](#卷积神经网络-convolutional-neural-network)
-        - [卷积层](#卷积层)
-        - [Stride](#stride)
-        - [池化层](#池化层)
-        - [Keras实现CNN](#keras实现cnn)
-            - [Keras 卷积层](#keras-卷积层)
-            - [Keras 最大池化层](#keras-最大池化层)
-            - [CNN架构](#cnn架构)
-            - [图片增强](#图片增强)
-        - [TensorFlow实现CNN](#tensorflow实现cnn)
-        - [VGG迁移学习](#vgg迁移学习)
-    - [循环神经网络 Recurrent Neural Network](#循环神经网络-recurrent-neural-network)
-        - [基于时间的反向传播](#基于时间的反向传播)
-        - [RNN梯度消失和爆炸](#rnn梯度消失和爆炸)
-        - [长短期记忆网络 LSTM](#长短期记忆网络-lstm)
-            - [学习门](#学习门)
-            - [遗忘门](#遗忘门)
-            - [记忆门](#记忆门)
-            - [应用门](#应用门)
-            - [组合](#组合)
-            - [LSTM为何能解决梯度消失](#lstm为何能解决梯度消失)
-        - [Tensorflow实现RNNs](#tensorflow实现rnns)
-        - [Word2vec](#word2vec)
-    - [生成对抗网络Generative Adversarial Network](#生成对抗网络generative-adversarial-network)
-        - [深度卷积生成对抗网络](#深度卷积生成对抗网络)
-        - [半监督GAN模型](#半监督gan模型)
-
-<!-- /TOC -->
 
 ## 感知器
 
@@ -2019,8 +1960,6 @@ LSTM的最成功之处就在于它保留了长期信息,长期信息是不断通
 
 ### Tensorflow实现RNNs
 
-
-
 ### Word2vec
 
 ## 生成对抗网络Generative Adversarial Network
@@ -2028,3 +1967,15 @@ LSTM的最成功之处就在于它保留了长期信息,长期信息是不断通
 ### 深度卷积生成对抗网络
 
 ### 半监督GAN模型
+
+## 超参数
+
+训练神经网络的时候有很多超参数,下面介绍如何选择和调整这些参数.
+
+### 学习率
+
+学习率控制了模型在学习的时候的速度.学习率越大,误差改变的幅度就越大;反之,误差的改变速度就越小.
+
+学习率一般控制在0.1,0.01,0.001,0.0001等左右.一个良好的学习率能够让误差在合理的时间内达到最小,例如下图所示:
+
+

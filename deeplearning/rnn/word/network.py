@@ -151,6 +151,7 @@ class CharNetwork(object):
         cells, self.init_state = lstm_graph(lstm_size, num_layers, batch_size, self.keep_prob)
 
         x_one_hot = tf.one_hot(self.inputs, num_classes)
+        print(x_one_hot.get_shape())
 
         outputs, state = tf.nn.dynamic_rnn(cells, x_one_hot, initial_state=self.init_state)
         self.final_state = state
@@ -160,7 +161,7 @@ class CharNetwork(object):
         self.loss = loss_graph(self.logits, self.targets, num_classes)
         self.optimizer = optimizer_graph(self.loss, learning_rate, grad_clip)
 
-    def train(self, features, epochs=20, keep_prob=0.75):
+    def train(self, features, save_points, epochs=20, keep_prob=0.75):
 
         saver = tf.train.Saver(max_to_keep=100)
 
@@ -190,5 +191,5 @@ class CharNetwork(object):
                 print("Training loss: {:.4f}".format(min(losses)))
                 print("============================================")
 
-            saver.save(sess, "checkpoints/douluo/char_model.ckpt")
+            saver.save(sess, save_points)
 

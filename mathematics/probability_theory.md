@@ -250,7 +250,7 @@ $$\mathbf{bias}(\hat{\theta}_m)=\mathbb{E}(\hat{\theta}_m)-\theta$$
 
 下面举个非常经典的例子,加入我们有一个服从高斯分布的数据集$\lbrace x^{(1)},\dots,x^{(m)}\rbrace\sim\mathcal{N}(x^{(i)};\mu,\sigma^2)$,我们现在要估计参数$\mu$和$\sigma$.
 
-假设我们使用样本均值作为$\mu$的点估计的函数,即:
+假设我们使用**样本均值**作为$\mu$的点估计的函数,即:
 
 $$\hat{\mu}_m=\frac{1}{m}\sum^m _{i=1}x^{(i)}$$
 
@@ -258,6 +258,38 @@ $$\hat{\mu}_m=\frac{1}{m}\sum^m _{i=1}x^{(i)}$$
 
 $$\mathbf{bias}(\hat{\mu}_m)=\mathbb{E} [ \hat{\mu}_m]-\mu$$
 
-$$\qquad\qquad\qquad\quad\;=\mathbb{E} [ \frac{1}{m}\sum^m _{i=1}x^{(i)}]-\mu$$
+$$\qquad\qquad\qquad\quad\ =\mathbb{E} [ \frac{1}{m}\sum^m _{i=1}x^{(i)}]-\mu$$
 
 $$\qquad\qquad\qquad=(\frac{1}{m}\sum^m_{i=1}\mu)-\mu$$
+
+$$\qquad\qquad\qquad=(\frac{1}{m}\sum^{m}_{i=1}\mu)-\mu$$
+
+$$\qquad\qquad=\mu-\mu=0$$
+
+我们发现,样本均值是高斯均值参数的无偏估计量.
+
+现在,使用**样本方差**作为$\sigma^2$的估计值,即:
+
+$$\hat{\sigma}_m^2=\frac{1}{m}\sum^m _{i=1}(x^{(i)}-\hat{\mu}_m)^2$$
+
+则需要计算偏差:
+
+$$\mathbf{bias}(\sigma^2_m)=\mathbb{E} [ \hat{\sigma}^2_m]-\sigma^2$$
+
+估计项$\mathbb{E} [ \hat{\sigma}^2_m]$,我们有:
+
+$$\mathbb{E} [ \hat{\sigma}^2_m]=\mathbb{E} [ \frac{1}{m}\sum^m_{i=1}(x^{(i)}-\hat{\mu}_m)^2]=\frac{m-1}{m}\sigma^2$$
+
+则求得偏差为:
+
+$$\mathbf{bias}(\sigma^2_m)=-\frac{\sigma^2}{m}$$
+
+偏差不为0,这是一个有偏估计.我们实际上还有一个对于$\sigma^2$的无偏估计:
+
+$$\hat{\sigma}^2_m=\frac{1}{m-1}\sum^m_{i=1}(x^{(i)}-\hat{\sigma}_m)^2$$
+
+具体过程不再演算了,总之可以得到$\mathbb{E} [ \hat{\sigma}^2_m]=\sigma^2$.
+
+有偏估计并不一定比无偏估计差.至少,我们看到无偏估计的计算代价比有偏估计要大一些(大部分情况).
+
+### 最大似然估计

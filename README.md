@@ -20,7 +20,7 @@
 机器学习的理论要求一定数学基础.其中线性代数尤为重要,其次是概率论和数值优化的一些理论.所以我一开始整理的是一些数学相关的markdown笔记:
 
 - [线性代数]()
-- [概率论]()
+- [概率论](mathematics/probability_theory.md)
 - [数值优化](mathematics/numerical_optimization.md)
 
 ## 深度学习

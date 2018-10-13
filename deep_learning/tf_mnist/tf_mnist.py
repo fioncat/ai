@@ -4,6 +4,7 @@
 # Tensorflow 实现CNN
 import tensorflow as tf
 import numpy as np
+from tensorflow.python.framework import graph_util
 
 # 读取MNIST数据集
 from tensorflow.examples.tutorials.mnist import input_data
@@ -141,5 +142,10 @@ with tf.Session() as sess:
     })
     print()
     print("Train Over, test accuracy: {}".format(test_acc))
+
+    constant_graph = graph_util.convert_variables_to_constants(sess,
+                                                               sess.graph_def, ['op_to_store'])
+    with tf.gfile.FastGFile('model/mnist.pb', mode='wb') as f:
+        f.write(constant_graph.SerializeToString())
 
 

@@ -98,4 +98,60 @@ $$x^*=x^{(0)}-\mathbf{H}(f)(x^{(0)})^{-1}\nabla_xf(x^{(0)})$$
 
 ## 约束优化
 
+有时候,我们并不想在$x$的所有取值下去优化一个函数,而是希望在一个集合$\mathbb{S}$中对$f$进行优化,这样的优化问题叫做**约束优化**.
 
+一个可行的方法是,仍然使用梯度下降法,但是把结果投影到$\mathbb{S}$中.
+
+这里重点说**Karush-Kuhn-Tucker**方法,这是约束优化问题的通用解决方法.
+
+我们先引入一个**广义Lagrangian函数**,对于$x$的定义域$\mathbb{S}$,我们希望通过若干函数来表达.具体来说,我们希望通过$m$个函数$g^{(i)}$和$n$个函数$h^{(j)}$来描述$\mathbb{S}$.那么$\mathbb{S}$可以表示为:
+
+$$\mathbb{S}=\{x|\forall i,g^{(i)}(x)=0\ and\ \forall j,h^{(j)}(x)\le 0 \}$$
+
+其中,$g^{(i)}$被称为**等式约束**,$h^{(j)}$被称为**不等式约束**.
+
+再引入$\lambda_i$和$\alpha_j$,它们被称为KKT乘子.则广义Lagrangian函数定义为:
+
+$$L(x,\lambda,\alpha)=f(x)+\sum_i\lambda_ig^{(i)}(x)+\sum_j\alpha_jh^{(j)}(x)$$
+
+现在,我们只需要对广义Lagrangian函数做优化,相当于求:
+
+$$\min\limits_x\max\limits_\lambda\max\limits_{\alpha,\alpha\ge0}L(x,\lambda,\alpha)$$
+
+这与如下函数有相同的最优目标函数值和最优点集:
+
+$$\min\limits_{x\in\mathbb{S}}f(x)$$
+
+这个特点非常有意思,因为当$x$满足约束时,有:
+
+$$\max\limits_\lambda\max\limits_{\alpha,\alpha\ge0}L(x,\lambda,\alpha)=f(x)$$
+
+当不满足的时候,有:
+
+$$\max\limits_\lambda\max\limits_{\alpha,\alpha\ge0}L(x,\lambda,\alpha)=\infty$$
+
+这个性质可以保证不可行点($x\notin\mathbb{S}$)永远不可能是最佳的,而可行点($x\in\mathbb{S}$)最优点不变.
+
+为了最终解决约束最大化问题,我们可以构造$-f(x)$的广义Lagrange函数,从而得到以下优化问题:
+
+$$\min\limits_x\max\limits_\lambda\max\limits_{\alpha,\alpha\ge0}-f(x)+\sum_i\lambda_ig^{(i)}(x)+\sum_j\alpha_jh^{(j)}(x)$$
+
+可以转换为在外层的最大化问题:
+
+$$\max\limits_x\min\limits_\lambda\min\limits_{\alpha,\alpha\ge0}f(x)+\sum_i\lambda_ig^{(i)}(x)-\sum_j\alpha_jh^{(j)}(x)$$
+
+等式约束的符号并不重要,因为优化可以自由选择每个$\lambda_i$的符号.
+
+关注不等式约束.如果一个不等式约束$h^{(i)}(x^*)=0$,则我们就说这个约束$h^{(i)}$是活跃的.如果约束不活跃,则有该约束的问题的解和去掉这个约束的问题的解至少存在一个相同的局部解.
+
+不活跃约束可能会排除掉其他解,例如一些存在最优点的区域被不活跃约束给消去.然而,无论不活跃约束是否在内,收敛时找到的点仍然是一个临界点.因为一个不活跃约束$h^{(j)}$必有负值,那么在最小化的过程中必另$\alpha_j=0$.因此,在优化解中,有一个很有意思的现象:$\alpha\odot h(x)=0$,也就是说,要么$h(x)$为0(该约束是活跃的),要么$\alpha$为0(该约束不活跃).
+
+换句话说,在收敛时,$\alpha_i\ge0$或$h^{(i)}(x)\le0$必有一个是活跃的.这个特性叫做**互补松弛性**.
+
+可以使用一组简单的性质来描述约束优化问题的最优解,这些性质叫做KKT条件.这些条件是确定一个点是最优点的必要条件,但不是充分条件:
+
+- 广义Lagrangian梯度为0
+- 所有关于$x$的KKT乘子的约束都满足
+- 不等式约束满足"互补松弛性": $\alpha\odot h(x)=0$.
+
+我们可以通过KKT条件来验证求得的点是不是最优解.

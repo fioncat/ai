@@ -4,7 +4,9 @@
 
 这个仓库就是本人在日常学习中以这种思路整理的笔记和一些小项目.
 
-理论部分以Markdown文档为主,我在文档中使用了大量Latex公式,而Github默认是不解析这些公式的,建议使用Chrome的插件[Github with MathJax](https://chrome.google.com/webstore/detail/github-with-mathjax/ioemnmodlmafdkllaclgeombjnmnbima/related).或者使用拥有Latex引擎的Markdown阅读器阅读.
+理论部分以Markdown文档为主,我在文档中使用了大量MathJax公式,而Github默认是不解析这些公式的,建议使用Chrome的插件[Github with MathJax](https://chrome.google.com/webstore/detail/github-with-mathjax/ioemnmodlmafdkllaclgeombjnmnbima/related).或者使用拥有MathJax引擎的Markdown阅读器阅读.
+
+因为MathJax的粗体太难看了(不支持Latex中的bm),所以我在文中的向量并没有用传统的粗体风格.不过除了特殊说明,基本上所有的小写字母都是向量.对于矩阵,我还是使用加粗的方式表示.
 
 实践是利用Python将算法转化为现实的可执行程序.Anaconda包含了本项目用到的绝大多数库,一些Anaconda没有包含的库如下:
 

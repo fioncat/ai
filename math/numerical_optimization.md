@@ -40,25 +40,25 @@ $$\mathbf{H}=\mathbf{H} _{ji}$$
 
 也就是说Hessian矩阵是实对称的.
 
-在对多维函数求导的时候引入**方向导数**,方向导数是函数$f$在$u$(单位向量)方向的斜率.也就是函数$f(x+\alphau)$关于$\alpha$的导数(在$\alpha$为0时取的),则可以计算:
+在对多维函数求导的时候引入**方向导数**,方向导数是函数$f$在$u$(单位向量)方向的斜率.也就是函数$f(x+\alpha u)$关于$\alpha$的导数(在$\alpha$为0时取的),则可以计算:
 
-$$\frac{\partial}{\partial\alpha}f(x+\alphau)=u^T\nabla_xf(x)$$
+$$\frac{\partial}{\partial\alpha}f(x+\alpha u)=u^T\nabla_xf(x)$$
 
 回到Hessian矩阵,因为它是对称的,所以可以分解成一组实特征值和一组特征向量的正交基.也就是说,在特定方向$d$上的二阶导数可以写成$d^T\mathbf{H}d$.当$d$是$\mathbf{H}$的一个特征向量,则其对应的特征值就是$d$方向的二阶导数.
 
-通过方向二阶导数可以预期一个梯度下降步骤的表现,现在假设$\bm{g}$是梯度,在$x^{(0)}$处对$f$在$\bm{g}$方向的求导可以写为$\bm{g}^T\mathbf{H}\bm{g}$,对函数做泰勒展开:
+通过方向二阶导数可以预期一个梯度下降步骤的表现,现在假设$\mathbf{g}$是梯度,在$x^{(0)}$处对$f$在$\mathbf{g}$方向的求导可以写为$\mathbf{g}^T\mathbf{H}\mathbf{g}$,对函数做泰勒展开:
 
-$$f(x)\approx f(x^{(0)})+(x-x^{(0)})^T\bm{g}+\frac{1}{2}(x-x^{(0)})^T\mathbf{H}(x-x^{(0)})$$
+$$f(x)\approx f(x^{(0)})+(x-x^{(0)})^T\mathbf{g}+\frac{1}{2}(x-x^{(0)})^T\mathbf{H}(x-x^{(0)})$$
 
-将梯度下降的更新公式$x^{(0)}-\epsilon\bm{g}$带入上面的近似,有:
+将梯度下降的更新公式$x^{(0)}-\epsilon\mathbf{g}$带入上面的近似,有:
 
-$$f(x^{(0)}-\epsilon\bm{g})\approx f(x^{(0)})-\epsilon\bm{g}^T\bm{g}+\frac{1}{2}\epsilon^2\bm{g}^T\mathbf{H}\bm{g}$$
+$$f(x^{(0)}-\epsilon\mathbf{g})\approx f(x^{(0)})-\epsilon\mathbf{g}^T\mathbf{g}+\frac{1}{2}\epsilon^2\mathbf{g}^T\mathbf{H}\mathbf{g}$$
 
-这个式子有三个项,第一个项是原始的函数值,第二个是预期的改善.注意第三个项,它过大会导致函数向上移动.当$\bm{g}^T\mathbf{H}\bm{g}$为负或0时,泰勒级数表明按照梯度下降将会永远使$f$下降.
+这个式子有三个项,第一个项是原始的函数值,第二个是预期的改善.注意第三个项,它过大会导致函数向上移动.当$\mathbf{g}^T\mathbf{H}\mathbf{g}$为负或0时,泰勒级数表明按照梯度下降将会永远使$f$下降.
 
-在$\bm{g}^T\mathbf{H}\bm{g}$为正时,通过二次函数的计算,$\epsilon$取以下值时可以使近似泰勒级数下降得最快:
+在$\mathbf{g}^T\mathbf{H}\mathbf{g}$为正时,通过二次函数的计算,$\epsilon$取以下值时可以使近似泰勒级数下降得最快:
 
-$$\epsilon^*=\frac{\bm{g}^T\bm{g}}{\bm{g}^T\mathbf{H}\bm{g}}$$
+$$\epsilon^*=\frac{\mathbf{g}^T\mathbf{g}}{\mathbf{g}^T\mathbf{H}\mathbf{g}}$$
 
 二阶导数还可以用于确定一个临界点是否是局部极大点,局部极小点:
 

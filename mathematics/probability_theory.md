@@ -258,6 +258,6 @@ $$\hat{\mu}_m=\frac{1}{m}\sum^m _{i=1}x^{(i)}$$
 
 $$
 \begin{aligned}
-    1=1
+    \mathbf{bias}(\hat{\mu}_m)&=\mathbb{E} [ \hat{\mu}_m]-\mu\\&=\mathbb{E} [ \frac{1}{m}\sum^m _{i=1}x^{(i)}]-\mu\\&=
 \end{aligned}
 $$

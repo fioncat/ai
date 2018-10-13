@@ -256,8 +256,8 @@ $$\hat{\mu}_m=\frac{1}{m}\sum^m _{i=1}x^{(i)}$$
 
 现在计算偏差:
 
-$$
-\begin{aligned}
-    \mathbf{bias}(\hat{\mu}_m)&=\mathbb{E} [ \hat{\mu}_m]-\mu\\&=\mathbb{E} [ \frac{1}{m}\sum^m _{i=1}x^{(i)}]-\mu\\&=
-\end{aligned}
-$$
+$$\mathbf{bias}(\hat{\mu}_m)=\mathbb{E} [ \hat{\mu}_m]-\mu$$
+
+$$\qquad\qquad\qquad\ \ \ \ \ =\mathbb{E} [ \frac{1}{m}\sum^m _{i=1}x^{(i)}]-\mu\\$$
+
+$$\qquad\qquad\qquad=(\frac{1}{m}\sum^m_{i=1}\mu)-\mu$$

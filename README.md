@@ -13,7 +13,7 @@
 - Tensorflow: Google的开源DeepLearning库, [官方网站](https://www.tensorflow.org/)
 - Keras: 底层基于Tensorflow, 提供更加人性化的API. [文档传送门](https://keras.io/)
 
-所有小项目基于Python 3.x编写.
+所有小项目基于Python 3.x编写.部分源代码使用jupyter notebook的编写.
 
 ## 数学
 
@@ -21,7 +21,7 @@
 
 - [线性代数]()
 - [概率论]()
-- [数值优化](math/numerical_optimization.md)
+- [数值优化](mathematics/numerical_optimization.md)
 
 ## 深度学习
 
@@ -29,7 +29,7 @@
 
 下面是深度学习的理论笔记(主要内容来自花书):
 
-- [深度前馈网络deep feedforward network]()
+- [深度前馈网络Deep Feedforward Network](deep_learning/notes/mlp.md)
 - [正则化]()
 - [优化方法]()
 - [卷积网络]()
@@ -47,8 +47,8 @@
 - [Tensorflow RNN实现自动生成文章]()
 - [Tensorflow RNN实现情感预测]()
 
-## 计算机图形
+## 机器学习
+
+## 计算机视觉
 
 ## 自然语言处理
-
-##

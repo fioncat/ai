@@ -36,7 +36,7 @@ $$\mathbf{H}(f)(x)_{ij}=\frac{\partial^2}{\partial x_i\partial x_j}f(x)$$
 
 对于二阶偏导,微分算子是可以交换的,这意味Hessian矩阵有一个重要的特征:
 
-$$\mathbf{H}=\mathbf{H} _{ji}$$
+$$\mathbf{H}_{ij}=\mathbf{H} _{ji}$$
 
 也就是说Hessian矩阵是实对称的.
 

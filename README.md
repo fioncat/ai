@@ -21,7 +21,7 @@
 
 - [线性代数]()
 - [概率论]()
-- [数值优化]()
+- [数值优化](math/numerical_optimization.md)
 
 ## 深度学习
 

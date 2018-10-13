@@ -106,7 +106,7 @@ $$x^*=x^{(0)}-\mathbf{H}(f)(x^{(0)})^{-1}\nabla_xf(x^{(0)})$$
 
 我们先引入一个**广义Lagrangian函数**,对于$x$的定义域$\mathbb{S}$,我们希望通过若干函数来表达.具体来说,我们希望通过$m$个函数$g^{(i)}$和$n$个函数$h^{(j)}$来描述$\mathbb{S}$.那么$\mathbb{S}$可以表示为:
 
-$$\mathbb{S}=\{x|\forall i,g^{(i)}(x)=0\ and\ \forall j,h^{(j)}(x)\le 0 \}$$
+$$\mathbb{S}=\lbrace x|\forall i,g^{(i)}(x)=0\ and\ \forall j,h^{(j)}(x)\le 0 \rbrace$$
 
 其中,$g^{(i)}$被称为**等式约束**,$h^{(j)}$被称为**不等式约束**.
 

@@ -1,13 +1,17 @@
 # AI学习资料整理
 
-对于
+对于AI的学习,我个人认为一定要理论结合实践,首先让自己的理论基础过关了,然后再去做一些小项目练手.
 
-理论部分以markdown文档为主,我在文档中使用了大量Latex公式,而Github默认是不解析这些公式的,建议使用Chrome的插件[Github with MathJax](https://chrome.google.com/webstore/detail/github-with-mathjax/ioemnmodlmafdkllaclgeombjnmnbima/related).或者使用拥有Latex引擎的工具阅读.
+这个仓库就是本人在日常学习中以这种思路整理的笔记和一些小项目.
 
-实践是利用Python将算法转化为现实的可执行软件.Anaconda包含了本项目用到的绝大多数库,一些Anaconda没有包含的库如下:
+理论部分以Markdown文档为主,我在文档中使用了大量Latex公式,而Github默认是不解析这些公式的,建议使用Chrome的插件[Github with MathJax](https://chrome.google.com/webstore/detail/github-with-mathjax/ioemnmodlmafdkllaclgeombjnmnbima/related).或者使用拥有Latex引擎的Markdown阅读器阅读.
+
+实践是利用Python将算法转化为现实的可执行程序.Anaconda包含了本项目用到的绝大多数库,一些Anaconda没有包含的库如下:
 
 - Tensorflow: Google的开源DeepLearning库, [官方网站](https://www.tensorflow.org/)
 - Keras: 底层基于Tensorflow, 提供更加人性化的API. [文档传送门](https://keras.io/)
+
+所有小项目基于Python 3.x编写.
 
 ## 数学
 
@@ -21,7 +25,7 @@
 
 深度学习属于机器学习的分支,它通过嵌套深层简单概念构造复杂的模型,以解决现实世界一些比较复杂的智能任务.深度学习要求有高等数学(简单的求导,偏导数,梯度等),线性代数和数值优化基础.
 
-下面的深度学习的理论笔记:
+下面是深度学习的理论笔记(主要内容来自花书):
 
 - [深度前馈网络deep feedforward network]()
 - [正则化]()
@@ -30,14 +34,16 @@
 - [循环网络]()
 - [超参数]()
 
-深度学习包含了以下的示例项目:
+深度学习包含了以下的示例项目(建议使用GPU训练):
 
 - [Python实现简单MLP模型并训练MNIST数据集]()
+- [Tensorflow 实现MLP并训练MNIST数据集]()
 - [Keras CNN训练CIFAR10数据]()
 - [Tensorflow VGG迁移学习实现对花朵图片的分类]()
 - [Keras VGG迁移学习实现对狗狗品种的预测]()
 - [Keras VGG迁移学习实现Kaggle猫狗大战任务]()
 - [Tensorflow RNN实现自动生成文章]()
+- [Tensorflow RNN实现情感预测]()
 
 ## 计算机图形
 

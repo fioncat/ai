@@ -253,9 +253,9 @@ $$\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ g\leftarrow\nabla_{h^{(k-1)}}\
 
 我们定义一些关于张量在计算图中的操作:
 
-- $\mathbf{get\_op}(V)$: 返回用于计算$V$的操作.
-- $\mathbf{get\_consumers}(V,\mathcal{G})$: 返回图$\mathcal{G}$中$V$的子节点.
-- $\mathbf{get\_inputs}(V,\mathcal{G})$: 返回图$\mathcal{G}$中$V$的父节点.
+- $\mathbf{getOp}(V)$: 返回用于计算$V$的操作.
+- $\mathbf{getConsumers}(V,\mathcal{G})$: 返回图$\mathcal{G}$中$V$的子节点.
+- $\mathbf{getInputs}(V,\mathcal{G})$: 返回图$\mathcal{G}$中$V$的父节点.
 
 $V$的操作op有一个重要的方法bprop,它用于计算$z$关于张量的Jacobian向量积.
 
@@ -279,11 +279,11 @@ $$\frac{\partial z}{\partial x}=\frac{\mathbf{d}(xy)}{\mathbf{d}y}\times1+\frac{
 
 $$\mathcal{G}'\leftarrow\mathbf{subgraph\ \ of\ \ \mathcal{G},which\ \ only \ \ contains\ \ ancestor\ \ of\ \ }z\mathbf{\ \ and\ \ descendants\ \ of\ \ }\mathbb{T}$$
 
-$$\mathbf{initialize\ \ grad\_table}$$
-$$\mathbf{grad\_table} [ z]\leftarrow1$$
+$$\mathbf{initialize\ \ gradTable}$$
+$$\mathbf{gradTable} [ z]\leftarrow1$$
 $$\mathbf{for}\ \ V\mathbf{\ \ in}\ \ \mathbb{T}:$$
-$$\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mathbf{build\_grad(V,\mathcal{G},\mathcal{G}',grad\_table)}$$
-$$\mathbf{return\ \ grad\_table}$$
+$$\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mathbf{buildGrad(V,\mathcal{G},\mathcal{G}',gradTable)}$$
+$$\mathbf{return\ \ gradTable}$$
 
 ***
 
@@ -291,17 +291,17 @@ $$\mathbf{return\ \ grad\_table}$$
 
 ***
 
-$$\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mathbf{def\ \ build\_grad}(V,\mathcal{G},\mathcal{G}',\mathbf{grad\_table}):$$
-$$\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mathbf{if\ \ }V\mathbf{\ \ in}\ \ \mathbf{grad\_table}:$$
-$$\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mathbf{return\ \ grad\_table} [ V]$$
+$$\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mathbf{def\ \ buildGrad}(V,\mathcal{G},\mathcal{G}',\mathbf{gradTable}):$$
+$$\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mathbf{if\ \ }V\mathbf{\ \ in}\ \ \mathbf{gradTable}:$$
+$$\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mathbf{return\ \ gradTable} [ V]$$
 $$i\leftarrow1$$
-$$\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mathbf{for}\ \ C\ \ \mathbf{in}\ \ \mathbf{get\_consumers}(V,\mathcal{G}'):$$
-$$\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ op\leftarrow\mathbf{get\_op}(C)$$
-$$\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ D\leftarrow\mathbf{build\_grad}(C,\mathcal{G},\mathcal{G}',\mathbf{grad\_table})$$
-$$\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ G^{(i)}\leftarrow op.\mathbf{bprop}(\mathbf{get\_inputs}(C,\mathcal{G}'),V,D)$$
+$$\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mathbf{for}\ \ C\ \ \mathbf{in}\ \ \mathbf{getConsumers}(V,\mathcal{G}'):$$
+$$\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ op\leftarrow\mathbf{getOp}(C)$$
+$$\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ D\leftarrow\mathbf{buildGrad}(C,\mathcal{G},\mathcal{G}',\mathbf{gradTable})$$
+$$\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ G^{(i)}\leftarrow op.\mathbf{bprop}(\mathbf{getInputs}(C,\mathcal{G}'),V,D)$$
 $$\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ i\leftarrow i+1$$
 $$\ \ \ \ \ \ \ \ \ \ \ \ \ \ G\leftarrow\sum_iG^{(i)}$$
-$$\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mathbf{grad\_table} [ V]=G$$
+$$\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mathbf{gradTable} [ V]=G$$
 $$\ \ \ \ \ \ \ \ \ \mathbf{return\ \ }G$$
 ***
 

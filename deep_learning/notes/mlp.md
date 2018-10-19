@@ -218,22 +218,30 @@ $$\frac{\partial z}{\partial w}=f'(y)f'(x)f'(w)$$
 
 假设网络的深度是$l$,$W^{(i)}$表示第$i$层的权重,$b^{(i)}$表示第$i$层的偏差,隐藏层的激活函数为$f$,则前向传递的伪代码为:
 
+***
+
 $$h^{(0)}=x$$
 $$\ \ \ \ \ \ \ \ \ \ \ \ \ \ \mathbf{for}\ \ k=1\ \  \mathbf{to}\ \ l:$$
 $$\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ h^{(k)}=f(W^{(k)}h^{(k-1)}+b^{(k)})$$
 $$\hat{y}=h^{(l)}$$
 $$\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ J=L(\hat{y},y)+\lambda\ \ \Omega(\theta)$$
 
+***
+
 注意这里最后的误差使用了正则化,笔记见[正则化笔记]().
 
 在前向传递完成之后,进行反向传递.这个过程是从输出层开始向后计算一直到第一个隐藏层所有参数的梯度.这些梯度可以用于更新参数(或者配合一些优化方法去更新):
+
+***
 
 $$\ \ \ \ \ \ \ \ g\leftarrow\nabla_{\hat{y}}J=\nabla_{\hat{y}}L(\hat{y},y)$$
 $$\mathbf{for}\ \ k=l\ \ \mathbf{to}\ \ 1:$$
 $$\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ g\leftarrow\nabla_{a^{(k)}}J=g\ \odot\ f'(a^{(k)})$$
 $$\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \nabla_{b^{(k)}}\ \ J=g+\lambda\nabla_{b^{(k)}}\ \ \Omega(\theta)$$
 $$\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \nabla_{W^{(k)}}\ \ J=g\ h^{(k-1)T}+\lambda\nabla_{W^{(k)}}\ \ \Omega(\theta)$$
-$$\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ g\leftarrow\nabla_{h^{(k-1)}}\ \ J=W^{(k)T}g$$
+$$\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ g\leftarrow\nabla_{h^{(k-1)}}\ \ \ J=W^{(k)T}g$$
+
+***
 
 我们可以在传统的前向传递中增加一些额外的节点来计算导数,这样反向传播就不需要访问任何实际的特定数值,它仅仅将节点增加到计算图中以描述如何去计算这个值.这可以在随后计算某个数的导数.一个简易的计算图如下:
 
@@ -249,4 +257,52 @@ $$\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ g\leftarrow\nabla_{h^{(k-1)}}\
 - $\mathbf{get\_consumers}(V,\mathcal{G})$: 返回图$\mathcal{G}$中$V$的子节点.
 - $\mathbf{get\_inputs}(V,\mathcal{G})$: 返回图$\mathcal{G}$中$V$的父节点.
 
+$V$的操作op有一个重要的方法bprop,它用于计算$z$关于张量的Jacobian向量积.
 
+但是操作不一样,则反向传播就不一样了.因此如何通过$V$的边来进行反向传播是由操作来决定的.例如,假设变量是由矩阵乘法决定的:$C=AB$.假设已知$z$关于$C$的梯度是$G$.对$A$调用bprop操作求梯度,得到$GB^T$;对$B$调用bprop操作求梯度,得到$A^TB$.bprop并不关心微分细则,微分是由操作本身决定的.
+
+bprop的最终输出$\mathbf{op.bprop(inputs,}X,G)$是对每个输入调用bprop操作的和:
+
+$$\sum_i(\nabla_X\mathbf{op.f}(\mathbf{inputs})_i)G_i$$
+
+其中,op.f是具体的操作,例如矩阵乘法,inputs是提供给操作的输入,X是输入,我们要计算它的梯度.G是操作对于输出的梯度(由上一层传过来).
+
+举个例子,假如一个操作是mul(乘法),它的输入是两个标量$x$,$z$关于输出的导数是$1$.op.bprop会分别对两个输入单独做bprop操作,然后求和,则可以得到:
+
+$$\frac{\partial z}{\partial x}=\frac{\mathbf{d}(xy)}{\mathbf{d}y}\times1+\frac{\mathbf{d}(xy)}{\mathbf{d}y}\times1=2x$$
+
+也就是说,即使输入的两个$x$是相同的,bprop还是会把它们看作不同的变量处理,但是最后得到的$2x$仍然是正确的导数.
+
+利用上面的方法,就可以根据给定的计算图$\mathcal{G}$,返回它的反向传播结果了.假设输入$\mathbb{T}$表示需要计算梯度的目标变量,$z$表示微分变量,伪代码如下:
+
+***
+
+$$\mathcal{G}'\leftarrow\mathbf{subgraph\ \ of\ \ \mathcal{G},which\ \ only \ \ contains\ \ ancestor\ \ of\ \ }z\mathbf{\ \ and\ \ descendants\ \ of\ \ }\mathbb{T}$$
+
+$$\mathbf{initialize\ \ grad\_table}$$
+$$\mathbf{grad\_table} [ z]\leftarrow1$$
+$$\mathbf{for}\ \ V\mathbf{\ \ in}\ \ \mathbb{T}:$$
+$$\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mathbf{build\_grad(V,\mathcal{G},\mathcal{G}',grad\_table)}$$
+$$\mathbf{return\ \ grad\_table}$$
+
+***
+
+核心方法是build_grad,它生成了每一个目标变量的梯度:
+
+***
+
+$$\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mathbf{def\ \ build\_grad}(V,\mathcal{G},\mathcal{G}',\mathbf{grad\_table}):$$
+$$\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mathbf{if\ \ }V\mathbf{\ \ in}\ \ \mathbf{grad\_table}:$$
+$$\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mathbf{return\ \ grad\_table} [ V]$$
+$$i\leftarrow1$$
+$$\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mathbf{for}\ \ C\ \ \mathbf{in}\ \ \mathbf{get\_consumers}(V,\mathcal{G}'):$$
+$$\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ op\leftarrow\mathbf{get\_op}(C)$$
+$$\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ D\leftarrow\mathbf{build\_grad}(C,\mathcal{G},\mathcal{G}',\mathbf{grad\_table})$$
+$$\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ G^{(i)}\leftarrow op.\mathbf{bprop}(\mathbf{get\_inputs}(C,\mathcal{G}'),V,D)$$
+$$\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ i\leftarrow i+1$$
+$$\ \ \ \ \ \ \ \ \ \ \ \ \ \ G\leftarrow\sum_iG^{(i)}$$
+$$\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mathbf{grad\_table} [ V]=G$$
+$$\ \ \ \ \ \ \ \ \ \mathbf{return\ \ }G$$
+***
+
+以上就是通用的反向传播伪代码.

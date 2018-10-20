@@ -19,9 +19,9 @@
 
 机器学习的理论要求一定数学基础.其中线性代数尤为重要,其次是概率论和数值优化的一些理论.所以我一开始整理的是一些数学相关的markdown笔记:
 
-- [线性代数](mathematics/linear_algebra.md)
-- [概率论](mathematics/probability_theory.md)
-- [数值优化](mathematics/numerical_optimization.md)
+- [线性代数Linear Algebra](mathematics/linear_algebra.md)
+- [概率论Probability theory](mathematics/probability_theory.md)
+- [数值优化Numberical Optimization](mathematics/numerical_optimization.md)
 - [凸优化]()
 
 ## 深度学习
@@ -31,10 +31,10 @@
 下面是深度学习的理论笔记(主要内容来自花书):
 
 - [深度前馈网络Deep Feedforward Network](deep_learning/notes/mlp.md)
-- [正则化]()
-- [优化方法]()
-- [卷积网络]()
-- [循环网络]()
+- [正则化Regularization](deep_learning/notes/regularization.md)
+- [优化方法](deep_learning/notes/optimization.md)
+- [卷积网络](deep_learning/notes/cnn.md)
+- [循环网络](deep_learning/notes/rnn.md)
 - [超参数]()
 
 深度学习包含了以下的示例项目(建议使用GPU训练):

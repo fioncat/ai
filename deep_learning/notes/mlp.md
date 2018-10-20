@@ -161,7 +161,7 @@ $$h_i=g(z,\alpha)=\max(0,z_i)+\alpha_i\min(0,z_i)$$
 对于$\alpha$的选择,有以下三种:
 
 - **绝对值整流**:固定$\alpha_i=1$,这样有$g(z)=|z|$.它一般用于图像中的对象识别.
-- **参漏整流**:将$\alpha_i$固定为一个类似0.01的小值.
+- **参漏整流**:将$\alpha_i$固定为一个类似0.01的小值.
 - **参数化整流**或**PReLU**:将$\alpha_i$作为学习的参数.
 
 ### sigmoid和双曲正切
@@ -220,26 +220,35 @@ $$\frac{\partial z}{\partial w}=f'(y)f'(x)f'(w)$$
 
 ***
 
-$$h^{(0)}=x$$
-$$\ \ \ \ \ \ \ \ \ \ \ \ \ \ \mathbf{for}\ \ k=1\ \  \mathbf{to}\ \ l:$$
-$$\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ h^{(k)}=f(W^{(k)}h^{(k-1)}+b^{(k)})$$
-$$\hat{y}=h^{(l)}$$
-$$\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ J=L(\hat{y},y)+\lambda\ \ \Omega(\theta)$$
+$h^{(0)}=x$
+
+$\mathbf{for}\ \ k=1\ \  \mathbf{to}\ \ l:$
+
+&ensp;&ensp;&ensp;&ensp;$h^{(k)}=f(W^{(k)}h^{(k-1)}+b^{(k)})$
+
+&ensp;&ensp;&ensp;&ensp;$\hat{y}=h^{(l)}$
+
+&ensp;&ensp;&ensp;&ensp;$J=L(\hat{y},y)+\lambda\ \ \Omega(\theta)$
 
 ***
 
-注意这里最后的误差使用了正则化,笔记见[正则化笔记]().
+注意这里最后的误差使用了正则化,笔记见[正则化笔记](./regularization.md).
 
 在前向传递完成之后,进行反向传递.这个过程是从输出层开始向后计算一直到第一个隐藏层所有参数的梯度.这些梯度可以用于更新参数(或者配合一些优化方法去更新):
 
 ***
 
-$$\ \ \ \ \ \ \ \ g\leftarrow\nabla_{\hat{y}}J=\nabla_{\hat{y}}L(\hat{y},y)$$
-$$\mathbf{for}\ \ k=l\ \ \mathbf{to}\ \ 1:$$
-$$\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ g\leftarrow\nabla_{a^{(k)}}J=g\ \odot\ f'(a^{(k)})$$
-$$\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \nabla_{b^{(k)}}\ \ J=g+\lambda\nabla_{b^{(k)}}\ \ \Omega(\theta)$$
-$$\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \nabla_{W^{(k)}}\ \ J=g\ h^{(k-1)T}+\lambda\nabla_{W^{(k)}}\ \ \Omega(\theta)$$
-$$\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ g\leftarrow\nabla_{h^{(k-1)}}\ \ \ J=W^{(k)T}g$$
+$g\leftarrow\nabla_{\hat{y}}J=\nabla_{\hat{y}}L(\hat{y},y)$
+
+$\mathbf{for}\ \ k=l\ \ \mathbf{to}\ \ 1:$
+
+&ensp;&ensp;&ensp;&ensp;$g\leftarrow\nabla_{a^{(k)}}J=g\ \odot\ f'(a^{(k)})$
+
+&ensp;&ensp;&ensp;&ensp;$\nabla_{b^{(k)}}\ \ J=g+\lambda\nabla_{b^{(k)}}\ \ \Omega(\theta)$
+
+&ensp;&ensp;&ensp;&ensp;$\nabla_{W^{(k)}}\ \ J=g\ h^{(k-1)T}+\lambda\nabla_{W^{(k)}}\ \ \Omega(\theta)$
+
+&ensp;&ensp;&ensp;&ensp;$g\leftarrow\nabla_{h^{(k-1)}}\ \ \ J=W^{(k)T}g$
 
 ***
 
@@ -277,13 +286,17 @@ $$\frac{\partial z}{\partial x}=\frac{\mathbf{d}(xy)}{\mathbf{d}y}\times1+\frac{
 
 ***
 
-$$\mathcal{G}'\leftarrow\mathbf{subgraph\ \ of\ \ \mathcal{G},which\ \ only \ \ contains\ \ ancestor\ \ of\ \ }z\mathbf{\ \ and\ \ descendants\ \ of\ \ }\mathbb{T}$$
+$\mathcal{G}'\leftarrow\mathbf{subgraph\ \ of\ \ \mathcal{G},which\ \ only \ \ contains\ \ ancestor\ \ of\ \ }z\mathbf{\ \ and\ \ descendants\ \ of\ \ }\mathbb{T}$
 
-$$\mathbf{initialize\ \ gradTable}$$
-$$\mathbf{gradTable} [ z]\leftarrow1$$
-$$\mathbf{for}\ \ V\mathbf{\ \ in}\ \ \mathbb{T}:$$
-$$\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mathbf{buildGrad(V,\mathcal{G},\mathcal{G}',gradTable)}$$
-$$\mathbf{return\ \ gradTable}$$
+$\mathbf{initialize\ \ gradTable}$
+
+$\mathbf{gradTable} [ z]\leftarrow1$
+
+$\mathbf{for}\ \ V\mathbf{\ \ in}\ \ \mathbb{T}:$
+
+&ensp;&ensp;&ensp;&ensp;$\mathbf{buildGrad(V,\mathcal{G},\mathcal{G}',gradTable)}$
+
+$\mathbf{return\ \ gradTable}$
 
 ***
 
@@ -291,18 +304,29 @@ $$\mathbf{return\ \ gradTable}$$
 
 ***
 
-$$\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mathbf{def\ \ buildGrad}(V,\mathcal{G},\mathcal{G}',\mathbf{gradTable}):$$
-$$\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mathbf{if\ \ }V\mathbf{\ \ in}\ \ \mathbf{gradTable}:$$
-$$\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mathbf{return\ \ gradTable} [ V]$$
-$$i\leftarrow1$$
-$$\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mathbf{for}\ \ C\ \ \mathbf{in}\ \ \mathbf{getConsumers}(V,\mathcal{G}'):$$
-$$\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ op\leftarrow\mathbf{getOp}(C)$$
-$$\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ D\leftarrow\mathbf{buildGrad}(C,\mathcal{G},\mathcal{G}',\mathbf{gradTable})$$
-$$\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ G^{(i)}\leftarrow op.\mathbf{bprop}(\mathbf{getInputs}(C,\mathcal{G}'),V,D)$$
-$$\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ i\leftarrow i+1$$
-$$\ \ \ \ \ \ \ \ \ \ \ \ \ \ G\leftarrow\sum_iG^{(i)}$$
-$$\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mathbf{gradTable} [ V]=G$$
-$$\ \ \ \ \ \ \ \ \ \mathbf{return\ \ }G$$
+$\mathbf{def\ \ buildGrad}(V,\mathcal{G},\mathcal{G}',\mathbf{gradTable}):$
+
+&ensp;&ensp;&ensp;&ensp;$\mathbf{if\ \ }V\mathbf{\ \ in}\ \ \mathbf{gradTable}:$
+
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;$\mathbf{return\ \ gradTable} [ V]$
+
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;$i\leftarrow1$
+
+&ensp;&ensp;&ensp;&ensp;$\mathbf{for}\ \ C\ \ \mathbf{in}\ \ \mathbf{getConsumers}(V,\mathcal{G}'):$
+
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;$op\leftarrow\mathbf{getOp}(C)$
+
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;$D\leftarrow\mathbf{buildGrad}(C,\mathcal{G},\mathcal{G}',\mathbf{gradTable})$
+
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;$G^{(i)}\leftarrow op.\mathbf{bprop}(\mathbf{getInputs}(C,\mathcal{G}'),V,D)$
+
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;$i\leftarrow i+1$
+
+&ensp;&ensp;&ensp;&ensp;$G\leftarrow\sum_iG^{(i)}$
+
+&ensp;&ensp;&ensp;&ensp;$\mathbf{gradTable} [ V]=G$
+
+&ensp;&ensp;&ensp;&ensp;$\mathbf{return\ \ }G$
 ***
 
 以上就是通用的反向传播伪代码.

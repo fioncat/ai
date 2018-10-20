@@ -32,12 +32,22 @@
 
 - [深度前馈网络Deep Feedforward Network](deep_learning/notes/mlp.md)
 - [正则化Regularization](deep_learning/notes/regularization.md)
-- [优化方法](deep_learning/notes/optimization.md)
-- [卷积网络](deep_learning/notes/cnn.md)
-- [循环网络](deep_learning/notes/rnn.md)
-- [超参数]()
+- [优化方法Optimization](deep_learning/notes/optimization.md)
+- [卷积神经网络Convolutional Neural Network](deep_learning/notes/cnn.md)
+- [循环神经网络Recurrent Neural Network](deep_learning/notes/rnn.md)
+- [深度学习实践Practice]()
+- [深度学习应用Application]()
+- [线性因子模型Linear Factor Model]()
+- [自编码器Autoencoder]()
+- [表示学习Express Learning]()
+- [结构化概率模型Structured Probabilistic Model]()
+- [蒙特卡洛方法Monte Carlo]()
+- [近似推断Approximate Inference]()
+- [深度生成模型Depth Generation Model]()
 
-深度学习包含了以下的示例项目(建议使用GPU训练):
+下面是Google的深度学习框架Tensorflow的笔记(基于Python):
+
+一些简单的深度学习小项目:
 
 - [Python实现简单MLP模型并训练MNIST数据集]()
 - [Tensorflow 实现MLP并训练MNIST数据集]()

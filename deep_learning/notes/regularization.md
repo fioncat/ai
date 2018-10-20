@@ -153,3 +153,5 @@ $$\mathbb{E} [ (\frac{1}{k}\sum_i\epsilon_i)^2]=\frac{1}{k^2}\mathbb{E} [ \sum_i
 Dropout和Bagging不一样之处在于,在Bagging的时候,所有模型都是独立的.而在Dropout的时候模型之间的参数是共享的.
 
 注意Dropout是一个正则化技术,它减少了模型的有效容量.为了抵消这种影响,我们需要增大模型的规模.并且Dropout在极小的训练样本可用时不会这么有效.但是在模型足够庞大且训练数据充足的情况下,Dropout一般都能让验证误差小很多.
+
+关于如何计算Dropout输出的分布,已经Dropout的更多技术细节,参见花书7.12节.

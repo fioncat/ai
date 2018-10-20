@@ -58,8 +58,39 @@ $$W^t=(V\mathbf{diag}(\lambda)V^{-1})^t=V\mathbf{diag}(\lambda)^tV^{-1}$$
 
 ## 基本算法
 
+对于最传统的梯度下降法,这里不再介绍,而是直接介绍基于梯度下降的一些改进算法.
+
 ### 随机梯度下降
 
+随机梯度下降(SGD)和其变种是机器学习中用得最多的优化算法,特别是在深度学习中.SGD按照数据生成分布抽取$m$个小批量样本,计算它们的梯度均值,可以得到梯度的无偏估计.
+
+SGD算法的伪代码为:
+
+***
+
+$\mathbf{def\ \ }SGD(\epsilon\leftarrow\mathbf{learning\ \ rate},\theta\leftarrow\mathbf{initial\ \ parameter}):$
+
+&ensp;&ensp;&ensp;&ensp;$\mathbf{while\ \ epoch\ \ dose\ \ not\ \ end}:$
+
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;$\lbrace(x^{(1)},y^{(1)}),\dots,(x^{(m)},y^{(m)})\rbrace\leftarrow\mathbf{small\ \ batch\ \ from\ \ training\ \ data}$
+
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;$\hat{g}\leftarrow\frac{1}{m}\nabla_\theta\sum_i^mL(f(x^{(i)};\theta),y^{(i)})$
+
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;$\theta\leftarrow\theta+\epsilon\hat{g}$
+
+***
+
+在传统的梯度下降中,学习率是固定的.但是对于SGD来说,有必要随着时间逐渐降低学习率.这是因为SGD中引入了噪声源($m$个从训练集中采集的样本)的梯度并不会在极小值处消失.而使用完整的训练集在接近极小值处梯度会变得非常小,之后变为0.因此不使用SGD可以有固定的学习率,而SGD在后期应该让学习率很低以保障收敛.
+
+在实践中,一般会对学习率进行线性衰减直到第$\tau$次迭代:
+
+$$\epsilon_k=(1-\alpha)\epsilon_0+\alpha\epsilon_\tau$$
+
+在使用这个策略的时候,我们需要注意的参数是$\epsilon_0$,$\epsilon_\tau$和$\tau$.一般$\epsilon_\tau$大概设为$\epsilon_0$的1%.
+
+对于$\epsilon_0$,如果太大,学习曲线会剧烈地振荡,代价函数可能会明显地增加.如果太小,学习速度会非常缓慢,学习可能会卡在一个相当高的代价值.
+
+通常可以检测前几轮迭代,选择一个比在效果上表现最佳的学习率更大的学习率,但又不会导致严重的振荡.
 
 ### 动量
 

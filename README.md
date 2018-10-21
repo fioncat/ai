@@ -47,7 +47,7 @@
 
 下面是Google的计算框架Tensorflow在深度学习上的应用笔记(基于Python):
 
-- [Tensorflow基础]()
+- [Tensorflow基础](deep_learning/notes/tf_basic.md)
 - [Tensorflow图像识别]()
 - [Tensorflow自然语言处理]()
 

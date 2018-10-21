@@ -4,7 +4,7 @@ TensorFlow是Google推出的著名开源计算框架.被大量应用于机器学
 
 注意,本文仅包括TensorFlow深度学习的笔记,对于一些其他工具,建议自行查阅文档.
 
-本笔记仅仅是TensorFlow的基本思想,充其量只是TensorFlow核心的冰山一角,更多TensorFlow内容请参见TensorFlow[官网](https://www.tensorflow.org/)和[TensorFlow Python API文档](https://www.tensorflow.org/api_docs/python/).
+本笔记仅仅是TensorFlow的基本思想,充其量只是TensorFlow核心的冰山一角,更多TensorFlow内容请参见TensorFlow[官网](https://www.tensorflow.org/)和[TensorFlow Python API文档](https://www.tensorflow.org/api_docs/python/).
 
 ## 计算图
 
@@ -25,7 +25,7 @@ result = tf.add(a, b)
 
 这就在默认的计算图中创建了3个tensor,前两个tensor是常量,result的结果依赖于a和b的和.
 
-通过tensor的graph属性,我们可以获取这个tensor的计算图对象.TensorFlow可以通过`get_default_graph()`来获得默认的图环境,因此下面输出为`True`:
+通过tensor的graph属性,我们可以获取这个tensor的计算图对象.TensorFlow可以通过`get_default_graph()`来获得默认的图环境,因此下面输出为`True`:
 
 ```python
 print(a.graph == tf.get_default_graph())
@@ -59,7 +59,7 @@ with g.device('/gpu:0'):
 
 Tensor是TensorFlow最基本的单位.所有的数据在TensorFlow中都是以Tensor的形式表示的.
 
-我们在定义Tensor的时候,并不会直接就计算出Tensor的值,而是仅仅保存它的结构,即这个Tensor是怎么计算出来的,在上一节的第一个例子中,`result`是`a`和`b`的和,而定义完`result`之后它的结果并没有被计算出来,此时`result`仅仅保存了它的结果是依据`a`和`b`计算而来的.这和传统的python编程是完全不一样的.
+我们在定义Tensor的时候,并不会直接就计算出Tensor的值,而是仅仅保存它的结构,即这个Tensor是怎么计算出来的,在上一节的第一个例子中,`result`是`a`和`b`的和,而定义完`result`之后`result`仅仅保存了它的结果是依据`a`和`b`计算而来的.这和传统的python编程是完全不一样的.
 
 Tensor中还保存了一些重要的属性:
 
@@ -161,9 +161,9 @@ a2 = tf.Variable(a.initialized_value() * 2)
 
 这样的话`a1`的初始值和`a`一样,`a2`的初始值是`a`的两倍.
 
-在变量之前,我们需要先让Session把变量的初始化过程跑完.这可以`sess.run(v.initializer)`完成.但是如果变量很多的话一个一个初始化就很麻烦.所以可以直接通过`sess.global_variables_initializer()`完成.这是一个操作,把它传给`run()`可以一次性初始化计算图中的所有变量.
+在使用变量之前,我们需要先让Session把变量的初始化过程跑完.这可以用`sess.run(v.initializer)`完成.但是如果变量很多的话一个一个初始化就很麻烦.所以可以直接通过`sess.global_variables_initializer()`完成.这是一个操作,把它传给`run()`可以一次性初始化计算图中的所有变量.
 
-我们之前说过,变量也是一种Tensor,不过它的值是通过其它Tensor计算而来的.更加通用的,我们可以把这里的"计算"抽象成"操作".而在TensorFlow内部,变量必须是由操作生成的.所以实际上上面的初始化也是操作的过程(这个操作的输入不是Tensor,而是随机函数,我们把这个操作叫做Assign),而任何操作都需要`sess.run()`才能执行,这就解释了为什么变量的初始化需要单独进行`run()`了.
+我们之前说过,变量也是一种Tensor,不过它的值是通过其它Tensor计算而来的.更加通用的,我们可以把这里的"计算"抽象成"操作".变量必须是由操作生成的.所以实际上上面的初始化也是操作的过程(这个操作的输入不是Tensor,而是随机函数,我们把这个操作叫做Assign),而任何操作都需要`sess.run()`才能执行,这就解释了为什么变量的初始化需要单独进行`run()`了.
 
 Tensor之间可以通过各种操作得到变量,例如`tf.add()`对两个Tensor求和得到一个变量,`tf.matmul()`对两个矩阵相乘.这样的数学计算操作非常多,详情可以查看文档.
 
@@ -171,6 +171,148 @@ Tensor之间可以通过各种操作得到变量,例如`tf.add()`对两个Tensor
 
 ## 实现线性模型
 
-线性模型是
+线性模型是神经网络的基础,下面我们看看怎么使用TensorFlow定义一个线性模型并在模拟数据上训练它.
+
+在TensorFlow中,模型是通过多个Tensor组织成为一个计算图来表达的.下面我们定义一个两层的线性模型,它使用两组参数`w1`和`w2`,它们都是矩阵.通过将输入向量和参数矩阵相乘就得到了输出结果.最后结果使用Sigmoid函数转换为概率.
+
+```python
+# TensorFlow 实现简单的线性模型
+import tensorflow as tf
+from numpy.random import RandomState
+
+# 模型输入
+x = tf.placeholder(tf.float32, shape=(None, 2), name='x')
+y = tf.placeholder(tf.float32, shape=(None, 1), name='y')
+
+# 模型参数
+w1 = tf.Variable(tf.random_normal([2, 3], seed=1))
+w2 = tf.Variable(tf.random_normal([3, 1], seed=1))
+
+# 模型计算
+hidden = tf.matmul(x, w1)
+hidden = tf.matmul(hidden, w2)
+
+# 模型输出
+output = tf.sigmoid(hidden)
+
+```
+
+在每次训练的时候,我们是从训练集中抽取一批数据分批训练的.所以`x`和`y`的第一个维度为`None`,它表示批的大小.
+
+下面我们需要定义训练中的损失函数,训练的过程实际上就是在最小化这个损失函数,一般我们使用交叉熵作为损失函数:
+
+```python
+# 定义损失函数
+cost = -tf.reduce_mean(y * tf.log(tf.clip_by_value(output, 1e-10, 1.0))
+        + (1 - y) * tf.log(tf.clip_by_value(1 - output, 1e-10, 1.0)))
+```
+
+交叉熵的计算过程我不再叙述了,详见深度学习的理论部分.通过`tf.clip_by_value()`可以将一个Tensor中得数值限定在一个范围之内,这样在`output`为`0`的时候把它改为一个很小的数字,避免出现`log0`这样未定义的结果.
+
+`reduce_mean()`可以求向量或者矩阵的均值,我们使用它来输出训练数据的交叉熵均值.
+
+随后需要定义优化器,TensorFlow使用优化器去最小化损失函数并调整参数.TensorFlow提供了非常多的优化器,常见的有`GradientDescenOptimizer`,`AdamOptimizer`,`MomentumOptimizer`.关于这些优化器的更多信息请参见文档和深度学习的理论部分.
+
+```python
+# 定义优化器
+optimizer = tf.train.AdamOptimizer(0.001).minimize(cost)
+```
+
+注意优化器是一个操作,它会自动去调整参数以减少代价,它没有返回值.
+
+下面我们就可以开始训练了,首先定义一些训练的超参数:
+
+```python
+# 一些超参数
+batch_size = 8          # 每次训练的数据大小
+epochs = 5000           # 迭代轮数
+print_per_epoch = 500   # 每隔多少轮打印一次训练情况
+```
+
+随后,启动一个会话,开始训练数据:
+
+```python
+with tf.Session() as sess:
+
+    # 初始化变量
+    sess.run(tf.global_variables_initializer())
+
+    # 开始训练
+    for epoch in range(epochs):
+
+        # 每次训练的数据分段
+        start = (epoch * batch_size) % data_size
+        end = min(start + batch_size, data_size)
+
+        # 执行优化器,训练参数
+        sess.run(optimizer, feed_dict={
+            x: X[start:end], y: Y[start:end]
+        })
+
+        # 每隔一段时间,打印训练情况
+        if (epoch + 1) % print_per_epoch == 0:
+            # 计算当前代价
+            loss = sess.run(cost, feed_dict={
+                x: X[start:end], y: Y[start:end]
+            })
+
+            # 打印代价
+            print("Epoch {}/{}: Loss:{:.4f}".format(epoch + 1, epochs, loss))
+
+```
+
+以上就实现并训练了一个简单的线性模型.
 
 ## 实现神经网络
+
+线性模型有很大的局限性,我们需要在隐藏层之间加入激活函数从而把模型进行非线性化.激活函数我们一般使用ReLU.
+
+TensorFlow提供了`tf.nn.relu()`,则我们的模型定义可以更改为:
+
+```python
+hidden = tf.nn.relu(tf.add(tf.matmul(x, w1)), biases1)
+logits = tf.nn.relu(tf.add(tf.matmul(hidden, w2)), biases2)
+```
+
+隐藏层的输出一般叫做`logits`,表示神经网络输出的得分.
+
+我们希望把`logits`输出变为概率输出.如果是多分类任务,这可以用Softmax输出单元实现.Tensorflow提供了`tf.nn.softmax()`,所以对于多分类问题来说,最后的输出可以改为:
+
+```python
+output = tf.nn.softmax(logits)
+```
+
+在定义损失函数的时候,我们一般使用交叉熵,交叉熵一般都和Softmax输出单元结合在一起使用.所以TensorFlow为我们提供了下面的方法可以一步实现对损失函数的定义:
+
+```python
+cost = tf.nn.softmax_cross_entropy_with_logits(labels=y,logits=logits)
+```
+
+也就是说我们可以直接把隐藏层的输出交给这个函数,它会自动帮助我们做Softmax处理并计算交叉熵.
+
+如果我们的问题是回归问题,误差函数有所不同,回归问题需要预测一个实数,其神经网络输出时常只有一个节点.我们常用均方误差(MSE)来作为回归问题的损失函数:
+
+```python
+cost = tf.reduce_mean(tf.square(hidden - y))
+```
+
+在实践中,一定要注意根据不同的问题定义特定的损失函数.
+
+## 学习率衰减
+
+在训练数据的时候,学习率的选择颇让人头疼.如果学习率太高,模型收敛地会很快但是波动可能会非常大,如果太低,模型收敛地会很慢.
+
+我们可以让学习率随着时间衰减,因为在训练刚开始的时候,代价离最低点还有一定距离,此时学习率可以高一些让代价更快下降.而到了学习后期,代价已经很低了,模型应该学习得更慢以防止出现波动.
+
+TensorFlow直接提供了学习率衰减,通过以下方式可以定义衰减的学习率:
+
+```python
+epochs = tf.Variable(0)
+learning_rate = tf.train.exponential_decay(0.1, epochs, 100, 0.96, staircase=True)
+```
+
+上面的学习率初始值为0.1,每训练100轮后乘以0.96.这些值在真实环境中都是根据经验设置并且需要不断调试的.
+
+## 正则化
+
+正则化可以在一定程度防止过拟合现象.

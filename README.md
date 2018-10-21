@@ -53,14 +53,8 @@
 
 一些简单的深度学习小项目:
 
-- [Python实现简单MLP模型并训练MNIST数据集]()
-- [Tensorflow 实现MLP并训练MNIST数据集]()
-- [Keras CNN训练CIFAR10数据]()
-- [Tensorflow VGG迁移学习实现对花朵图片的分类]()
-- [Keras VGG迁移学习实现对狗狗品种的预测]()
-- [Keras VGG迁移学习实现Kaggle猫狗大战任务]()
-- [Tensorflow RNN实现自动生成文章]()
-- [Tensorflow RNN实现情感预测]()
+- [TensorFlow实现线性模型并训练随机数据](deep_learning/tf_projects/linear_model.py)
+- [TensorFlow实现深层神经网络](deep_learning/tf_projecrs/deep_nn.py)
 
 ## 机器学习
 

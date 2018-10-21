@@ -1,16 +1,16 @@
 # TensorFlow 入门笔记
 
-TensorFlow是Google推出的著名开源计算框架.被大量应用于机器学习和深度学习.TensorFlow支持多平台(Linux, MacOS, Windows, Android, IOS).支持GPU加速,并行计算等等.目前已经被大量应用于深度学习领域.
+TensorFlow是Google推出的著名开源计算框架.被大量应用于机器学习和深度学习.TensorFlow支持多平台(Linux, MacOS, Windows, Android, IOS).支持GPU加速,并行计算等等.目前已经被大量应用于深度学习领域.
 
-注意,本文仅包括TensorFlow深度学习的笔记,对于一些其他工具,建议自行查阅文档.
+注意,本文仅包括TensorFlow深度学习的笔记,对于一些其他工具,建议自行查阅文档.
 
 ## 计算图
 
-TensorFlow是通过计算图的形式进行计算的.Tensor表示**张量**,它是TensorFlow中最基础的单位,是计算图中的节点.在程序中,它可以是标量,向量或是矩阵.Flow表示了张量在计算图中通过计算互相转换,好像Tensor在图中流动一样.
+TensorFlow是通过计算图的形式进行计算的.Tensor表示**张量**,它是TensorFlow中最基础的单位,是计算图中的节点.在程序中,它可以是标量,向量或是矩阵.Flow表示了张量在计算图中通过计算互相转换,好像Tensor在图中流动一样.
 
-tensor之间的依赖关系就是通过计算图来描述的,而我们在使用TensorFlow编程的时候最重要的步骤就是定义计算图.
+tensor之间的依赖关系就是通过计算图来描述的,而我们在使用TensorFlow编程的时候最重要的步骤就是定义计算图.
 
-TensorFlow程序默认维护了一个计算图,默认情况下我们创建的tensor都是在这个计算图中的:
+TensorFlow程序默认维护了一个计算图,默认情况下我们创建的tensor都是在这个计算图中的:
 
 ```python
 import tensorflow as tf
@@ -21,9 +21,9 @@ b = tf.constant([3.0, 4.0], name='b')
 result = tf.add(a, b)
 ```
 
-这就在默认的计算图中创建了3个tensor,前两个tensor是常量,result的结果依赖于a和b的和.
+这就在默认的计算图中创建了3个tensor,前两个tensor是常量,result的结果依赖于a和b的和.
 
-通过tensor的graph属性,我们可以获取这个tensor的计算图对象.TensorFlow可以通过`get_default_graph()`来获得默认的图环境,因此下面输出为`True`:
+通过tensor的graph属性,我们可以获取这个tensor的计算图对象.TensorFlow可以通过`get_default_graph()`来获得默认的图环境,因此下面输出为`True`:
 
 ```python
 print(a.graph == tf.get_default_graph())
@@ -41,7 +41,7 @@ with g2.as_default():
     ...
 ```
 
-如果我们在`g1`和`g2`中创建了两个tensor,即使它们的名字是一样的,但是因为在不同的图中,所以它们可以拥有自己不同的值和或不同的依赖.
+如果我们在`g1`和`g2`中创建了两个tensor,即使它们的名字是一样的,但是因为在不同的图中,所以它们可以拥有自己不同的值和或不同的依赖.
 
 我们甚至可以通过`tf.Graph.device`来制定运行这个图的设备:
 
@@ -63,11 +63,11 @@ Tensor中还保存了一些重要的属性:
 
 - name: Tensor在图中的唯一标识,它由两个部分组成,格式是"node:src_output".其中node是由用户在定义Tensor的时候通过name属性指定的,不指定的话使用默认值;src_output表示这个张量来自节点的第几个输出.
 - type: Tensor储存的数据类型.在默认情况下,整数会使用`tf.int32`,小数使用`tf.float32`.我们也可以通过`dtype`属性手动指定.注意,对类型不匹配的Tensor执行一些运算操作TensorFlow会报错.
-- shape: Tensor储存的数据的维度.格式和NumPy一样.对于标量,shape是一个空的元组.通过Tensor的`get_shape()`可以获取维度.
+- shape: Tensor储存的数据的维度.格式和NumPy一样.对于标量,shape是一个空的元组.通过Tensor的`get_shape()`可以获取维度.
 
 Tensor被分为了多个类型,上面我们已经见识过`tf.constant()`了,它是一个常量,需要在定义的时候就初始化好.
 
-另外一个类型是`tf.placeholder()`.这也是一个常量,不过它不用事先初始化,仅仅作为一个占位符存在.我们只需要指定它的类型,维度即可.在稍后真正执行图(后面会介绍怎么执行计算图)的时候,才对`placeholder`进行赋值:
+另外一个类型是`tf.placeholder()`.这也是一个常量,不过它不用事先初始化,仅仅作为一个占位符存在.我们只需要指定它的类型,维度即可.在稍后真正执行图(后面会介绍怎么执行计算图)的时候,才对`placeholder`进行赋值:
 
 ```python
 import tensorflow as tf

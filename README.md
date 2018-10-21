@@ -45,7 +45,11 @@
 - [近似推断Approximate Inference]()
 - [深度生成模型Depth Generation Model]()
 
-下面是Google的深度学习框架Tensorflow的笔记(基于Python):
+下面是Google的计算框架Tensorflow在深度学习上的应用笔记(基于Python):
+
+- [Tensorflow基础]()
+- [Tensorflow图像识别]()
+- [Tensorflow自然语言处理]()
 
 一些简单的深度学习小项目:
 

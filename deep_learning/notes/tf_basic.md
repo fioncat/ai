@@ -315,4 +315,51 @@ learning_rate = tf.train.exponential_decay(0.1, epochs, 100, 0.96, staircase=Tru
 
 ## 正则化
 
-正则化可以在一定程度防止过拟合现象.
+正则化可以在一定程度防止过拟合现象.TensorFlow支持优化带有正则项的损失函数.同时TensorFlow也提供了计算正则化项的方法.
+
+通过`tf.contrib.layers.l2_regularizer(lambda)(w)`我们可以计算参数`w`的L2正则化项(使用`l1_regularizer`可以计算L1正则化项).我们可以直接把这个项加到损失函数的后面.
+
+```python
+x = tf.placeholder(shape=(None, 2))
+y = tf.placeholder(shape=(None, 3))
+
+w = tf.Variable(tf.random([2, 3]))
+logits = tf.matmul(x, w)
+
+loss = tf.reduce_mean(tf.square(logits - y))
+        + tf.contrib.layers.l2_regularizer(_lambda)(w)
+```
+
+如果神经网络非常深,不止一个隐藏层,我们可以通过`tf.add_to_collection()`把每组参数的正则化项加到一个由Tensorflow维护的集合中.在最后把损失加到这个集合中并计算集合的和,就可以得到最终的损失了.
+
+例如,我们单独定义一个函数来获取初始化好的参数,并同时计算正则项,并加到集合中:
+
+```python
+def get_weights(shape, _lambda):
+    var = tf.Variable(tf.random_normal(shape))
+    tf.add_to_collection('loss', 
+            tf.contrib.layers.l2_regularizer(var))
+    return var
+```
+
+这样,在最后计算好损失之后,要求所有正则化和损失的和,`tf.add_n()`可以计算一个集合的和,`tf.get_collection()`可以获取集合:
+
+```python
+loss = tf.nn.softmax_cross_entropy_with_logits(labels=y,logits=logits)
+tf.add_to_collection('loss', loss)
+loss = tf.add_n(tf.get_collection('loss'))
+```
+
+## 滑动平均模型
+
+滑动平均可以让模型在测试集上更加健壮,可以提高模型的泛化能力.TensorFlow提供了`tf.train.ExponentialMovingAverage`来实现滑动平均.需要提供衰减率来控制模型的更新速度.
+
+滑动平均为每个变量维护一个"影子变量",影子变量的初始值和变量本身一样,但是在更新变量的时候,影子变量的更新是:
+
+```python
+shadow_var = decay * shadow_var + (1 - decay) * var
+```
+
+影子变量不会影响原来变量的更新,但是我们可以使用影子变量作为模型的输出,从而提高模型的泛化能力.
+
+## 持久化
